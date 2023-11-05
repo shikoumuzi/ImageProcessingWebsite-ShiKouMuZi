@@ -1,0 +1,7 @@
+.vs
+.git
+.idea
+node_modules
+/target
+target
+dist
