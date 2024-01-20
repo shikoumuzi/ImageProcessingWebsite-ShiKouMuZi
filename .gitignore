@@ -2,6 +2,9 @@
 .git
 .idea
 node_modules
-/target
 target
 dist
+build
+bin
+out
+
