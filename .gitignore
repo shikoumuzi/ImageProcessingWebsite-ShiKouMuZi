@@ -7,4 +7,4 @@ dist
 build
 bin
 out
-
+*.db

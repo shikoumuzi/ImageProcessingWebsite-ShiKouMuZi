@@ -123,7 +123,7 @@ endmacro()
 initRapidJson()
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (OpenCVUtil "src/OpenCVUtil.cpp" "src/OpenCVUtil.h" "src/ObjectBase.h" "src/BasicOperation/BasicOperatrion.h")
+add_executable (OpenCVUtil "src/OpenCVUtil.cpp" "src/OpenCVUtil.h" "src/MObjectBase.h" "src/MBasicOperation/MBasicOperatrion.h" "src/MMat/MMat.h" "src/MMat/MMat.cpp" "src/MMat/MMatInf.h" "src/MError.h" "src/MLog.h")
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)
