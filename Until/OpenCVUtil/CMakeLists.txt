@@ -69,12 +69,15 @@ initBoost()
 
 macro(initOpenCV)
 	set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${OpenCV_DIR}/include/opencv2)
-	set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${OpenCV_DIR}/bin)
+	set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${OpenCV_DIR}/x64/vc16/lib)
+
+	LIST(APPEND CMAKE_PROGRAM_PATH ${CMAKE_LIBRARY_PATH} ${OpenCV_DIR}/x64/vc16/bin)
+
 	set(OpenCV_ROOT ${OpenCV_DIR})
 	find_package(OpenCV REQUIRED)
 	if(OpenCV_FOUND)
 		include_directories(${OpenCV_INCLUDE_DIRS})
-		link_directories(${OpenCV_LIBRARY_DIRS})
+		link_directories(${OpenCV_DIR}/x64/vc16/bin)
 		message(STATUS "OpenCV 库信息")
 		message(STATUS "OpenCV_INCLUDE_DIRS=${OpenCV_INCLUDE_DIRS}")
 		message(STATUS "OpenCV_LIBRARY_DIRS=${OpenCV_LIBRARY_DIRS}")
@@ -123,7 +126,16 @@ endmacro()
 initRapidJson()
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (OpenCVUtil "src/OpenCVUtil.cpp" "src/OpenCVUtil.h" "src/MObjectBase.h" "src/MBasicOperation/MBasicOperatrion.h" "src/MMat/MMat.h" "src/MMat/MMat.cpp" "src/MMat/MMatInf.h" "src/MError.h" "src/MLog.h")
+add_executable (OpenCVUtil 
+				"src/OpenCVUtil.cpp" 
+				"src/OpenCVUtil.h" 
+				"src/MObjectBase.h" 
+				"src/MBasicOperation/MBasicOperatrion.h" 
+				"src/MMat/MMat.h" 
+				"src/MMat/MMat.cpp" 
+				"src/MMat/MMatInf.h" 
+				"src/MError.h" 
+				"src/MLog.h")
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)
@@ -135,7 +147,10 @@ macro(targetLinkLib)
 
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${rapidjson_LIRARIES})
 	message(STATUS "rapidjson is targeted")
-	
+
+	target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBRARIES})
+	target_link_directories(${PROJECT_NAME} PUBLIC ${OpenCV_DIR}/x64/vc16/bin)
+	message(STATUS ${OpenCV_LIBRARIES})
 
 endmacro()
 targetLinkLib()

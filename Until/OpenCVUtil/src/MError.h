@@ -8,6 +8,7 @@ namespace MUZI
 	{
 		// MatManger
 		MAT_COUNT_REACH_MAX = -101, // mat达到最大数量，不能再申请了
+		READ_IMG_FAILED = -102, // 读取图片失败
 	};
 }
 

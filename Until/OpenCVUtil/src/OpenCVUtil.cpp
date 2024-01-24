@@ -2,12 +2,12 @@
 //
 
 #include "OpenCVUtil.h"
-
-extern "C"
-{
-}
+#include "MLog.h"
+#include "MMat/MMat.h"
 
 int main()
 {
+	MUZI::logger.bindOutput("F:\\University\\WorkAndReport\\GraduationProject\\ImageProcessingWebsite\\Log\\log.txt");
+	MUZI::logger.w("this is warning message");
 	return 0;
 }

@@ -7,6 +7,9 @@
 #include<vector>
 #include<thread>
 #include<memory>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
 
 #define __MUZI_MAX_MAT_SIZE__ 2048
 namespace MUZI

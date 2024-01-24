@@ -18,6 +18,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include<boost/filesystem.hpp>
+#include<iostream>
 
 namespace MUZI
 {
