@@ -33,7 +33,7 @@ namespace MUZI
 		}
 	}
 
-	MMatIndex_t MMatManger::readImg(Path& path, int flag)
+	MMatIndex_t MMatManger::readImg(const Path& path, int flag)
 	{
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)
@@ -54,14 +54,15 @@ namespace MUZI
 		return ret_index;
 	}
 
-	MMatIndex_t MMatManger::saveImg(Path& file_path)
+	void MMatManger::saveImg(MMatIndex_t index, const Path& file_path)
 	{
-		return MMatIndex_t();
+		cv::imwrite(file_path.string(), this->getMat(index));
+		return;
 	}
 
-	MMatIndex_t MMatManger::saveImg(Path& dir_path, std::string file_name)
+	void MMatManger::saveImg(MMatIndex_t index, const Path& dir_path, std::string file_name)
 	{
-		return MMatIndex_t();
+		return ;
 	}
 
 	MMatIndex_t MMatManger::getNewIndex()

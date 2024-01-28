@@ -50,9 +50,9 @@ namespace MUZI
 		void operator=(const MMatManger&) = delete;
 		void operator=(MMatManger&&) = delete;
 	public:
-		MMatIndex_t readImg(Path& path, int flag);
-		MMatIndex_t saveImg(Path& file_path);
-		MMatIndex_t saveImg(Path& dir_path, std::string file_name);
+		MMatIndex_t readImg(const Path& path, int flag);
+		void saveImg(MMatIndex_t index, const Path& file_path);
+		void saveImg(MMatIndex_t index, const Path& dir_path, std::string file_name);
 
 	private:
 		MMatIndex_t getNewIndex();
@@ -64,6 +64,7 @@ namespace MUZI
 	private:
 		std::unique_ptr<MatMangerData> m_data;
 	};
+
 }
 
 #endif // !__MUZI_MAT__H__
