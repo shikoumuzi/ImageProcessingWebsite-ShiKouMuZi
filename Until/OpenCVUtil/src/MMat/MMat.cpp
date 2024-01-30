@@ -38,7 +38,7 @@ namespace MUZI
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)
 		{
-			return MERROR::MAT_COUNT_REACH_MAX;
+			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
 		try
 		{
@@ -48,7 +48,7 @@ namespace MUZI
 		catch (const std::exception& e)
 		{
 			std::cerr << "MMatManger::readImg: (" << path << "," << flag << ") -> " << e.what() << std::endl;
-			return MERROR::READ_IMG_FAILED;
+			return MERROR::MATMANAGER_READ_IMG_FAILED;
 		}
 
 		return ret_index;
@@ -86,7 +86,7 @@ namespace MUZI
 		MMatIndex_t now_index = this->getNewIndex();
 		if (now_index == -1)
 		{
-			return MERROR::MAT_COUNT_REACH_MAX;
+			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
 		for (MMatIndex_t i = now_index; i < this->m_data->m_mats.size(); ++i)
 		{
@@ -102,7 +102,7 @@ namespace MUZI
 				return i;
 			}
 		}
-		return MERROR::MAT_COUNT_REACH_MAX;
+		return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 	}
 
 	Mat& MMatManger::getMat(MMatIndex_t index)
@@ -114,7 +114,7 @@ namespace MUZI
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)
 		{
-			return MERROR::MAT_COUNT_REACH_MAX;
+			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
 		mat = this->m_data->m_mats[ret_index].mat;
 		this->m_data->m_mats[ret_index].is_allocated = true;
@@ -125,7 +125,7 @@ namespace MUZI
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)
 		{
-			return MERROR::MAT_COUNT_REACH_MAX;
+			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
 		this->m_data->m_mats[this->m_data->m_tail_index].mat = mat;
 		this->m_data->m_mats[this->m_data->m_tail_index].is_allocated = true;
