@@ -4,15 +4,19 @@
 
 namespace MUZI
 {
-	enum MERROR
+	extern "C"
 	{
-		// MatManger
-		MATMANAGER_MAT_COUNT_REACH_MAX = -101, // mat达到最大数量，不能再申请了
-		MATMANAGER_READ_IMG_FAILED = -102, // 读取图片失败
+		enum MERROR
+		{
+			// MatManger
+			MATMANAGER_MAT_COUNT_REACH_MAX = -101, // mat达到最大数量，不能再申请了
+			MATMANAGER_READ_IMG_FAILED = -102, // 读取图片失败
 
-		//MNumericCalculation
-		MNUMBERICCALCULATION__MATS_CHANNELS_IS_NOT_EQUAL = -202,
-	};
+			//MNumericCalculation
+			MNUMBERICCALCULATION__MATS_CHANNELS_IS_NOT_EQUAL = -202,
+			MNUMBERICCALCULATION__UNKONW_FLAG = -203,
+		};
+	}
 }
 
 #endif // !__MUZI_ERROR__
