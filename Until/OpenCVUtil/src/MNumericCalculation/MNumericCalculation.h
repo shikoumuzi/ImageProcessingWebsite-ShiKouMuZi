@@ -18,6 +18,8 @@ namespace MUZI
 		static MMatIndex_t add(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar);
 		static MMatIndex_t add(MMatIndex_t mat_a, uint8_t value);
 		static MMatIndex_t sub(MMatIndex_t mat_a, MMatIndex_t mat_b);
+		static MMatIndex_t sub(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar);
+		static MMatIndex_t sub(MMatIndex_t mat_a, uint8_t value);
 		static MMatIndex_t multiply(MMatIndex_t mat_a, MMatIndex_t mat_b);
 		static MMatIndex_t divide(MMatIndex_t mat_a, MMatIndex_t mat_b);
 	};

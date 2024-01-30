@@ -65,7 +65,7 @@ namespace MUZI
 		return;
 	}
 
-	void MMatManger::showImg(MMatIndex_t index, const std::string& title = "Image")
+	void MMatManger::showImg(MMatIndex_t index, const std::string& title)
 	{
 		cv::imshow(title, this->getMat(index));
 	}

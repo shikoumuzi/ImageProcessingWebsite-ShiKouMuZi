@@ -135,7 +135,13 @@ add_executable (OpenCVUtil
 				"src/MMat/MMat.cpp" 
 				"src/MMat/MMatInf.h" 
 				"src/MError.h" 
-				"src/MLog.h" "src/MMat/MMatInf.cpp" "src/MBasicOperation/MBasicOperation.cpp" "src/MNumericCalculation/MNumericCalculation.h" "src/MNumericCalculation/MNumericCalculationInf.h" "src/MNumericCalculation/MNumericCalculationInf.cpp")
+				"src/MLog.h" 
+				"src/MMat/MMatInf.cpp" 
+				"src/MBasicOperation/MBasicOperation.cpp" 
+				"src/MNumericCalculation/MNumericCalculation.h" 
+				"src/MNumericCalculation/MNumericCalculation.cpp" 
+				"src/MNumericCalculation/MNumericCalculationInf.h" 
+				"src/MNumericCalculation/MNumericCalculationInf.cpp")
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)

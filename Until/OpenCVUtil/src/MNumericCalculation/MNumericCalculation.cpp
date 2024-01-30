@@ -84,6 +84,35 @@ namespace MUZI
 		return manager.setMat(cv::Mat(res_mat));
 	}
 
+	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar)
+	{
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mats = MNumericCalculation::getMat(manager, mat_a);
+		int erroc_code = MNumericCalculation::checkMat(mats);
+		if (erroc_code < 0)
+		{
+			return erroc_code;
+		}
+		cv::Mat dst_mat;
+		cv::subtract(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), dst_mat);
+		return manager.getNewMat(dst_mat);
+	}
+
+	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, uint8_t value)
+	{
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mat = MNumericCalculation::getMat(manager, mat_a);
+		int erroc_code = MNumericCalculation::checkMat(mat);
+		if (erroc_code < 0)
+		{
+			return erroc_code;
+		}
+		cv::Mat dst_mat;
+		cv::add(manager.getMat(mat_a), value, dst_mat);
+
+		return manager.getNewMat(dst_mat);
+	}
+
 	MMatIndex_t MNumericCalculation::multiply(MMatIndex_t mat_a, MMatIndex_t mat_b)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
