@@ -10,6 +10,15 @@ extern "C"
 	{
 		MUZI::MMatManger::getManager().saveImg(img, path);
 	}
+
+	void showImg(MMat_t img, const char* title)
+	{
+		MUZI::MMatManger::getManager().saveImg(img, title);
+	}
+	void freeImg(MMat_t img)
+	{
+		MUZI::MMatManger::getManager().freeMat(img);
+	}
 }
 
 

@@ -53,18 +53,20 @@ namespace MUZI
 		MMatIndex_t readImg(const Path& path, int flag);
 		void saveImg(MMatIndex_t index, const Path& file_path);
 		void saveImg(MMatIndex_t index, const Path& dir_path, std::string file_name);
+		void showImg(MMatIndex_t index, const std::string& title = "Image");
+		void showImgWithBlock(MMatIndex_t index, const std::string& title = "Image");
+		void block();
 
 	private:
 		MMatIndex_t getNewIndex();
 	public:
 		Mat& getMat(MMatIndex_t index);
 		MMatIndex_t getNewMat(Mat& mat);
-		MMatIndex_t setMat(Mat& mat);
+		MMatIndex_t setMat(const Mat& mat);
 		void freeMat(MMatIndex_t index);
 	private:
 		std::unique_ptr<MatMangerData> m_data;
 	};
-
 }
 
 #endif // !__MUZI_MAT__H__

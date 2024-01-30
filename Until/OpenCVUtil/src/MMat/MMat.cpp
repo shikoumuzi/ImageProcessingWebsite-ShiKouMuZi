@@ -62,7 +62,23 @@ namespace MUZI
 
 	void MMatManger::saveImg(MMatIndex_t index, const Path& dir_path, std::string file_name)
 	{
-		return ;
+		return;
+	}
+
+	void MMatManger::showImg(MMatIndex_t index, const std::string& title = "Image")
+	{
+		cv::imshow(title, this->getMat(index));
+	}
+
+	void MMatManger::showImgWithBlock(MMatIndex_t index, const std::string& title)
+	{
+		this->showImg(index, title);
+		this->block();
+	}
+
+	void MMatManger::block()
+	{
+		cv::waitKey();
 	}
 
 	MMatIndex_t MMatManger::getNewIndex()
@@ -104,7 +120,7 @@ namespace MUZI
 		this->m_data->m_mats[ret_index].is_allocated = true;
 		return ret_index;
 	}
-	MMatIndex_t MMatManger::setMat(Mat& mat)
+	MMatIndex_t MMatManger::setMat(const Mat& mat)
 	{
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)

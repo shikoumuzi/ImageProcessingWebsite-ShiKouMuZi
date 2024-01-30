@@ -7,7 +7,6 @@ namespace MUZI
 {
 	class BasicOperation
 	{
-
 	};
 }
 
