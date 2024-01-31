@@ -15,8 +15,14 @@ extern "C"
 	{
 		MUZI::MMatManger::getManager().saveImg(img, title);
 	}
+
 	void mat_freeImg(MMat_t img)
 	{
 		MUZI::MMatManger::getManager().freeMat(img);
+	}
+
+	MMat_t mat_createImg(uint32_t weight, uint32_t hight, uint8_t channels, uint8_t init_value)
+	{
+		return MUZI::MMatManger::getManager().createMat(weight, hight, channels, init_value);
 	}
 }

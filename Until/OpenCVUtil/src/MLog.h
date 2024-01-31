@@ -63,13 +63,13 @@ namespace MUZI
 			boost::log::add_common_attributes();
 		}
 	public:
-		void w(const std::string& s)
+		void w(const std::string& caller, const std::string& s)
 		{
 			Recorder recorder = this->logger.open_record();
 			if (recorder)
 			{
 				RecordOStream stream(recorder);
-				stream << s;
+				stream << caller << ":" << s;
 				this->logger.push_record(std::move(recorder));
 			}
 		}

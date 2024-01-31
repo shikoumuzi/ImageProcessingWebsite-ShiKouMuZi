@@ -81,6 +81,25 @@ namespace MUZI
 		cv::waitKey();
 	}
 
+	MMatIndex_t MMatManger::createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value)
+	{
+		MMatIndex_t now_index = this->getNewIndex();
+		if (now_index == -1)
+		{
+			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
+		}
+		switch (channels)
+		{
+		case 1:
+			return this->setMat(Mat::zeros(cv::Size(width, hight), CV_8UC1));
+		case 3:
+			return this->setMat(Mat::zeros(cv::Size(width, hight), CV_8UC3));
+		default:
+			return MERROR::MNUMBERICCALCULATION_UNKONU_CHANNELS;
+			break;
+		}
+	}
+
 	MMatIndex_t MMatManger::getNewIndex()
 	{
 		MMatIndex_t now_index = this->getNewIndex();

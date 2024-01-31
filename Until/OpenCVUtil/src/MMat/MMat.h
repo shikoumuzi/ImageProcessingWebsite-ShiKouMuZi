@@ -56,7 +56,8 @@ namespace MUZI
 		void showImg(MMatIndex_t index, const std::string& title = "Image");
 		void showImgWithBlock(MMatIndex_t index, const std::string& title = "Image");
 		void block();
-
+	public:
+		MMatIndex_t createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value = 0);
 	private:
 		MMatIndex_t getNewIndex();
 	public:

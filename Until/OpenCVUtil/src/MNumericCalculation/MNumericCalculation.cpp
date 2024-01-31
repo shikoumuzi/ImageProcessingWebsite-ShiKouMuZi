@@ -1,18 +1,23 @@
 #include "MNumericCalculation.h"
-
+#include "../MLog.h"
 namespace MUZI
 {
-	int MNumericCalculation::checkMat(Mat a)
+	int MNumericCalculation::checkMat(Mat& a)
 	{
 		return 0;
 	}
 
-	int MNumericCalculation::checkMat(Mat a, Mat b)
+	int MNumericCalculation::checkMat(Mat& a, Mat& b)
 	{
 		if (a.channels() != b.channels())
 		{
 			return MERROR::MNUMBERICCALCULATION__MATS_CHANNELS_IS_NOT_EQUAL;
 		}
+		return 0;
+	}
+
+	int MNumericCalculation::checkMask(Mat& mask, Mat& a, Mat& b)
+	{
 		return 0;
 	}
 
@@ -28,42 +33,114 @@ namespace MUZI
 		return manager.getMat(mat_a);
 	}
 
-	MMatIndex_t MUZI::MNumericCalculation::add(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, MMatIndex_t mat_b, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
-		int erroc_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
-		auto res_mat = std::get<0>(mats) + std::get<1>(mats);
-		return manager.setMat(cv::Mat(res_mat));
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			error_code = MNumericCalculation::checkMask(mask, std::get<0>(mats), std::get<1>(mats));
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			try
+			{
+				cv::add(mat_a, mat_b, res_mat, mask);
+				return manager.setMat(cv::Mat(res_mat));
+			}
+			catch (const std::exception& e)
+			{
+				logger.w("MNumericCalculation::add", e.what());
+				return -1;
+			}
+		}
+		try
+		{
+			auto res_mat = std::get<0>(mats) + std::get<1>(mats);
+			return manager.setMat(cv::Mat(res_mat));
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::add", e.what());
+			return -1;
+		}
 	}
 
-	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar)
+	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mat = MNumericCalculation::getMat(manager, mat_a);
-		int erroc_code = MNumericCalculation::checkMat(mat);
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(mat);
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
-		cv::Mat dst_mat;
-		cv::add(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), dst_mat);
-
-		return manager.getNewMat(dst_mat);
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(mat, mask);
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			try
+			{
+				cv::add(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), res_mat, mask);
+				return manager.setMat(cv::Mat(res_mat));
+			}
+			catch (const std::exception& e)
+			{
+				logger.w("MNumericCalculation::add", e.what());
+				return -1;
+			}
+		}
+		try
+		{
+			cv::Mat dst_mat;
+			cv::add(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), dst_mat);
+			return manager.getNewMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::add", e.what());
+			return -1;
+		}
 	}
 
-	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, uint8_t value)
+	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, uint8_t value, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mat = MNumericCalculation::getMat(manager, mat_a);
-		int erroc_code = MNumericCalculation::checkMat(mat);
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(mat);
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
+		}
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(mat, mask);
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			cv::add(manager.getMat(mat_a), value, res_mat, mask);
+			return manager.setMat(cv::Mat(res_mat));
 		}
 		cv::Mat dst_mat;
 		cv::add(manager.getMat(mat_a), value, dst_mat);
@@ -75,10 +152,10 @@ namespace MUZI
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mat = MNumericCalculation::getMat(manager, mat_a);
-		int erroc_code = MNumericCalculation::checkMat(mat);
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(mat);
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
 		cv::Mat dst_mat;
 		cv::addWeighted(mat_a, alpha, mat_b, beta, gamma, dst_mat);
@@ -90,10 +167,10 @@ namespace MUZI
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
-		int erroc_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
 
 		auto mat_a_size = std::get<0>(mats).size();
@@ -121,44 +198,81 @@ namespace MUZI
 		return manager.setMat(target_mat);
 	}
 
-	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, MMatIndex_t mat_b, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
-		int erroc_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
+		}
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			cv::subtract(mat_a, mat_b, res_mat, mask);
+			return manager.setMat(cv::Mat(res_mat));
 		}
 		auto res_mat = std::get<0>(mats) - std::get<1>(mats);
 		return manager.setMat(cv::Mat(res_mat));
 	}
 
-	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar)
+	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, const std::tuple<uint8_t, uint8_t, uint8_t>& scalar, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a);
-		int erroc_code = MNumericCalculation::checkMat(mats);
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(mats);
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
+		}
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(mats, mask);
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			cv::subtract(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), res_mat, mask);
+			return manager.setMat(cv::Mat(res_mat));
 		}
 		cv::Mat dst_mat;
 		cv::subtract(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), dst_mat);
 		return manager.getNewMat(dst_mat);
 	}
 
-	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, uint8_t value)
+	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, uint8_t value, MMatIndex_t mask_index)
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mat = MNumericCalculation::getMat(manager, mat_a);
-		int erroc_code = MNumericCalculation::checkMat(mat);
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(mat);
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
+		}
+
+		if (mask_index != -1)
+		{
+			auto& mask = manager.getMat(mask_index);
+			error_code = MNumericCalculation::checkMat(mat, mask);
+			if (error_code < 0)
+			{
+				return error_code;
+			}
+			cv::Mat res_mat;
+			cv::subtract(manager.getMat(mat_a), value, res_mat, mask);
+			return manager.setMat(cv::Mat(res_mat));
 		}
 		cv::Mat dst_mat;
-		cv::add(manager.getMat(mat_a), value, dst_mat);
+		cv::subtract(manager.getMat(mat_a), value, dst_mat);
 
 		return manager.getNewMat(dst_mat);
 	}
@@ -167,10 +281,10 @@ namespace MUZI
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
-		int erroc_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
 	}
 
@@ -178,10 +292,30 @@ namespace MUZI
 	{
 		auto& manager = MUZI::MMatManger::getManager();
 		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
-		int erroc_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
-		if (erroc_code < 0)
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
 		{
-			return erroc_code;
+			return error_code;
 		}
+	}
+
+	MMatIndex_t MNumericCalculation::bitwiseAnd(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	{
+		return MMatIndex_t();
+	}
+
+	MMatIndex_t MNumericCalculation::bitwiseOr(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	{
+		return MMatIndex_t();
+	}
+
+	MMatIndex_t MNumericCalculation::bitwiseXor(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	{
+		return MMatIndex_t();
+	}
+
+	MMatIndex_t MNumericCalculation::bitwiseNot(MMatIndex_t mat_a, MMatIndex_t mat_b)
+	{
+		return MMatIndex_t();
 	}
 }

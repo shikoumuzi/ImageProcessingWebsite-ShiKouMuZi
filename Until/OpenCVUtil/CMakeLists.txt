@@ -130,14 +130,14 @@ add_executable (OpenCVUtil
 				"src/OpenCVUtil.cpp" 
 				"src/OpenCVUtil.h" 
 				"src/MObjectBase.h" 
-				"src/MBasicOperation/MBasicOperatrion.h" 
+				"src/MError.h" 
+				"src/MLog.h" 
+
 				"src/MMat/MMat.h" 
 				"src/MMat/MMat.cpp" 
 				"src/MMat/MMatInf.h" 
-				"src/MError.h" 
-				"src/MLog.h" 
 				"src/MMat/MMatInf.cpp" 
-				"src/MBasicOperation/MBasicOperation.cpp" 
+
 				"src/MNumericCalculation/MNumericCalculation.h" 
 				"src/MNumericCalculation/MNumericCalculation.cpp" 
 				"src/MNumericCalculation/MNumericCalculationInf.h" 
