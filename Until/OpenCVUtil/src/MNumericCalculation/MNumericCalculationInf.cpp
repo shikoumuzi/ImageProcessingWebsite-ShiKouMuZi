@@ -3,6 +3,7 @@
 #include<tuple>
 extern "C"
 {
+	// 加法部分
 	MMat_t mat_addBetweenMats(MMat_t img_a, MMat_t img_b)
 	{
 		return MUZI::MNumericCalculation::add(img_a, img_b);
@@ -15,10 +16,24 @@ extern "C"
 	{
 		return MUZI::MNumericCalculation::add(img_a, std::make_tuple(scalar->r, scalar->g, scalar->b));
 	}
+	MMat_t mat_addBetweenMatsWithMask(MMat_t img_a, MMat_t img_b, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::add(img_a, img_b, mask);
+	}
+	MMat_t mat_addBetweenMatAndValueWithMask(MMat_t img_a, uint8_t value, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::add(img_a, value, mask);
+	}
+	MMat_t mat_addBetweenMatAndScalarWithMask(MMat_t img_a, const Scalar* scalar, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::add(img_a, std::make_tuple(scalar->r, scalar->g, scalar->b), mask);
+	}
 	MMat_t mat_addWeighted(MMat_t mat_a, float alpha, MMat_t mat_b, float beta, float gamma)
 	{
 		return MUZI::MNumericCalculation::add(mat_a, alpha, mat_b, beta, gamma);
 	}
+
+	// 减法
 	MMat_t mat_subBetweenMats(MMat_t img_a, MMat_t img_b)
 	{
 		return MUZI::MNumericCalculation::sub(img_a, img_b);
@@ -31,6 +46,19 @@ extern "C"
 	{
 		return MUZI::MNumericCalculation::sub(img_a, std::make_tuple(scalar->r, scalar->g, scalar->b));
 	}
+	MMat_t mat_subBetweenMatsWithMask(MMat_t img_a, MMat_t img_b, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::sub(img_a, img_b, mask);
+	}
+	MMat_t mat_subBetweenMatAndValueWithMask(MMat_t img_a, uint8_t value, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::sub(img_a, value, mask);
+	}
+	MMat_t mat_subBetweenMatAndScalarWithMask(MMat_t img_a, const Scalar* scalar, MMat_t mask)
+	{
+		return MUZI::MNumericCalculation::sub(img_a, std::make_tuple(scalar->r, scalar->g, scalar->b), mask);
+	}
+
 	MMat_t mat_multiply(MMat_t img_a, MMat_t img_b)
 	{
 		return MUZI::MNumericCalculation::multiply(img_a, img_b);

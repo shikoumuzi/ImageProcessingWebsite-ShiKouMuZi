@@ -138,14 +138,30 @@ namespace MUZI
 			{
 				return error_code;
 			}
-			cv::Mat res_mat;
-			cv::add(manager.getMat(mat_a), value, res_mat, mask);
-			return manager.setMat(cv::Mat(res_mat));
+			try
+			{
+				cv::Mat res_mat;
+				cv::add(manager.getMat(mat_a), value, res_mat, mask);
+				return manager.setMat(cv::Mat(res_mat));
+			}
+			catch (const std::exception& e)
+			{
+				logger.w("MNumericCalculation::add", e.what());
+				return -1;
+			}
 		}
-		cv::Mat dst_mat;
-		cv::add(manager.getMat(mat_a), value, dst_mat);
+		try
+		{
+			cv::Mat dst_mat;
+			cv::add(manager.getMat(mat_a), value, dst_mat);
 
-		return manager.getNewMat(dst_mat);
+			return manager.getNewMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::add", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, double alpha, MMatIndex_t mat_b, double beta, double gamma)
@@ -157,10 +173,18 @@ namespace MUZI
 		{
 			return error_code;
 		}
-		cv::Mat dst_mat;
-		cv::addWeighted(mat_a, alpha, mat_b, beta, gamma, dst_mat);
+		try
+		{
+			cv::Mat dst_mat;
+			cv::addWeighted(mat_a, alpha, mat_b, beta, gamma, dst_mat);
 
-		return manager.getNewMat(dst_mat);
+			return manager.getNewMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::add", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::add(MMatIndex_t mat_a, double alpha, MMatIndex_t mat_b, Location location, double beta, double gamma)
@@ -184,18 +208,26 @@ namespace MUZI
 		{
 			location.y = mat_a_size.height - mat_b_size.width;
 		}
-		Mat target_mat;
-		std::get<0>(mats).copyTo(target_mat);
+		try
+		{
+			Mat target_mat;
+			std::get<0>(mats).copyTo(target_mat);
 
-		auto img_crop = target_mat(cv::Range(location.y, location.y + mat_b_size.height), cv::Range(location.x, location.x + mat_b_size.width));
-		Mat img_add;
-		cv::add(img_crop, mat_b, img_add);
-		Mat img_add_w;
-		cv::addWeighted(img_crop, alpha, std::get<1>(mats), beta, gamma, img_add_w);
+			auto img_crop = target_mat(cv::Range(location.y, location.y + mat_b_size.height), cv::Range(location.x, location.x + mat_b_size.width));
+			Mat img_add;
+			cv::add(img_crop, mat_b, img_add);
+			Mat img_add_w;
+			cv::addWeighted(img_crop, alpha, std::get<1>(mats), beta, gamma, img_add_w);
 
-		img_add_w.copyTo(img_crop);
+			img_add_w.copyTo(img_crop);
 
-		return manager.setMat(target_mat);
+			return manager.setMat(target_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::add", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, MMatIndex_t mat_b, MMatIndex_t mask_index)

@@ -8,6 +8,6 @@
 int main()
 {
 	MUZI::logger.bindOutput("F:\\University\\WorkAndReport\\GraduationProject\\ImageProcessingWebsite\\Log\\log.txt");
-	MUZI::logger.w("this is warning message");
+	MUZI::logger.w("main", "this is warning message");
 	return 0;
 }
