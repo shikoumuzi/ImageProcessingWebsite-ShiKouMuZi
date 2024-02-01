@@ -81,6 +81,17 @@ namespace MUZI
 		cv::waitKey();
 	}
 
+	MMatManger::Attribute MMatManger::getAttribute(MMatIndex_t index)
+	{
+		auto& mat = this->getMat(index);
+		
+		return {.dims = mat.dims,
+				.rows = mat.rows,
+				.cols = mat.cols,
+				.channels = mat.channels(),
+				.ele_size = mat.elemSize()};
+	}
+
 	MMatIndex_t MMatManger::createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value)
 	{
 		MMatIndex_t now_index = this->getNewIndex();
@@ -98,6 +109,23 @@ namespace MUZI
 			return MERROR::MNUMBERICCALCULATION_UNKONU_CHANNELS;
 			break;
 		}
+	}
+
+	void MMatManger::copy(MMatIndex_t src_index, MMatIndex_t dst_index)
+	{
+		this->getMat(src_index).copyTo(this->getMat(dst_index));
+	}
+
+	void MMatManger::resize(MMatIndex_t index)
+	{
+	}
+
+	void MMatManger::hstack(std::vector<MMatIndex_t>& imgs)
+	{
+	}
+
+	void MMatManger::vstack(std::vector<MMatIndex_t>& imgs)
+	{
 	}
 
 	MMatIndex_t MMatManger::getNewIndex()

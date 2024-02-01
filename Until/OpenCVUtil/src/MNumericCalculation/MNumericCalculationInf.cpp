@@ -59,6 +59,7 @@ extern "C"
 		return MUZI::MNumericCalculation::sub(img_a, std::make_tuple(scalar->r, scalar->g, scalar->b), mask);
 	}
 
+	// ³Ë³ý
 	MMat_t mat_multiply(MMat_t img_a, MMat_t img_b)
 	{
 		return MUZI::MNumericCalculation::multiply(img_a, img_b);
@@ -66,5 +67,23 @@ extern "C"
 	MMat_t mat_divide(MMat_t img_a, MMat_t img_b)
 	{
 		return MUZI::MNumericCalculation::divide(img_a, img_b);
+	}
+
+	// Î»ÔËËã
+	MMat_t mat_BitwiseAnd(MMat_t img_a, MMat_t img_b)
+	{
+		return MUZI::MNumericCalculation::bitwiseAnd(img_a, img_b);
+	}
+	MMat_t mat_BitwiseOr(MMat_t img_a, MMat_t img_b)
+	{
+		return MUZI::MNumericCalculation::bitwiseOr(img_a, img_b);
+	}
+	MMat_t mat_BitwiseNot(MMat_t img_a, MMat_t img_b)
+	{
+		return MUZI::MNumericCalculation::bitwiseNot(img_a, img_b);
+	}
+	MMat_t mat_BitwiseXor(MMat_t img_a, MMat_t img_b)
+	{
+		return MUZI::MNumericCalculation::bitwiseXor(img_a, img_b);
 	}
 }

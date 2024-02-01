@@ -333,21 +333,89 @@ namespace MUZI
 
 	MMatIndex_t MNumericCalculation::bitwiseAnd(MMatIndex_t mat_a, MMatIndex_t mat_b)
 	{
-		return MMatIndex_t();
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
+		{
+			return error_code;
+		}
+		try
+		{
+			Mat dst_mat;
+			cv::bitwise_and(std::get<0>(mats), std::get<1>(mats), dst_mat);
+			return manager.setMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::bitwiseAnd", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::bitwiseOr(MMatIndex_t mat_a, MMatIndex_t mat_b)
 	{
-		return MMatIndex_t();
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
+		{
+			return error_code;
+		}
+		try
+		{
+			Mat dst_mat;
+			cv::bitwise_or(std::get<0>(mats), std::get<1>(mats), dst_mat);
+			return manager.setMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::bitwiseAnd", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::bitwiseXor(MMatIndex_t mat_a, MMatIndex_t mat_b)
 	{
-		return MMatIndex_t();
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
+		{
+			return error_code;
+		}
+		try
+		{
+			Mat dst_mat;
+			cv::bitwise_xor(std::get<0>(mats), std::get<1>(mats), dst_mat);
+			return manager.setMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::bitwiseAnd", e.what());
+			return -1;
+		}
 	}
 
 	MMatIndex_t MNumericCalculation::bitwiseNot(MMatIndex_t mat_a, MMatIndex_t mat_b)
 	{
-		return MMatIndex_t();
+		auto& manager = MUZI::MMatManger::getManager();
+		auto mats = MNumericCalculation::getMat(manager, mat_a, mat_b);
+		int error_code = MNumericCalculation::checkMat(std::get<0>(mats), std::get<1>(mats));
+		if (error_code < 0)
+		{
+			return error_code;
+		}
+		try
+		{
+			Mat dst_mat;
+			cv::bitwise_not(std::get<0>(mats), std::get<1>(mats), dst_mat);
+			return manager.setMat(dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			logger.w("MNumericCalculation::bitwiseAnd", e.what());
+			return -1;
+		}
 	}
 }

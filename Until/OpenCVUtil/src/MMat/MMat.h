@@ -10,7 +10,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
-
+#include <vector>
 #define __MUZI_MAX_MAT_SIZE__ 2048
 namespace MUZI
 {
@@ -30,6 +30,14 @@ namespace MUZI
 		{
 			MatVecotr m_mats;
 			MMatIndex_t m_tail_index; // 尾部最新的元素的索引
+		};
+		struct Attribute
+		{
+			int32_t dims;
+			int32_t rows;
+			int32_t cols;
+			int32_t channels;
+			uint64_t ele_size;
 		};
 	public:
 		enum READIMG_OPTION
@@ -57,7 +65,13 @@ namespace MUZI
 		void showImgWithBlock(MMatIndex_t index, const std::string& title = "Image");
 		void block();
 	public:
+		Attribute getAttribute(MMatIndex_t index);
 		MMatIndex_t createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value = 0);
+		void copy(MMatIndex_t src_index, MMatIndex_t dst_index);
+		void resize(MMatIndex_t index);
+		void hstack(std::vector<MMatIndex_t>& imgs);
+		void vstack(std::vector<MMatIndex_t>& imgs);
+		
 	private:
 		MMatIndex_t getNewIndex();
 	public:
