@@ -7,10 +7,12 @@
 #include<vector>
 #include<thread>
 #include<memory>
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
-#include <vector>
+#include <opencv2/imgproc/imgproc.hpp>
+
 #define __MUZI_MAX_MAT_SIZE__ 2048
 namespace MUZI
 {
@@ -66,12 +68,13 @@ namespace MUZI
 		void block();
 	public:
 		Attribute getAttribute(MMatIndex_t index);
-		MMatIndex_t createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value = 0);
+		MMatIndex_t createMat(uint32_t width, uint32_t height, uint8_t channels, uint8_t init_value = 0);
 		void copy(MMatIndex_t src_index, MMatIndex_t dst_index);
-		void resize(MMatIndex_t index);
-		void hstack(std::vector<MMatIndex_t>& imgs);
-		void vstack(std::vector<MMatIndex_t>& imgs);
-		
+		MMatIndex_t resize(MMatIndex_t index, uint32_t width, uint32_t height);
+		MMatIndex_t hstack(std::vector<MMatIndex_t>& imgs);
+		MMatIndex_t vstack(std::vector<MMatIndex_t>& imgs);
+		int32_t split(MMatIndex_t index, std::vector<MMatIndex_t>& mats);
+		MMatIndex_t merge(const std::vector<MMatIndex_t>& index);
 	private:
 		MMatIndex_t getNewIndex();
 	public:

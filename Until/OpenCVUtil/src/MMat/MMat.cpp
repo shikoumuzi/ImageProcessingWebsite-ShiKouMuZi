@@ -92,7 +92,7 @@ namespace MUZI
 				.ele_size = mat.elemSize()};
 	}
 
-	MMatIndex_t MMatManger::createMat(uint32_t width, uint32_t hight, uint8_t channels, uint8_t init_value)
+	MMatIndex_t MMatManger::createMat(uint32_t width, uint32_t height, uint8_t channels, uint8_t init_value)
 	{
 		MMatIndex_t now_index = this->getNewIndex();
 		if (now_index == -1)
@@ -102,9 +102,9 @@ namespace MUZI
 		switch (channels)
 		{
 		case 1:
-			return this->setMat(Mat::zeros(cv::Size(width, hight), CV_8UC1));
+			return this->setMat(Mat::zeros(cv::Size(width, height), CV_8UC1));
 		case 3:
-			return this->setMat(Mat::zeros(cv::Size(width, hight), CV_8UC3));
+			return this->setMat(Mat::zeros(cv::Size(width, height), CV_8UC3));
 		default:
 			return MERROR::MNUMBERICCALCULATION_UNKONU_CHANNELS;
 			break;
@@ -116,16 +116,47 @@ namespace MUZI
 		this->getMat(src_index).copyTo(this->getMat(dst_index));
 	}
 
-	void MMatManger::resize(MMatIndex_t index)
+	int32_t MMatManger::resize(MMatIndex_t index, uint32_t width, uint32_t height)
 	{
+		auto& mat = this->getMat(index);
+		Mat dst_mat;
+		if (mat.rows < height && mat.cols < width)
+		{
+			cv::resize(mat, dst_mat, cv::Size(width, height), 0,0, cv::INTER_AREA);
+		}
+		else if (mat.rows > height && mat.cols > width)
+		{
+			cv::resize(mat, dst_mat, cv::Size(width, height), 0, 0, cv::INTER_CUBIC);
+		}
+		else
+		{
+			return MERROR::MATMANAGER_NOT_MATCH_SIZE;
+		}
+		return this->setMat(dst_mat);
 	}
 
-	void MMatManger::hstack(std::vector<MMatIndex_t>& imgs)
+	MMatIndex_t MMatManger::hstack(std::vector<MMatIndex_t>& imgs)
 	{
+		cv::Mat dst_mat;
+		cv::hconcat(imgs, dst_mat);
+		return this->setMat(dst_mat);
 	}
 
-	void MMatManger::vstack(std::vector<MMatIndex_t>& imgs)
+	MMatIndex_t MMatManger::vstack(std::vector<MMatIndex_t>& imgs)
 	{
+		cv::Mat dst_mat;
+		cv::vconcat(imgs, dst_mat);
+		return this->setMat(dst_mat);
+	}
+
+	int32_t MMatManger::split(MMatIndex_t index, std::vector<MMatIndex_t>& mats)
+	{
+		return 0;
+	}
+
+	MMatIndex_t MMatManger::merge(const std::vector<MMatIndex_t>& index)
+	{
+		return MMatIndex_t();
 	}
 
 	MMatIndex_t MMatManger::getNewIndex()
