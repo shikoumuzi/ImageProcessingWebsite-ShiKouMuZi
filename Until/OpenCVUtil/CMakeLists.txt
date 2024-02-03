@@ -141,7 +141,7 @@ add_executable (OpenCVUtil
 				"src/MNumericCalculation/MNumericCalculation.h" 
 				"src/MNumericCalculation/MNumericCalculation.cpp" 
 				"src/MNumericCalculation/MNumericCalculationInf.h" 
-				"src/MNumericCalculation/MNumericCalculationInf.cpp")
+				"src/MNumericCalculation/MNumericCalculationInf.cpp" "src/MAffineTransformation/MAffineTransform.h" "src/MAffineTransformation/MAffineTransform.cpp")
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)
