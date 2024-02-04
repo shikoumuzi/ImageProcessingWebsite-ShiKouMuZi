@@ -7,7 +7,7 @@ namespace MUZI
 	class MAffineTransform
 	{
 	public:
-		enum FILP_CODE
+		enum FLIP_CODE
 		{
 			VERTICAL = 0,
 			HORIZINTAL = 1,
