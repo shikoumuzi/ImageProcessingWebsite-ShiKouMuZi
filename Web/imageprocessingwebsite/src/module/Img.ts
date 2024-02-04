@@ -1,6 +1,8 @@
 export default class Img {
     constructor() {
         this.id = ''
-        this.img = Blob()
+        this.img = new Blob()
     }
+    id: string
+    img: Blob
 }

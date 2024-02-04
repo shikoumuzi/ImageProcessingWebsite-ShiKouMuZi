@@ -9,6 +9,12 @@ export default class HistoryOpertions {
         this.history_operations_mapping[this.index] = operation
         this.index = this.index + 1
     }
+    clear() {
+        this.history_operations_mapping.clear()
+        this.index = 1
+        this.id = ''
+    }
+
     toList() {
         var opertion_list = []        
         for(var i = 0; i < this.history_operations_mapping.size; ++i)
