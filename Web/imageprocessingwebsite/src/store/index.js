@@ -6,7 +6,7 @@ export default createStore({
   state: {
     token: '',
     user_base_msg: UserMsg(),
-
+    history_operation_list: []
   },
   getters: {
   },
