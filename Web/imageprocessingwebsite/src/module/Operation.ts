@@ -5,6 +5,7 @@ export default class Operation {
         this.method_name = '' // 方法名
         this.src_img = []
         this.args = [] // 参数
+        this.time_stamp = new Date().getTime()
     }
 
     toDict() {
@@ -13,12 +14,21 @@ export default class Operation {
             module_name: this.module_name,
             method_name: this.method_name,
             src_img: this.src_img,
+            time_stamp: this.time_stamp,
             args: this.args
         }
     }
+    setTimeStamp(time_stamp) {
+        this.time_stamp = time_stamp
+    }
+    getDate() {
+        return new Date(this.time_stamp)
+    }
+
     id: string
     module_name: string
     method_name: string
     src_img: Array<number>
     args: any
+    time_stamp: number
 }
