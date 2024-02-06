@@ -1,16 +1,19 @@
 import { createStore } from 'vuex'
-import { UserMsg } from '@/module/UserMsg'
-import { Image } from '@/module/Img'
+import UserMsg from '../typings/UserMsg'
  
 export default createStore({
   state: {
     token: '',
     user_base_msg: UserMsg(),
-    is_user_exited: false,
+    user_login_status: false,
+    manager_now_browser: 'home'
   },
   getters: {
     getDate(state) {
       return state.user_base_msg.getDate()
+    },
+    getUserLoginStatus(state) {
+      return state.user_login_status
     }
   },
   mutations: {
@@ -20,6 +23,9 @@ export default createStore({
     // eslint-disable-next-line camelcase
     setTimeStamp(state, time_stamp) {
       state.user_base_msg.setTimeStamp(time_stamp)
+    },
+    setUserLoginStatus(state, status) {
+      state.user_login_status = status
     }
   },
   actions: {

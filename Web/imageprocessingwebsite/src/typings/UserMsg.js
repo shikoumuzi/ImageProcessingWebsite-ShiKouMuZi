@@ -1,6 +1,6 @@
-import HistoryOpertions from "./HistoryOperations"
-import Operation from "./Operation"
-import Img from "./Img"
+import HistoryOpertions from './HistoryOperations'
+import Operation from './Operation'
+import Img from './Img'
 
 export default class UserMsg {
     constructor() {
@@ -20,8 +20,8 @@ export default class UserMsg {
         this.history_operations.clear()
         this.result_image_list = []
     }
-    username: string
-    operation_list: Array<Operation>
-    history_operations: HistoryOpertions
-    result_image_list: Array<Img>
+    // username: string
+    // operation_list: Array<Operation>
+    // history_operations: HistoryOpertions
+    // result_image_list: Array<Img>
 }

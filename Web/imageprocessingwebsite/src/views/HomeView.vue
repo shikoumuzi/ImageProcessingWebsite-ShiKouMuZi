@@ -1,7 +1,10 @@
 <template>
-  <NavigationBar>
-    
-  </NavigationBar>
+  <div>
+    <NavigationBar>
+
+    </NavigationBar>
+    <h>this is HomeView</h>
+  </div>
 </template>
 
 <script>

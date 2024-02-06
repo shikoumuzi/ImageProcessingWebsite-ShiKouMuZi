@@ -18,17 +18,21 @@ export default class Operation {
             args: this.args
         }
     }
+
+    // eslint-disable-next-line camelcase
     setTimeStamp(time_stamp) {
+        // eslint-disable-next-line camelcase
         this.time_stamp = time_stamp
     }
+
     getDate() {
         return new Date(this.time_stamp)
     }
 
-    id: string
-    module_name: string
-    method_name: string
-    src_img: Array<number>
-    args: any
-    time_stamp: number
+    // id: string
+    // module_name: string
+    // method_name: string
+    // src_img: Array<number>
+    // args: any
+    // time_stamp: number
 }

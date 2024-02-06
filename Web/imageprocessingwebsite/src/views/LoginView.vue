@@ -48,7 +48,7 @@
 
 <script>
 import axios from 'axios'
-// import { ElNotification } from 'element-plus';
+import { ElNotification } from 'element-plus';
 
 export default {
     name: 'LoginView',
@@ -87,8 +87,16 @@ export default {
                     password: this.login_form.password
                   }
                 }).then((response) => {
-                  if (response.data != null) {
-                    this.$store = 0
+                  if (response.data !== null) {
+                    if (response.data.status === 0) {
+                      this.$store.commit('setUserLoginStatus', true)
+                      } else {
+                        ElNotification.error({
+                        title: '错误',
+                        message: response.data.error_msg,
+                        showClose: false,
+                    })
+                    }
                   }
                 })
               }
