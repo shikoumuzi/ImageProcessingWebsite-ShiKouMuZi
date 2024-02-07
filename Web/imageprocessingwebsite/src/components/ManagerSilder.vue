@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { ElMenu } from 'element-plus';
 export default {
 
 }

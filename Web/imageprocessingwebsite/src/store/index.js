@@ -4,8 +4,9 @@ import UserMsg from '../typings/UserMsg'
 export default createStore({
   state: {
     token: '',
-    user_base_msg: UserMsg(),
+    user_base_msg: new UserMsg(),
     user_login_status: false,
+
     manager_now_browser: 'home'
   },
   getters: {

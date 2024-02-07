@@ -90,7 +90,7 @@ export default {
                   if (response.data !== null) {
                     if (response.data.status === 0) {
                       this.$store.commit('setUserLoginStatus', true)
-                      } else {
+                      } else { 
                         ElNotification.error({
                         title: '错误',
                         message: response.data.error_msg,
