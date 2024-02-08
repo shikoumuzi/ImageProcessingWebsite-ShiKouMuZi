@@ -6,20 +6,20 @@
         <div style="width:250px;height: 250px" ref="animationContainer"></div>
         <el-container class="align shadow">
           <el-header>
-            <span style="font-size: 2em">askLaw登录</span>
+            <span style="font-size: 2em">ImageProcessingWebsite 登录</span>
           </el-header>
           <el-main>
-            <el-form :model="loginForm"
+            <el-form :model="login_form"
                      status-icon
                      :rules="rules"
                      ref="loginForm"
                      label-width="100px"
                      label-position="left">
               <el-form-item label="用户名" prop="username">
-                <el-input v-model="loginForm.username"></el-input>
+                <el-input v-model="login_form.username"></el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="pass">
-                <el-input type="password" v-model="loginForm.pass" autocomplete="off"></el-input>
+              <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="login_form.password" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button-group class="my-el-button-group">
@@ -90,6 +90,9 @@ export default {
                   if (response.data !== null) {
                     if (response.data.status === 0) {
                       this.$store.commit('setUserLoginStatus', true)
+                      this.$store.commit('setUserName', this.login_form.username)
+                      this.$store.commit('setToken', response.data.token)
+                      this.$store.commit('setAuthority', response.data.authority)
                       } else { 
                         ElNotification.error({
                         title: '错误',
@@ -104,7 +107,7 @@ export default {
           )
         },
         toReigster() {
-          this.$router.push('/reigster')
+          this.$router.push('/register')
         }
     }
 }

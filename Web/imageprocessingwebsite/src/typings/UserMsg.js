@@ -8,10 +8,15 @@ export default class UserMsg {
         this.operation_list = []
         this.history_operations = new HistoryOpertions()
         this.result_image_list = []
+        this.authority = 0
       }
     
-    setUsername(username) {
+    setUserName(username) {
         this.username = username
+    }
+
+    setAuthority(authority) {
+        this.authority = authority
     }
 
     clear() {
@@ -19,6 +24,7 @@ export default class UserMsg {
         this.operation_list = []
         this.history_operations.clear()
         this.result_image_list = []
+        this.authority = 0
     }
     // username: string
     // operation_list: Array<Operation>

@@ -5,7 +5,9 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue';
 import ImageOperationView from '../views/ImageOperationView.vue'
 import UserView from '../views/UserView.vue'
-
+import ManagerView from '@/views/ManagerView.vue';
+import store from '../store/index';
+import axios from 'axios'
 const routes = [
   {
     path: '/',
@@ -39,12 +41,45 @@ const routes = [
     path: '/user',
     name: 'user',
     component: UserView
+  },
+  {
+    path: '/manager',
+    name: 'manager',
+    component: ManagerView
+
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/image_operation') {
+    if (store.getters.getUserBaseMsg.authority === 0) {
+      // eslint-disable-next-line quotes
+      next("/login")
+    }
+  }
+  if (to.path === '/manager') {
+    if (store.getters.getUserBaseMsg.authority !== 2) {
+      next('/home')
+    }
+    axios.post('/api/checkManagerAuthority', 
+    {
+      params: {
+        token: store.getters.getToken
+      }
+    }).then((res) => {
+      if (res.data !== null) {
+        if (res.data.state !== 0) {
+          next('/home')
+        }
+      }
+    })
+  }
+  next()
 })
 
 export default router

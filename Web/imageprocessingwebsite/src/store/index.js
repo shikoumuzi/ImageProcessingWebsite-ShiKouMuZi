@@ -15,6 +15,12 @@ export default createStore({
     },
     getUserLoginStatus(state) {
       return state.user_login_status
+    },
+    getUserBaseMsg(state) {
+      return state.user_base_msg
+    },
+    getToken(state) {
+      return state.token
     }
   },
   mutations: {
@@ -27,6 +33,17 @@ export default createStore({
     },
     setUserLoginStatus(state, status) {
       state.user_login_status = status
+    },
+    clearUserMsg(state) {
+      state.user_base_msg = new UserMsg()
+      console.log(state)
+    },
+    // eslint-disable-next-line camelcase
+    setUserName(state, user_name) {
+      state.user_base_msg.setUserName(user_name)
+    },
+    setAuthority(state, authority) {
+      state.user_base_msg.setAuthority(authority)
     }
   },
   actions: {
