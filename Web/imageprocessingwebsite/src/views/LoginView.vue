@@ -66,11 +66,16 @@ export default {
             username: [
               { required: true, message: '请输入用户名', trigger: 'blur' },
               { min: 3, max: 20, message: '用户名长度在3到10个字符之间', trigger: 'blur' },
-            ],
+              { pattern: /^[\u0391-\uFFE5A-Za-z0-9]+$/, message: '请输入不包含特殊字符的中英文以及数字', trigger: 'blur' }
+            ],  
             password: [
               { required: true, message: '请输入密码', trigger: 'blur' },
-              { min: 6, max: 20, message: '用户名长度在6到10个字符之间', trigger: 'blur' }
+              { min: 6, max: 20, message: '密码长度在6到20个字符之间', trigger: 'blur' },
+              // eslint-disable-next-line object-curly-spacing, no-useless-escape
+              {pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,20}$/, message: '密码必须包含数字、字母、特殊字符', trigger: 'blur'}
+
             ]
+
           }
 
       };
@@ -79,9 +84,9 @@ export default {
         // eslint-disable-next-line camelcase
         submitLoginForm(login_form_name) {
           this.$ref[login_form_name].validate(
-            (valid) => {
+            (valid) => { 
               if (valid) {
-                axios.post('/api/account/login', {
+                axios.post(this.$store.getters.getUrl.login, {
                   params: {
                     username: this.login_form.username,
                     password: this.login_form.password
@@ -93,6 +98,7 @@ export default {
                       this.$store.commit('setUserName', this.login_form.username)
                       this.$store.commit('setToken', response.data.token)
                       this.$store.commit('setAuthority', response.data.authority)
+                      this.$store.commit('setTimeStamp', response.data.time_stamp)
                       } else { 
                         ElNotification.error({
                         title: '错误',
@@ -106,9 +112,18 @@ export default {
             }
           )
         },
-        toReigster() {
+        toRegister() {
           this.$router.push('/register')
-        }
+        },
+        // eslint-disable-next-line camelcase
+        resetForm(login_form_name) {
+          this.login_form = {
+            username: '',
+            password: '',
+            authority: '',
+          }
+        } 
+
     }
 }
 </script>

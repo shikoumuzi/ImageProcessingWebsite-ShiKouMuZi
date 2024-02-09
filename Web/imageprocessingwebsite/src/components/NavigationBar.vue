@@ -70,6 +70,7 @@ export default {
     signOut() {
       this.$store.commit('setUserLoginStatus', false)
       this.$store.commit('clearUserMsg')
+      this.user_msg = this.$store.getters.getUserBaseMsg
     },
     getUserSubMenuTitle() {
       if (this.$store.getters.getUserBaseMsg.authority === 0) {

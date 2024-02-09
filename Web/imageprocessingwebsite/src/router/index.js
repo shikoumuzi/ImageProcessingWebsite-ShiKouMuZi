@@ -66,7 +66,8 @@ router.beforeEach((to, from, next) => {
     if (store.getters.getUserBaseMsg.authority !== 2) {
       next('/home')
     }
-    axios.post('/api/checkManagerAuthority', 
+    
+    axios.post(store.getters.getUrl.checkManagerAuthority, 
     {
       params: {
         token: store.getters.getToken

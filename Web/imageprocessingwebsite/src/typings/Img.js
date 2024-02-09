@@ -3,6 +3,7 @@ export default class Img {
         this.img_id = ''
         this.img = new Blob()
     }
+    
     // img_id: string
     // img: Blob
 }

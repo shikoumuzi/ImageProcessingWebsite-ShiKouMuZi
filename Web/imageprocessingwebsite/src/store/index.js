@@ -1,13 +1,20 @@
 import { createStore } from 'vuex'
 import UserMsg from '../typings/UserMsg'
  
+import { ref } from 'vue';
 export default createStore({
   state: {
     token: '',
     user_base_msg: new UserMsg(),
     user_login_status: false,
 
-    manager_now_browser: 'home'
+    manager_now_browser: 'home',
+
+    api_url: {
+      login: '/login',
+      register: '/register',
+      checkManagerAuthority: '/checkManagerAuthority'
+    }
   },
   getters: {
     getDate(state) {
@@ -21,6 +28,15 @@ export default createStore({
     },
     getToken(state) {
       return state.token
+    },
+    getUrl(state) {
+      return state.api_url
+    },
+    getResultImgListSize(state) {
+      return state.user_base_msg.result_image_list.length
+    },
+    getResultImgList(state) {
+      return ref(state.user_base_msg.result_image_list)
     }
   },
   mutations: {
@@ -44,7 +60,7 @@ export default createStore({
     },
     setAuthority(state, authority) {
       state.user_base_msg.setAuthority(authority)
-    }
+    },
   },
   actions: {
   },

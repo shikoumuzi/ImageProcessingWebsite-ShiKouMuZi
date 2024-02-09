@@ -16,6 +16,6 @@ for (const [key, component] of Object.entries(ElementPlusIconVue)) {
 }
 app.mount('#app')
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://localhost:8080/api'
 axios.defaults.timeout = 2000
 app.config.globalProperties.$axios = axios; // 配置axios的全局引用

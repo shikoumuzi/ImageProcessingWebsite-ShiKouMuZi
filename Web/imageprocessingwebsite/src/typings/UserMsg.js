@@ -9,6 +9,7 @@ export default class UserMsg {
         this.history_operations = new HistoryOpertions()
         this.result_image_list = []
         this.authority = 0
+        this.time_stamp = 0
       }
     
     setUserName(username) {
@@ -17,6 +18,12 @@ export default class UserMsg {
 
     setAuthority(authority) {
         this.authority = authority
+    }
+
+    // eslint-disable-next-line camelcase
+    setTimeStamp(time_stamp) {
+        // eslint-disable-next-line camelcase
+        this.time_stamp = time_stamp
     }
 
     clear() {
