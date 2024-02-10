@@ -2,14 +2,16 @@
   <div>
     <ul>
         <li v-for="index in this.result_img_count" :key="index">
-            <el-image :src="getImgSrc(i)" :fit="contain" />
-            <div style="display: flex; justify-content: flex-end;">
-                <span>{{ i }}</span>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <el-image :src="getImgSrc(i)" :fit="contain" />
+                <div style="display: flex; justify-content: flex-end;">
+                    <span style="margin-right: 2pt;">{{ i }}</span>
 
-                <div>
-                    <i class="el-icon-" />
+                    <div>
+                        <el-icon><Download /></el-icon>
+                    </div>
+
                 </div>
-
             </div>
         </li>
     </ul>
@@ -27,13 +29,14 @@ export default {
     },
     methods: {
         getImgSrc(index) {
-            return window.URL.createObjectURL((this.$store.getters.getResultImgList)[index].img)
+            return window.URL.createObjectURL(((this.$store.getters.getResultImgList).value)[index].img)
         },
     },
     watch: {
         '$store.state.user_base_msg.result_image_list.length'(newValue, oldValue) {
+            console.log('work')
             this.result_img_count = newValue
-        }
+        },
     }
 }
 </script>

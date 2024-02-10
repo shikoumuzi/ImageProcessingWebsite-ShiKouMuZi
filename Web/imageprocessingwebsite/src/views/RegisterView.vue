@@ -52,7 +52,7 @@
 
 <script>
 import { ElForm, ElNotification } from 'element-plus'
-import axios from 'axios'
+import axios from '../plugin/AxiosAPI'
 export default {
     name: 'RegisterView',
     components: {

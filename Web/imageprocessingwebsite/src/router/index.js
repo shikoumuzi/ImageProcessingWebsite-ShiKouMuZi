@@ -56,7 +56,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  store.commit('setFrom', from.path)
   if (to.path === '/image_operation') {
+    store.commit('setFrom', '/image_operation')
+    // console.log(store.getters.getFrom)
     if (store.getters.getUserBaseMsg.authority === 0) {
       // eslint-disable-next-line quotes
       next("/login")
@@ -67,7 +70,7 @@ router.beforeEach((to, from, next) => {
       next('/home')
     }
     
-    axios.post(store.getters.getUrl.checkManagerAuthority, 
+    axios.get(store.getters.getUrl.checkManagerAuthority, 
     {
       params: {
         token: store.getters.getToken

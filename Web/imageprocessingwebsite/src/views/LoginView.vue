@@ -24,11 +24,11 @@
               <el-form-item>
                 <el-button-group class="my-el-button-group">
                   <el-space wrap>
-                    <el-button @click="submitForm('loginForm')" class="el-button--primary el-button--large"
+                    <el-button @click="submitLoginForm" class="el-button--primary el-button--large"
                                size="large">
                       <el-text size="large" class="mx-5" style="color: white">登录</el-text>
                     </el-button>
-                    <el-button @click="resetForm('loginForm')" class="el-button--large" size="large">
+                    <el-button @click="resetForm" class="el-button--large" size="large">
                       <el-text size="large" class="mx-5">重置</el-text>
                     </el-button>
                     <el-button @click="toRegister" text type="primary" class="mx-1" size="large">
@@ -47,13 +47,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../plugin/AxiosAPI'
 import { ElNotification } from 'element-plus';
 
 export default {
     name: 'LoginView',
     mounted () {
-
     },
     data () {
       return {
@@ -82,8 +81,9 @@ export default {
     },
     methods: {
         // eslint-disable-next-line camelcase
-        submitLoginForm(login_form_name) {
-          this.$ref[login_form_name].validate(
+        submitLoginForm() {
+          console.log(this.$refs)
+          this.$refs.loginForm.validate(
             (valid) => { 
               if (valid) {
                 axios.post(this.$store.getters.getUrl.login, {
@@ -99,6 +99,8 @@ export default {
                       this.$store.commit('setToken', response.data.token)
                       this.$store.commit('setAuthority', response.data.authority)
                       this.$store.commit('setTimeStamp', response.data.time_stamp)
+                      
+                      this.$router.push(this.$store.getters.getFrom)
                       } else { 
                         ElNotification.error({
                         title: '错误',
@@ -116,12 +118,13 @@ export default {
           this.$router.push('/register')
         },
         // eslint-disable-next-line camelcase
-        resetForm(login_form_name) {
+        resetForm() {
           this.login_form = {
             username: '',
             password: '',
             authority: '',
           }
+          this.$refs.loginForm.resetForm()
         } 
 
     }

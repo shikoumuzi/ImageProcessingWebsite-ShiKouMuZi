@@ -7,8 +7,12 @@ export default createStore({
     token: '',
     user_base_msg: new UserMsg(),
     user_login_status: false,
-
+    
     manager_now_browser: 'home',
+
+    brower_record: {
+      from: ''
+    },
 
     api_url: {
       login: '/login',
@@ -37,6 +41,9 @@ export default createStore({
     },
     getResultImgList(state) {
       return ref(state.user_base_msg.result_image_list)
+    },
+    getFrom(state) {
+      return state.brower_record.from
     }
   },
   mutations: {
@@ -61,6 +68,9 @@ export default createStore({
     setAuthority(state, authority) {
       state.user_base_msg.setAuthority(authority)
     },
+    setFrom(state, from) {
+      state.brower_record.from = from
+    }
   },
   actions: {
   },
