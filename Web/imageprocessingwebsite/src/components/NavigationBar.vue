@@ -2,7 +2,7 @@
 <template>
     <div>
         <el-menu 
-          :default-active="current" 
+          :default-active="this.$route.path" 
           mode="horizontal"
           router="true"
           bg-color="#F5F5F5" 
@@ -80,7 +80,9 @@ export default {
       }
     },
     toLogin() {
-      this.$router.push('/login')
+      if (this.$store.getters.getUserBaseMsg.authority === 0) {
+        this.$router.push('/login')
+      }
     }
   },
 }

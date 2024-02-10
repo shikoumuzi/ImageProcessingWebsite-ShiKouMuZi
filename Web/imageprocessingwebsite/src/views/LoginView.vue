@@ -48,11 +48,16 @@
 
 <script>
 import axios from '../plugin/AxiosAPI'
-import { ElNotification } from 'element-plus';
+import { componentSizeMap, ElNotification } from 'element-plus';
 
 export default {
     name: 'LoginView',
     mounted () {
+      if (this.$store.getters.getFrom === '/register') {
+        if (this.$store.getters.getRegisterName !== '') {
+          this.login_form.username = this.$store.getters.getRegisterName
+        }
+      }
     },
     data () {
       return {
@@ -82,7 +87,7 @@ export default {
     methods: {
         // eslint-disable-next-line camelcase
         submitLoginForm() {
-          console.log(this.$refs)
+          // console.log(this.$refs)
           this.$refs.loginForm.validate(
             (valid) => { 
               if (valid) {

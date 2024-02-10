@@ -59,8 +59,8 @@ export default {
 
     },
     data () {
-        const validatePass = (rule, value, callback) => {
-          console.log(callback)
+        const validateCheckPass = (rule, value, callback) => {
+          // console.log(callback)
           if (value === '') {
             callback(new Error('请输入密码'))
           } else if (value.length < 6 || value.length > 20) {
@@ -93,7 +93,7 @@ export default {
             ],
             check_password: [
               { required: true, message: '请再次输入密码', trigger: 'blur' },
-              { validator: validatePass }
+              { validator: validateCheckPass, trigger: 'blur' }
             ]
           }
         }

@@ -1,7 +1,17 @@
 <template>
-    <NavigationBar>
-    </NavigationBar>
-  <router-view/>
+  <el-container style="height: 100%;">
+    <el-container>
+      <el-header>    
+        <NavigationBar>
+        </NavigationBar>
+      </el-header>
+      <el-main>
+        <router-view/>
+      </el-main>
+      <el-footer>footer</el-footer>
+    </el-container>
+  </el-container>
+  
 </template>
 
 <script>
@@ -25,6 +35,7 @@ export default ({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 nav {

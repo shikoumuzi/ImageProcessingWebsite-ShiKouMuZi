@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <ul>
-        <li v-for="index in this.result_img_count" :key="index">
+  <div style="border: 1pt;">
+    <ul v-infinite-scroll="load" class="result_img_list" style="overflow: auto">
+        <li v-for="index in this.result_img_count" :key="index" class="result_img_list_item">
             <div style="display: flex; flex-direction: column; justify-content: center;">
                 <el-image :src="getImgSrc(i)" :fit="contain" />
                 <div style="display: flex; justify-content: flex-end;">
@@ -31,6 +31,9 @@ export default {
         getImgSrc(index) {
             return window.URL.createObjectURL(((this.$store.getters.getResultImgList).value)[index].img)
         },
+        load() {
+            this.result_img_count = this.$store.state.user_base_msg.result_image_list.length
+        }
     },
     watch: {
         '$store.state.user_base_msg.result_image_list.length'(newValue, oldValue) {
@@ -42,5 +45,18 @@ export default {
 </script>
 
 <style>
+.result_img_list
+{
+    
+}
 
+.result_img-list .result_img_list_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
 </style>

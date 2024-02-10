@@ -17,8 +17,13 @@ export default createStore({
     api_url: {
       login: '/login',
       register: '/register',
-      checkManagerAuthority: '/checkManagerAuthority'
-    }
+      checkManagerAuthority: '/checkManagerAuthority',
+      checkPassword: '/checkPassword',
+      resetPassword: '/resetPassword'
+
+    },
+
+    register_name: '',
   },
   getters: {
     getDate(state) {
@@ -44,6 +49,9 @@ export default createStore({
     },
     getFrom(state) {
       return state.brower_record.from
+    },
+    getregisterName(state) {
+      return state.register_name
     }
   },
   mutations: {
@@ -70,6 +78,11 @@ export default createStore({
     },
     setFrom(state, from) {
       state.brower_record.from = from
+    },
+    // eslint-disable-next-line camelcase
+    setRegisterName(state, register_name) {
+      // eslint-disable-next-line camelcase
+      state.register_name = register_name
     }
   },
   actions: {
