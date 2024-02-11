@@ -14,80 +14,33 @@
           ref="carousel"
           @mouseenter="handleMouseEnter"
           @mouseleave="handleMousetLeave">
-          <el-carousel-item>
+
+          <el-carousel-item v-for="(item, index) in src_img_names_list" :key="index">
             <el-image 
-              :src="require('@/assets/img/about/OpenCV.png')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="OpenCV"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Rust.jpg')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Rust"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Rocket.png')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Rocket"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Cpp.png')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Cpp"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/C.jpg')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="C"/>
-          </el-carousel-item>
-          <el-carousel-item >
-            <el-image 
-              :src="require('@/assets/img/about/CMake.jpg')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="CMake"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Web.jpg')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Web"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Vue.jpeg')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Vue"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Element.png')" 
-              :fit="contain" 
-              @click="chooseDetail"
-              name="Element"/>
-          </el-carousel-item>
-          <el-carousel-item>
-            <el-image 
-              :src="require('@/assets/img/about/Sqlite.jpg')" 
+              :src="require('@/assets/img/about/' + item)" 
               :fit="contain" 
               @click="chooseDetail"
               name="Sqlite"/>
           </el-carousel-item>
+
         </el-carousel>
       </el-col>
       <el-col :span="16">
-
+        <div> 
+            <div>
+              <!--简介-->
+            </div>
+            <div>
+              <!--官网链接-->
+            </div>
+            <div>
+              <!--下载链接-->
+            </div>
+            <div>
+              <!--优秀文章推荐-->
+            </div>
+            
+        </div>
       </el-col>
       <el-col :span="4"></el-col>
     </el-row>
@@ -106,8 +59,20 @@ export default ({
  },
   data() {
     return {
-      initialIndex: 0,
-      is_mouse_on_slider: false
+      now_carousel_index: 0,
+      is_mouse_on_slider: false,
+      src_img_names_list: [
+        'OpenCV.png',
+        'Rust.jpg',
+        'Rocket.png',
+        'Cpp.png',
+        'C.jpg',
+        'CMake.jpg',
+        'Web.jpg',
+        'Vue.jpeg',
+        'Element.png',
+        'Sqlite.jpg'
+      ]
     }
   },
   methods: {
@@ -127,32 +92,25 @@ export default ({
       if (this.is_mouse_on_slider === false) {
         return
       }
-      // console.log(this.$refs)
-      // console.log('index: ' + this.initialIndex)
-      // console.log('direction:' + direction)
-      // console.log('deltaY:' + e.deltaY)
-      // // eslint-disable-next-line eqeqeq
-      // console.log(direction == 'down' && e.deltaY >= 100)
-      // // eslint-disable-next-line eqeqeq
-      // console.log(direction == 'up' && e.deltaY <= -125)
+
       if (direction === 'down' && e.deltaY >= 100) {
-          if (this.initialIndex > 9) {
-              this.initialIndex -= 10
+          if (this.now_carousel_index > 9) {
+              this.now_carousel_index -= 10
           } else {
-              this.initialIndex += 1;
+              this.now_carousel_index += 1;
           }
-          this.$refs.carousel.setActiveItem(this.initialIndex)
+          this.$refs.carousel.setActiveItem(this.now_carousel_index)
       }
 
       // eslint-disable-next-line eqeqeq
       if (direction === 'up' && e.deltaY <= -100) {
-          if (this.initialIndex < 0) {
-              this.initialIndex += 10;
+          if (this.now_carousel_index < 0) {
+              this.now_carousel_index += 10;
               // this.setActiveItem(0)
           } else {
-              this.initialIndex -= 1;
+              this.now_carousel_index -= 1;
           }
-          this.$refs.carousel.setActiveItem(this.initialIndex)
+          this.$refs.carousel.setActiveItem(this.now_carousel_index)
       }
     },
     handleMouseEnter(e) {
@@ -160,6 +118,18 @@ export default ({
     },
     handleMousetLeave(e) {
       this.is_mouse_on_slider = false
+    },
+    getIntroduction() {
+
+    },
+    getOfficalUrl() {
+
+    },
+    getDownLoadUrl() {
+
+    },
+    getRecommendedArticleUrl() {
+      
     }
 
   },
