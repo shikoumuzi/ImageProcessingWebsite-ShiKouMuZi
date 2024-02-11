@@ -7,8 +7,8 @@
         <el-container>
           <el-main>
               <el-form ref="userForm" :model="user_form" :rules="rules" label-width="80px">
-                <el-form-item label="用户名" prop="user_name">
-                  <el-input placeholder="" :maxLength="20" v-model="user_form.user_name" />
+                <el-form-item label="用户名" prop="username">
+                  <el-input placeholder="" :maxLength="20" v-model="user_form.username" />
                 </el-form-item>
                 <el-form-item label="权限级别" prop="authority">
                   <el-input placeholder=""  v-model="user_form.authority"/>
@@ -16,15 +16,18 @@
                 <el-form-item label="创建时间" prop="created_date">
                   <el-input placeholder=""  v-model="user_form.created_date" readonly/>
                 </el-form-item>
-                <el-form-item label="输入密码" prop="password" v-show="is_reset">
-                  <el-input placeholder=""  v-model="user_form.password"/>
+                <el-form-item label="输入原密码" prop="old_password" v-show="is_reset">
+                  <el-input placeholder=""  v-model="user_form.old_password"/>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="check_password" v-show="is_reset">
-                  <el-input placeholder=""  v-model="user_form.check_password"/>
+                <el-form-item label="输入新密码" prop="new_password" v-show="is_reset">
+                  <el-input placeholder=""  v-model="user_form.new_password"/>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="check_new_password" v-show="is_reset">
+                  <el-input placeholder=""  v-model="user_form.check_new_password"/>
                 </el-form-item>
                 <el-form-item >
                   <el-button type="primary" @click="startToChange">修改密码</el-button>
-                  <el-button type="primary" @click="cancelForChange" v-show="is_reset">确认修改</el-button>
+                  <el-button type="primary" @click="submitResetForm" v-show="is_reset">确认修改</el-button>
                   <el-button type="info" @click="cancelForChange" v-show="is_reset">取消修改</el-button>
                 </el-form-item>
               </el-form>
@@ -38,12 +41,12 @@
 
 <script>
 import axios from 'axios'
-
+import { ElNotification } from 'element-plus'
 export default {
   mounted() {
     const usermsg = this.$store.getters.getUserBaseMsg
     if (usermsg.authority !== 0) {
-      this.user_form.user_name = usermsg.username
+      this.user_form.username = usermsg.username
       if (usermsg.authority === 1) {
         this.user_form.authority = '普通用户'
       } else if (usermsg.authority === 2) {
@@ -53,7 +56,7 @@ export default {
     }
   },
   data() {
-    const validatePass = (rule, value, callback) => {
+    const validateOldPass = (rule, value, callback) => {
       if (value === '') {
             callback(new Error('请输入密码'))
           } else if (value.length < 6 || value.length > 20) {
@@ -73,7 +76,28 @@ export default {
                 }
               }
               callback(new Error('输入的密码同原密码不匹配'))
-            })
+            // eslint-disable-next-line node/handle-callback-err
+            }).catch((error) => {
+              ElNotification.error({
+                  title: '错误',
+                  message: '检查密码操作失败，服务器未响应',
+                  duration: 4000,
+                })
+              })
+              callback(new Error('服务器未响应'))
+          }
+    }
+    const validateNewPass = (rule, value, callback) => {
+      if (value === '') {
+            callback(new Error('请输入密码'))
+          } else if (value.length < 6 || value.length > 20) {
+            callback(new Error('密码长度为6-20位'))
+          } else {
+            if (this.user_form.old_password !== '' && this.user_form.new_password !== this.user_form.old_password) {
+              callback()
+            } else {
+              callback(new Error('新密码不能和原密码一样'))
+            }
           }
     }
     const validateCheckPass = (rule, value, callback) => {
@@ -82,42 +106,37 @@ export default {
           } else if (value.length < 6 || value.length > 20) {
             callback(new Error('密码长度为6-20位'))
           } else {
-            const usermsg = this.$store.getters.getUserBaseMsg
-            axios.post(this.$store.getters.getUrl.resetPassword, {
-              params: {
-                token: this.$store.getters.getToken,
-                username: usermsg.username,
-                old_password: this.user_form.password,
-                new_password: value
-              }
-            }).then((response) => {
-              if (response.data !== null) {
-                if (response.data.status === 0) {
-                  callback()
-                }
-              }
-              callback(new Error('修改密码失败'))
-            })
+            if (this.user_form.new_password !== this.user_form.check_new_password) {
+              callback(new Error('输入同上一栏密码不一致'))
+            }
           }
     }
     return {
       user_form: {
-        user_name: '',
+        username: '',
         authority: '',
         created_date: new Date().toDateString(),
-        password: '',
-        check_password: ''
+        old_password: '',
+        new_password: '',
+        check_new_password: ''
       },
       is_reset: false,
       rules: {
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+        old_password: [
+          { required: true, message: '请输入原密码', trigger: 'blur' },
           { min: 6, max: 20, message: '密码长度在6到20个字符之间', trigger: 'blur' },
           // eslint-disable-next-line object-curly-spacing, no-useless-escape
           {pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,20}$/, message: '密码必须包含数字、字母、特殊字符', trigger: 'blur'},
-          { validator: validatePass, trigger: 'blur' }
+          { validator: validateOldPass, trigger: 'blur' }
         ],
-        check_password: [
+        new_password: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '密码长度在6到20个字符之间', trigger: 'blur' },
+          // eslint-disable-next-line object-curly-spacing, no-useless-escape
+          {pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,20}$/, message: '密码必须包含数字、字母、特殊字符', trigger: 'blur'},
+          { validator: validateNewPass, trigger: 'blur' }
+        ],
+        check_new_password: [
           { required: true, message: '请再次输入密码', trigger: 'blur' },
           { validator: validateCheckPass, trigger: 'blur' }
         ]
@@ -131,6 +150,42 @@ export default {
     },
     cancelForChange() {
       this.is_reset = false
+    },
+    submitResetForm() {
+      const usermsg = this.$store.getters.getUserBaseMsg
+      axios.post(this.$store.getters.getUrl.resetPassword, {
+        params: {
+          token: this.$store.getters.getToken,
+          username: usermsg.username,
+          old_password: this.user_form.old_password,
+          new_password: this.user_form.new_password
+        }
+      }
+      ).then((response) => {
+        if (response.data !== null) {
+          if (response.data.status === 0) {
+            ElNotification.success({
+              title: '成功',
+              message: '修改密码成功',
+              duration: 4000
+            })
+          } else {
+            ElNotification.error({
+              title: '错误',
+              message: '修改密码失败',
+              duration: 4000,
+            })
+          } 
+        } 
+      })
+      // eslint-disable-next-line node/handle-callback-err
+      .catch((error) => {
+          ElNotification.error({
+              title: '错误',
+              message: '检查密码操作失败，服务器未响应',
+              duration: 4000,
+            })
+        })
     }
   }
 }

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from '../plugin/AxiosAPI'
+import axios from '../../plugin/AxiosAPI'
 import { componentSizeMap, ElNotification } from 'element-plus';
 
 export default {
@@ -107,13 +107,22 @@ export default {
                       
                       this.$router.push(this.$store.getters.getFrom)
                       } else { 
-                        ElNotification.error({
-                        title: '错误',
-                        message: response.data.error_msg,
-                        showClose: false,
-                    })
+                        if (response.data.status === 1) {
+                          ElNotification.error({
+                            title: '错误',
+                            message: '登录操作失败，用户名或者密码错误',
+                            duration: 4000
+                          })
+                        }
                     }
                   }
+                // eslint-disable-next-line node/handle-callback-err
+                }).catch((error) => {
+                  ElNotification.error({
+                    title: '错误',
+                    message: '登录操作失败，服务器未响应',
+                    duration: 4000,
+                  })
                 })
               }
             }

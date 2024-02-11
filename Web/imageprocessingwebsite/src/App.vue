@@ -1,14 +1,14 @@
 <template>
-  <el-container style="height: 100%;">
+  <el-container style="height: 100%; height: 100vh;">
     <el-container>
       <el-header>    
         <NavigationBar>
         </NavigationBar>
       </el-header>
-      <el-main>
+      <el-main style="background-color: rgba(255,251,240, 0.6); height: 100%; padding: 0; margin: 0;">
         <router-view/>
       </el-main>
-      <el-footer>footer</el-footer>
+      <!-- <el-footer>footer</el-footer> -->
     </el-container>
   </el-container>
   

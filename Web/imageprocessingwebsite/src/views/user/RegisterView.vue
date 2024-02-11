@@ -52,7 +52,7 @@
 
 <script>
 import { ElForm, ElNotification } from 'element-plus'
-import axios from '../plugin/AxiosAPI'
+import axios from '../../plugin/AxiosAPI'
 export default {
     name: 'RegisterView',
     components: {
@@ -116,9 +116,29 @@ export default {
               }).then((response) => {
                 if (response.data != null) {
                   if (response.data.status === 0) {
+                    this.$store.commit('setRegisterName', this.register_form.username)
                     this.$router.push('/login')
+                  } else if (response.data.status === 1) {
+                    ElNotification.error({
+                      title: '错误',
+                      message: '注册操作失败，当前用户名已存在',
+                      duration: 4000,
+                    })
+                  } else if (response.data.status === 2) {
+                    ElNotification.error({
+                      title: '错误',
+                      message: '注册操作失败，当前用户数已达到最大值',
+                      duration: 4000,
+                    })
                   }
                 }
+              // eslint-disable-next-line arrow-spacing, node/handle-callback-err
+              }).catch((error)=>{
+                ElNotification.error({
+                    title: '错误',
+                    message: '注册操作失败，服务器未响应',
+                    duration: 4000,
+                  })
               })
             }
           }

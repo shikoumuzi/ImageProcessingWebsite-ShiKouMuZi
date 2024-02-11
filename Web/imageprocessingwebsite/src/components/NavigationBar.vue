@@ -22,16 +22,22 @@
             </el-menu-item>
             <el-menu-item 
               index="3"
+              route="/history_operation"
+              class="menu_item">
+                历史操作
+            </el-menu-item>
+            <el-menu-item 
+              index="4"
               route="/about"
               class="menu_item">
                 介绍
             </el-menu-item>
-            <el-menu-item index="4" v-show="this.user_msg.authority == 2">
+            <el-menu-item index="5" v-show="this.user_msg.authority == 2">
                 网站管理
             </el-menu-item>
           </div>
           <el-menu-item 
-            index="5"
+            index="6"
             route="/user"
             class="menu_item"
             @click="toLogin">
