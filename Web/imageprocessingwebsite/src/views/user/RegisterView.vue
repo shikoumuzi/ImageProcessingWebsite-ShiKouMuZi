@@ -117,6 +117,11 @@ export default {
                 if (response.data != null) {
                   if (response.data.status === 0) {
                     this.$store.commit('setRegisterName', this.register_form.username)
+                    ElNotification.success({
+                            title: '成功',
+                            message: '注册成功',
+                            duration: 4000
+                          })
                     this.$router.push('/login')
                   } else if (response.data.status === 1) {
                     ElNotification.error({

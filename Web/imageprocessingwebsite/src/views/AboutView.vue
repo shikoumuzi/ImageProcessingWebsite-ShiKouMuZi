@@ -25,42 +25,52 @@
 
         </el-carousel>
       </el-col>
+      <el-col :span="1"></el-col>
       <el-col :span="16">
         <div> 
-            <div>
+          <el-collapse v-model="activeNames">
+            <el-collapse-item name="1" title="Introduction">
               <!--简介-->
-            </div>
-            <div>
+              {{ getIntroduction() }}
+            </el-collapse-item>
+            <el-collapse-item name="2" title="OfficalUrl">
               <!--官网链接-->
-            </div>
-            <div>
+              {{ getDownLoadUrl() }}
+            </el-collapse-item>
+            <el-collapse-item name="3" title="Download">
               <!--下载链接-->
-            </div>
-            <div>
+              {{ getDownLoadUrl() }}
+            </el-collapse-item>
+            <el-collapse-item name="4" title="RecommendedArticle">
               <!--优秀文章推荐-->
-            </div>
+              {{ getRecommendedArticleUrl() }}
+            </el-collapse-item>
+          </el-collapse>
             
         </div>
       </el-col>
-      <el-col :span="4"></el-col>
+      <el-col :span="3"></el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-
+import { ref } from 'vue';
+import axios from '../plugin/AxiosAPI';
 export default ({
   setup() {
     
   },
   mounted() {
-     // 监听鼠标滚动事件
-     window.addEventListener('mousewheel', this.handleScroll);
+    // 监听鼠标滚动事件
+    window.addEventListener('mousewheel', this.handleScroll);
  },
   data() {
     return {
+      text_var: '',
       now_carousel_index: 0,
       is_mouse_on_slider: false,
+      activeNames: ref('1'),
       src_img_names_list: [
         'OpenCV.png',
         'Rust.jpg',
@@ -80,7 +90,7 @@ export default ({
 
     },
     changeCarousel(index) {
-      console.log(index)
+      // console.log(index)
     },
     // 判断滚动方向，因为此demo中只有四页，故边界处理为 0 与 3
     handleScroll(e) {
@@ -119,17 +129,54 @@ export default ({
     handleMousetLeave(e) {
       this.is_mouse_on_slider = false
     },
+    checkTargetContectTitle(title) {
+      if (!(title in this.$store.getters.getAbout.value)) {
+        axios.get(this.$store.getters.getUrl.about, {
+          params: {
+            token: this.$store.getters.getToken,
+            target_content_title: title
+          }
+        }).then((response) => {
+          if (response.data != null) {
+            if (response.data.status === 0) {
+              this.$store.getters.getAbout.value[title] = {
+                introduction: response.data.introduction,
+                offical_url: response.data.offical_url,
+                download_url: response.data.download_url,
+                recommended_article_url: response.data.recommended_article_url,
+              }
+            }
+          }
+        })
+      }
+    },
     getIntroduction() {
-
+      // eslint-disable-next-line camelcase
+      const now_title = this.src_img_names_list[this.now_carousel_index].split('.')[0]
+      // eslint-disable-next-line camelcase
+      this.checkTargetContectTitle(now_title)
+      return this.$store.getAbout.value[now_title].introduction
     },
     getOfficalUrl() {
-
+      // eslint-disable-next-line camelcase
+      const now_title = this.src_img_names_list[this.now_carousel_index].split('.')[0]
+      // eslint-disable-next-line camelcase
+      this.checkTargetContectTitle(now_title)
+      return this.$store.getAbout.value[now_title].offical_url
     },
     getDownLoadUrl() {
-
+      // eslint-disable-next-line camelcase
+      const now_title = this.src_img_names_list[this.now_carousel_index].split('.')[0]
+      // eslint-disable-next-line camelcase
+      this.checkTargetContectTitle(now_title)
+      return this.$store.getAbout.value[now_title].download_url
     },
     getRecommendedArticleUrl() {
-      
+      // eslint-disable-next-line camelcase
+      const now_title = this.src_img_names_list[this.now_carousel_index].split('.')[0]
+      // eslint-disable-next-line camelcase
+      this.checkTargetContectTitle(now_title)
+      return this.$store.getAbout.value[now_title].recommended_article_url
     }
 
   },

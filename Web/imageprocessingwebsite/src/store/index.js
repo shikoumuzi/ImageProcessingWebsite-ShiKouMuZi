@@ -19,9 +19,11 @@ export default createStore({
       register: '/register',
       checkManagerAuthority: '/checkManagerAuthority',
       checkPassword: '/checkPassword',
-      resetPassword: '/resetPassword'
-
+      resetPassword: '/resetPassword',
+      about: '/about',
     },
+
+    about: {},
 
     register_name: '',
   },
@@ -39,19 +41,26 @@ export default createStore({
       return state.token
     },
     getUrl(state) {
+      // 获取api的url
       return state.api_url
     },
     getResultImgListSize(state) {
+      // 获取已经生成的结果图片数量
       return state.user_base_msg.result_image_list.length
     },
     getResultImgList(state) {
+      // 获取结果图片列表
       return ref(state.user_base_msg.result_image_list)
     },
     getFrom(state) {
+      // 获取来源路由
       return state.brower_record.from
     },
-    getregisterName(state) {
+    getRegisterName(state) {
       return state.register_name
+    },
+    getAbout(state) {
+      return ref(state.about)
     }
   },
   mutations: {

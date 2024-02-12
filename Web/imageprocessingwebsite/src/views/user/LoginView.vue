@@ -105,6 +105,12 @@ export default {
                       this.$store.commit('setAuthority', response.data.authority)
                       this.$store.commit('setTimeStamp', response.data.time_stamp)
                       
+                      ElNotification.success({
+                            title: '成功',
+                            message: '登录成功',
+                            duration: 4000 
+                          })
+
                       this.$router.push(this.$store.getters.getFrom)
                       } else { 
                         if (response.data.status === 1) {
