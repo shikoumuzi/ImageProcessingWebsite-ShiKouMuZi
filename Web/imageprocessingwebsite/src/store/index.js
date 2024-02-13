@@ -23,7 +23,7 @@ export default createStore({
       about: '/about',
     },
 
-    about: {},
+    abouts: {},
 
     register_name: '',
   },
@@ -59,9 +59,10 @@ export default createStore({
     getRegisterName(state) {
       return state.register_name
     },
-    getAbout(state) {
-      return ref(state.about)
-    }
+    getAbouts(state) {
+      return state.abouts
+    },
+
   },
   mutations: {
     setToken(state, token) {
@@ -92,6 +93,16 @@ export default createStore({
     setRegisterName(state, register_name) {
       // eslint-disable-next-line camelcase
       state.register_name = register_name
+    },
+    clearAbout(state) {
+      state.abouts = {}
+    },
+    // eslint-disable-next-line camelcase
+    addAbout(state, about_msg) {
+      // console.log('addAbout------------------------------')
+      
+      state.abouts[about_msg.title] = about_msg.about
+      // console.log(state.abouts[about_msg.title])
     }
   },
   actions: {
