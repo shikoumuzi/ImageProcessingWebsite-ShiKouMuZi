@@ -1,4 +1,5 @@
 <template>
+  <el-watermark :font="font" :content="['ShiKouMuZi']">
   <el-container style="height: 100%; height: 100vh;">
     <el-container>
       <el-header>    
@@ -11,7 +12,7 @@
       <!-- <el-footer>footer</el-footer> -->
     </el-container>
   </el-container>
-  
+</el-watermark>
 </template>
 
 <script>

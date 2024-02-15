@@ -51,7 +51,7 @@
                     loading
                     bordered
                     @change="changePage"
-                    style="text-indent: 0em;">
+                    style="text-indent: 0em; font-size: 18px">
                     <el-table-column label='ID' type="index"></el-table-column>
                     <el-table-column label="URL" prop="url" width="350"></el-table-column>
                     <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -65,7 +65,7 @@
                   :data="this.about.download_url"
                   bordered
                   @change="changePage"
-                  style="text-indent: 0em;">
+                  style="text-indent: 0em; font-size: 18px">
                   <el-table-column label='ID' type="index"></el-table-column>
                   <el-table-column label="URL" prop="url" width="350"></el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -81,7 +81,7 @@
                   :data="this.about.recommended_article_url"
                   bordered
                   @change="changePage"
-                  style="text-indent: 0em;">
+                  style="text-indent: 0em; font-size: 18px">
                   <el-table-column label='ID' type="index"></el-table-column>
                   <el-table-column label="URL" prop="url" width="350"></el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -261,6 +261,7 @@ export default ({
   border-top: 1px;
   background-color: rgb(255, 255, 255);
   text-indent:1em;
+  font-size: 20px;
 }
 /* ::v-deep .el-collapse-item__header.is-active {
   border-bottom: 1px solid #ebeef5;
