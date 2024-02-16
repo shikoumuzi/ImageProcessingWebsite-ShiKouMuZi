@@ -28,7 +28,7 @@
         <el-row :gutter="0">
           <el-col :span="5"></el-col>
           <el-col :span="4">
-            <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: column;" @click="toGithubIssue">
               <font>Github</font>
               <el-image :src="require('@/assets/img/home/github.png')" :fit="contain" class="el-img"/>
               <!-- <div class="img-wrapper">
@@ -38,8 +38,10 @@
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: column;" @click="toEmail">
               <font>Email</font>
+              <!-- <font style="display: none;" id="email_font" >shikoumuziin14290@gmail.com</font>
+              <input style="display: none;" id="email_input"> -->
               <el-image :src="require('@/assets/img/home/email.png')" :fit="contain" class="el-img" style="margin-top: 8%;"/>
               <!-- <div class="img-wrapper">
                 <img src="../assets/img/home/email.png" class="img" style="transform: translateY(-160%); margin-top: 8%;"/>
@@ -65,12 +67,27 @@
 </template>
 
 <script>
+import VueClipboards from 'vue-clipboard2'
+
 // @ is an alias to /src
 export default {
 
   name: 'HomeView',
   components: {
-  }
+  },
+  methods: {
+    toGithubIssue() {
+      window.open('https://github.com/shikoumuzi/ImageProcessingWebsite-ShiKouMuZi/issues');
+    },
+    toEmail() {
+      this.$copyText('shikoumuziin14290@gmail.com').then(function (e) {
+        alert('邮箱地址已复制')
+      }, function (e) {
+        alert('邮箱地址复制失败')
+      })
+    },
+
+  },
 }
 </script>
 

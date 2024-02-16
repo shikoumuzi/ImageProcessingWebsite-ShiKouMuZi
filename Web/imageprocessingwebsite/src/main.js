@@ -7,13 +7,14 @@ import axios from './plugin/AxiosAPI'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconVue from '@element-plus/icons-vue'
-
+import VueClipboards from 'vue-clipboard2'
 const app = createApp(App)
 // app.config.silent = true
 // app.config.warnHandler = () => null
 
 app.use(store).use(router)
 app.use(ElementPlus)
+app.use(VueClipboards)
 for (const [key, component] of Object.entries(ElementPlusIconVue)) {
     app.component(key, component)
 }
