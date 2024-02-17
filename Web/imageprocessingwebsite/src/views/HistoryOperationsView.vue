@@ -22,6 +22,12 @@
               <span>{{ scope.row.note }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="操作" width="100" fixed="right">
+            <template v-slot="scope">
+              <el-button type="link" @click="toDo(scope.row)">使用</el-button>
+              <el-button type="link" @click="toDo(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-col>
       <el-col :span="6"></el-col>
@@ -35,7 +41,7 @@ import { ref } from 'vue';
 import axios from '../plugin/AxiosAPI';
 export default {
   mounted() {
-    this.getHistoryOperations()
+    this.initHistoryOperations()
   },
   data() {
     return {
@@ -43,21 +49,24 @@ export default {
     }
   },
   methods: {
-    getHistoryOperations() {
-      axios.get(this.$store.getters.getUrl.operation.getHistoryOperationsList, {
-        params: {
-          token: this.$store.getters.getToken,
-          username: this.$store.getters.getUserBaseMsg.value.username
-        }
-      }).then((response) => {
-        console.log(response.data)
-        if (response.data != null) {
-          if (response.data.status === 0) {
-            this.$store.commit('setHistoryOperations', response.data.history_operations)
-            this.history_operations = this.$store.getters.getUserBaseMsg.value.history_operations.toList()
+    initHistoryOperations() {
+      if (this.$store.getters.getUserBaseMsg.value.history_operations.size() === 0) {
+        axios.get(this.$store.getters.getUrl.operation.getHistoryOperationsList, {
+          params: {
+            token: this.$store.getters.getToken,
+            username: this.$store.getters.getUserBaseMsg.value.username
           }
-        }
-      })
+        }).then((response) => {
+          console.log(response.data)
+          if (response.data != null) {
+            if (response.data.status === 0) {
+              this.$store.commit('setHistoryOperations', response.data.history_operations)
+              this.history_operations = this.$store.getters.getUserBaseMsg.value.history_operations.toList()
+            }
+          }
+        }) 
+      }
+      this.history_operations = this.$store.getters.getUserBaseMsg.value.history_operations.toList()
     }
   },
 }

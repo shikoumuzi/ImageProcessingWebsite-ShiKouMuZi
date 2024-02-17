@@ -6,7 +6,7 @@ import RegisterView from '../views/user/RegisterView.vue';
 import ImageOperationView from '../views/ImageOperationView.vue'
 import UserView from '../views/UserView.vue'
 import store from '../store/index';
-import axios from 'axios'
+import axios from '../plugin/AxiosAPI'
 import { ElNotification } from 'element-plus';
 const routes = [
   {

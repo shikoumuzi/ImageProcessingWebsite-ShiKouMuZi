@@ -9,7 +9,20 @@
       </el-form-item>
     </el-form> 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="handleCancel">取 消</el-button>
+        <el-popconfirm
+          width="220"
+          confirm-button-text="OK"
+          cancel-button-text="No, Thanks"
+          :icon="InfoFilled"
+          icon-color="#626AEF"
+          title="确定取消吗"
+          @confirm="handleCancel"
+        >
+          <template #reference>
+            <el-button size="small" >取 消</el-button>
+          </template>
+        </el-popconfirm>
+
         <el-button size="small" type="primary" @click="handleOk" >确 定</el-button>
       </span>
     </el-dialog>
@@ -21,6 +34,7 @@
 import axios from '../plugin/AxiosAPI'
 import { ElNotification } from 'element-plus'
 import mitt from '../plugin/MittAPI'
+import { InfoFilled } from '@element-plus/icons-vue'
 export default { 
   data() {
     return {

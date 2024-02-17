@@ -32,7 +32,10 @@
               class="menu_item">
                 介绍
             </el-menu-item>
-            <el-menu-item index="5" v-show="this.$store.getters.getUserBaseMsg.value.authority == 2">
+            <el-menu-item 
+              index="5" 
+              route="/manager"
+              v-show="this.$store.getters.getUserBaseMsg.value.authority == 2">
                 网站管理
             </el-menu-item>
           </div>

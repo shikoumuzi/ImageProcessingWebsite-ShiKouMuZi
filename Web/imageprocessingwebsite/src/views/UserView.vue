@@ -8,26 +8,38 @@
           <el-main>
               <el-form ref="userForm" :model="user_form" :rules="rules" label-width="80px">
                 <el-form-item label="用户名" prop="username">
-                  <el-input placeholder="" :maxLength="20" v-model="user_form.username" />
+                  <el-input placeholder="" :maxLength="20" v-model="user_form.username" :readonly="!is_reset"/>
                 </el-form-item>
                 <el-form-item label="权限级别" prop="authority">
-                  <el-input placeholder=""  v-model="user_form.authority"/>
+                  <el-input placeholder=""  v-model="user_form.authority" :readonly="!is_reset"/>
                 </el-form-item>
                 <el-form-item label="创建时间" prop="created_date">
                   <el-input placeholder=""  v-model="user_form.created_date" readonly/>
                 </el-form-item>
                 <el-form-item label="输入原密码" prop="old_password" v-show="is_reset">
-                  <el-input placeholder=""  v-model="user_form.old_password"/>
+                  <el-input placeholder=""  v-model="user_form.old_password" type="password" show-password/>
                 </el-form-item>
                 <el-form-item label="输入新密码" prop="new_password" v-show="is_reset">
-                  <el-input placeholder=""  v-model="user_form.new_password"/>
+                  <el-input placeholder=""  v-model="user_form.new_password" type="password" show-password/>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="check_new_password" v-show="is_reset">
-                  <el-input placeholder=""  v-model="user_form.check_new_password"/>
+                  <el-input placeholder=""  v-model="user_form.check_new_password" type="password" show-password/>
                 </el-form-item>
                 <el-form-item >
-                  <el-button type="primary" @click="startToChange">修改密码</el-button>
-                  <el-button type="primary" @click="submitResetForm" v-show="is_reset">确认修改</el-button>
+                  <el-button type="primary" @click="startToChange" v-show="!is_reset">修改密码</el-button>
+                  <el-popconfirm
+                    width="220"
+                    confirm-button-text="OK"
+                    cancel-button-text="No, Thanks"
+                    :icon="InfoFilled"
+                    icon-color="#626AEF"
+                    title="确定修改吗"
+                    @confirm="submitResetForm"
+                  >
+                    <template #reference>
+                      <el-button type="primary"  v-show="is_reset">确认修改</el-button>
+                    </template>
+                  </el-popconfirm>
                   <el-button type="info" @click="cancelForChange" v-show="is_reset">取消修改</el-button>
                 </el-form-item>
               </el-form>
@@ -40,7 +52,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../plugin/AxiosAPI'
 import { ElNotification } from 'element-plus'
 export default {
   mounted() {
@@ -61,6 +73,7 @@ export default {
           } else if (value.length < 6 || value.length > 20) {
             callback(new Error('密码长度为6-20位'))
           } else {
+            console.log(this.$store.getters.getUrl.user.checkPassword)
             axios.post(this.$store.getters.getUrl.user.checkPassword, {
               params: {
                 token: this.$store.getters.getToken,
@@ -68,6 +81,7 @@ export default {
                 password: value
               }
             }).then((response) => {
+              console.log(response)
               if (response.data !== null) {
                 if (response.data.status === 0) {
                   callback()
@@ -76,13 +90,14 @@ export default {
               callback(new Error('输入的密码同原密码不匹配'))
             // eslint-disable-next-line node/handle-callback-err
             }).catch((error) => {
+              console.log(error)
               ElNotification.error({
                   title: '错误',
                   message: '检查密码操作失败，服务器未响应',
                   duration: 4000,
                 })
+                callback(new Error('服务器未响应'))
               })
-              callback(new Error('服务器未响应'))
           }
     }
     const validateNewPass = (rule, value, callback) => {

@@ -119,6 +119,7 @@ export default createStore({
     },
     // eslint-disable-next-line camelcase
     setHistoryOperations(state, history_operations) {
+      state.user_base_msg.history_operations.clear()
       for (let i = 0; i < history_operations.length; ++i) {
         // eslint-disable-next-line camelcase, prefer-const
         let history_operation = new HistoryOperation()
@@ -127,6 +128,10 @@ export default createStore({
         history_operation.history_operation_id = history_operations[i].history_operation_id
         state.user_base_msg.history_operations.push(history_operation)
       }
+    },
+    // eslint-disable-next-line camelcase
+    pushOnceToHistoryOperations(state, history_operation) {
+        state.user_base_msg.history_operations.push(history_operation)
     }
   },
   actions: {

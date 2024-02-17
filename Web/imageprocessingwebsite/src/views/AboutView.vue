@@ -51,7 +51,7 @@
                     loading
                     bordered
                     @change="changePage"
-                    style="text-indent: 0em; font-size: 18px">
+                    class="item-table">
                     <el-table-column label='ID' type="index"></el-table-column>
                     <el-table-column label="URL" prop="url" width="350"></el-table-column>
                     <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -65,7 +65,7 @@
                   :data="this.about.download_url"
                   bordered
                   @change="changePage"
-                  style="text-indent: 0em; font-size: 18px">
+                  class="item-table">
                   <el-table-column label='ID' type="index"></el-table-column>
                   <el-table-column label="URL" prop="url" width="350"></el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -81,7 +81,7 @@
                   :data="this.about.recommended_article_url"
                   bordered
                   @change="changePage"
-                  style="text-indent: 0em; font-size: 18px">
+                  class="item-table">
                   <el-table-column label='ID' type="index"></el-table-column>
                   <el-table-column label="URL" prop="url" width="350"></el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
@@ -275,21 +275,11 @@ export default ({
   text-align: left;
   text-indent:1em;
 }
-.scale-animation {
-            animation-name: custom-scale;
-            animation-duration: 3s;
-            animation-fill-mode: forwards;
-        }
+.item-table {
+  text-indent: 0em; 
+  font-size: 18px; 
+  margin-left: 1%;
+  margin-right: 1%;
+}
 
-        @keyframes custom-scale {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
 </style>
