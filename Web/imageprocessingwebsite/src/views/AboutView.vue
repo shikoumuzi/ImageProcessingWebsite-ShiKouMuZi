@@ -33,7 +33,7 @@
       <el-col :span="16">
         <div >
           <el-image :src="require('@/assets/img/about/' + this.src_img_names_list[this.now_carousel_index])" :fit="contain" 
-          style="margin-top: 1%; border: 10px solid; border-color: black; border-radius: 10px;"/>
+          style="margin-top: 1%; border: 10px solid; border-color: black; border-radius: 10px; max-width: 50% ;"/>
         </div>
         <div style="margin-top: 2%; border: 10px; border-color: rgb(0, 2, 7); background-color: rgba(243, 240, 240, 0.863); border-radius: 10px;"> 
           <div style="padding: 1.2%; border: 10px;">

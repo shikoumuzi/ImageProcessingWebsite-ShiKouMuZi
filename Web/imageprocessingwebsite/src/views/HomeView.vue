@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div style="background-color: rgb(31, 31, 31); height: 62vh;">
+    <suggestion/>
+    <div style="background-color: rgb(31, 31, 31); height: 60vh;">
       <el-row :gutter="0">
         <el-col :span="4"></el-col>
         <el-col :span="16">
@@ -19,7 +20,7 @@
         <el-col :span="4"></el-col>
       </el-row>
     </div>
-    <div style="margin-top: 2%; font-size: 20px; ">
+    <div style="margin-top: 1%; font-size: 20px; ">
       <h style="font-size: 30px; font-family: 'Poppins', Sans-serif;">Please contact me if you have any questions</h>
       <div style="display: flex;  justify-content: center;">
         <el-divider style="background-color: rgb(44, 43, 43); max-width: 160vh; "/>
@@ -50,7 +51,7 @@
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: column;" @click="toSuggestion">
               <font>Suggestion</font>
               <!-- <div class="img-wrapper">
                 <img src="../assets/img/home/suggestion.png" class="img"/>
@@ -68,12 +69,15 @@
 
 <script>
 import VueClipboards from 'vue-clipboard2'
-
+import Suggestion from '../components/Suggestion';
+import mitt from '@/plugin/MittAPI';
+import { ElNotification } from 'element-plus';
 // @ is an alias to /src
 export default {
 
   name: 'HomeView',
   components: {
+    Suggestion
   },
   methods: {
     toGithubIssue() {
@@ -86,7 +90,18 @@ export default {
         alert('邮箱地址复制失败')
       })
     },
-
+    toSuggestion() {
+      if (this.$store.getters.getUserBaseMsg.value.authority === 0) {
+        ElNotification.error({
+          title: '错误',
+          message: '请先登录',
+          duration: 4000,
+        })
+        this.$router.push('/login')
+      }
+      mitt.emit('setDialogVisible', true)
+      // console.log('emit => setDialogVisible with true')
+    }
   },
 }
 </script>

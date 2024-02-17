@@ -5,10 +5,9 @@ import LoginView from '../views/user/LoginView.vue'
 import RegisterView from '../views/user/RegisterView.vue';
 import ImageOperationView from '../views/ImageOperationView.vue'
 import UserView from '../views/UserView.vue'
-import ManagerView from '@/views/ManagerView.vue';
-import HistoryOperationVue from '@/views/manager/HistoryOperation.vue';
 import store from '../store/index';
 import axios from 'axios'
+import { ElNotification } from 'element-plus';
 const routes = [
   {
     path: '/',
@@ -46,13 +45,13 @@ const routes = [
   {
     path: '/manager',
     name: 'manager',
-    component: ManagerView
+    component: () => import('../views/ManagerView.vue')
 
   },
   {
     path: '/history_operation',
     name: 'history_operation',
-    component: HistoryOperationVue
+    component: () => import('../views/HistoryOperationsView.vue')
 
   }
 ]
@@ -62,24 +61,34 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => { 
   store.commit('setFrom', from.path)
   // 检查前往操作的路由跳转
-  if (to.path === '/image_operation') {
+  if (to.path === '/image_operation' || to.path === '/history_operation') {
     store.commit('setFrom', '/image_operation')
     // console.log(store.getters.getFrom)
-    if (store.getters.getUserBaseMsg.authority === 0) {
+    if (store.getters.getUserBaseMsg.value.authority === 0) {
       // eslint-disable-next-line quotes
-      next("/login")
+      ElNotification.error({
+        title: '错误',
+        message: '请先登录',
+        duration: 4000,
+      })
+      next('/login')
     }
   }
   // 检查前往登录的界面跳转
   if (to.path === '/manager') {
-    if (store.getters.getUserBaseMsg.authority !== 2) {
+    if (store.getters.getUserBaseMsg.value.authority !== 2) {
+      ElNotification.error({
+        title: '错误',
+        message: '权限不足',
+        duration: 4000,
+      })
       next('/home')
     }
     
-    axios.post(store.getters.getUrl.checkManagerAuthority, 
+    axios.post(store.getters.getUrl.user.checkManagerAuthority, 
     {
       params: {
         token: store.getters.getToken
@@ -87,6 +96,12 @@ router.beforeEach((to, from, next) => {
     }).then((res) => {
       if (res.data !== null) {
         if (res.data.status !== 0) {
+          ElNotification.error({
+            title: '错误',
+            message: '权限不足',
+            duration: 4000,
+          })
+          
           next('/home')
         }
       }
@@ -94,9 +109,14 @@ router.beforeEach((to, from, next) => {
   }
 // 检查前往用户界面
 if (to.path === '/user') {
-  if (store.getters.getUserBaseMsg.authority !== 0 && store.getters.getUserBaseMsg.token !== '') {
+  if (store.getters.getUserBaseMsg.value.authority !== 0 && store.getters.getUserBaseMsg.value.token !== '') {
     next()
   } else {
+    ElNotification.error({
+      title: '错误',
+      message: '请先登录',
+      duration: 4000,
+    })
     next('/home')
   }
 }

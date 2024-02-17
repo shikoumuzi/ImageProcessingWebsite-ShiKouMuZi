@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 import UserMsg from '../typings/UserMsg'
  
-import { ref } from 'vue';
+import { h, ref } from 'vue';
+import HistoryOperation from '@/typings/HistoryOperation';
 export default createStore({
   state: {
     token: '',
@@ -15,12 +16,20 @@ export default createStore({
     },
 
     api_url: {
-      login: '/login',
-      register: '/register',
-      checkManagerAuthority: '/checkManagerAuthority',
-      checkPassword: '/checkPassword',
-      resetPassword: '/resetPassword',
+      user: {
+        login: '/login',
+        register: '/register',
+        checkManagerAuthority: '/checkManagerAuthority',
+        checkPassword: '/checkPassword',
+        resetPassword: '/resetPassword',
+      },
       about: '/about',
+      suggestion: '/suggestion',
+
+      operation: {
+        getHistoryOperationsList: '/history_operations'
+      },
+
     },
 
     abouts: {},
@@ -35,7 +44,7 @@ export default createStore({
       return state.user_login_status
     },
     getUserBaseMsg(state) {
-      return state.user_base_msg
+      return ref(state.user_base_msg)
     },
     getToken(state) {
       return state.token
@@ -60,8 +69,11 @@ export default createStore({
       return state.register_name
     },
     getAbouts(state) {
-      return state.abouts
+      return ref(state.abouts)
     },
+    getHistoryOperationList() {
+      return ref()
+    }
 
   },
   mutations: {
@@ -75,10 +87,6 @@ export default createStore({
     setUserLoginStatus(state, status) {
       state.user_login_status = status
     },
-    clearUserMsg(state) {
-      state.user_base_msg = new UserMsg()
-      console.log(state)
-    },
     // eslint-disable-next-line camelcase
     setUserName(state, user_name) {
       state.user_base_msg.setUserName(user_name)
@@ -86,6 +94,11 @@ export default createStore({
     setAuthority(state, authority) {
       state.user_base_msg.setAuthority(authority)
     },
+    clearUserMsg(state) {
+      state.user_base_msg = new UserMsg()
+      console.log(state)
+    },
+
     setFrom(state, from) {
       state.brower_record.from = from
     },
@@ -103,6 +116,17 @@ export default createStore({
       
       state.abouts[about_msg.title] = about_msg.about
       // console.log(state.abouts[about_msg.title])
+    },
+    // eslint-disable-next-line camelcase
+    setHistoryOperations(state, history_operations) {
+      for (let i = 0; i < history_operations.length; ++i) {
+        // eslint-disable-next-line camelcase, prefer-const
+        let history_operation = new HistoryOperation()
+        history_operation.note = history_operations[i].note
+        history_operation.time_stamp = history_operations[i].time_stamp
+        history_operation.history_operation_id = history_operations[i].history_operation_id
+        state.user_base_msg.history_operations.push(history_operation)
+      }
     }
   },
   actions: {

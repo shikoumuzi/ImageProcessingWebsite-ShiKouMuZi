@@ -32,7 +32,7 @@
               class="menu_item">
                 介绍
             </el-menu-item>
-            <el-menu-item index="5" v-show="this.user_msg.authority == 2">
+            <el-menu-item index="5" v-show="this.$store.getters.getUserBaseMsg.value.authority == 2">
                 网站管理
             </el-menu-item>
           </div>
@@ -42,7 +42,7 @@
             class="menu_item"
             @click="toLogin">
             {{ getUserSubMenuTitle() }}
-            <el-sub-menu v-show="this.user_msg.authority !== 0">
+            <el-sub-menu v-show="this.$store.getters.getUserBaseMsg.value.authority !== 0">
               <!-- <span slot="title">用户</span> -->
               <el-menu-item index="1">个人信息</el-menu-item>
               <el-menu-item index="2" @click="signOut">
@@ -64,29 +64,24 @@ export default {
   },
   data () {
     return {
-      user_msg: null
     }
   },
   created () {
-    this.user_msg = this.$store.getters.getUserBaseMsg
-    // this.user_msg.authority = 1
-    // this.user_msg.username = '李文智'
   },
   methods: {
     signOut() {
       this.$store.commit('setUserLoginStatus', false)
       this.$store.commit('clearUserMsg')
-      this.user_msg = this.$store.getters.getUserBaseMsg
     },
     getUserSubMenuTitle() {
-      if (this.$store.getters.getUserBaseMsg.authority === 0) {
+      if (this.$store.getters.getUserBaseMsg.value.authority === 0) {
         return '登录'
       } else {
-        return this.$store.getters.getUserBaseMsg.username
+        return this.$store.getters.getUserBaseMsg.value.username
       }
     },
     toLogin() {
-      if (this.$store.getters.getUserBaseMsg.authority === 0) {
+      if (this.$store.getters.getUserBaseMsg.value.authority === 0) {
         this.$router.push('/login')
       }
     }

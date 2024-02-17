@@ -44,15 +44,14 @@ import axios from 'axios'
 import { ElNotification } from 'element-plus'
 export default {
   mounted() {
-    const usermsg = this.$store.getters.getUserBaseMsg
-    if (usermsg.authority !== 0) {
-      this.user_form.username = usermsg.username
-      if (usermsg.authority === 1) {
+    if (this.$store.getters.getUserBaseMsg.value.authority !== 0) {
+      this.user_form.username = this.$store.getters.getUserBaseMsg.value.username
+      if (this.$store.getters.getUserBaseMsg.value.authority === 1) {
         this.user_form.authority = '普通用户'
-      } else if (usermsg.authority === 2) {
+      } else if (this.$store.getters.getUserBaseMsg.value.authority === 2) {
         this.user_form.authority = '管理员'
       }
-      this.user_form.created_date = new Date(usermsg.time_stamp).toDateString()
+      this.user_form.created_date = new Date(this.$store.getters.getUserBaseMsg.value.time_stamp).toDateString()
     }
   },
   data() {
@@ -62,11 +61,10 @@ export default {
           } else if (value.length < 6 || value.length > 20) {
             callback(new Error('密码长度为6-20位'))
           } else {
-            const usermsg = this.$store.getters.getUserBaseMsg
-            axios.post(this.$store.getters.getUrl.checkPassword, {
+            axios.post(this.$store.getters.getUrl.user.checkPassword, {
               params: {
                 token: this.$store.getters.getToken,
-                username: usermsg.username,
+                username: this.$store.getters.getUserBaseMsg.value.username,
                 password: value
               }
             }).then((response) => {
@@ -152,11 +150,10 @@ export default {
       this.is_reset = false
     },
     submitResetForm() {
-      const usermsg = this.$store.getters.getUserBaseMsg
-      axios.post(this.$store.getters.getUrl.resetPassword, {
+      axios.post(this.$store.getters.getUrl.user.resetPassword, {
         params: {
           token: this.$store.getters.getToken,
-          username: usermsg.username,
+          username: this.$store.getters.getUserBaseMsg.value.username,
           old_password: this.user_form.old_password,
           new_password: this.user_form.new_password
         }

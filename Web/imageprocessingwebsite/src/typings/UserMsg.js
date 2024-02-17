@@ -1,12 +1,12 @@
-import HistoryOpertions from './HistoryOperations'
+import HistoryOpertionsSet from './HistoryOperationsSet'
 import Operation from './Operation'
 import Img from './Img'
-
+import { ref } from 'vue';
 export default class UserMsg {
     constructor() {
         this.username = ''
         this.operation_list = []
-        this.history_operations = new HistoryOpertions()
+        this.history_operations = new HistoryOpertionsSet()
         this.result_image_list = []
         this.authority = 0
         this.time_stamp = 0
@@ -33,8 +33,10 @@ export default class UserMsg {
         this.result_image_list = []
         this.authority = 0
     }
-    // username: string
-    // operation_list: Array<Operation>
-    // history_operations: HistoryOpertions
-    // result_image_list: Array<Img>
+
+    getHistoryOperations() {
+        console.log('getHistoryOperations')
+        console.log(this.history_operations)
+        return this.history_operations
+    }
 }

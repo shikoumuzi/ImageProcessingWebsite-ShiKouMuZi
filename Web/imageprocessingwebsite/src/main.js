@@ -8,6 +8,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconVue from '@element-plus/icons-vue'
 import VueClipboards from 'vue-clipboard2'
+import mitt from 'mitt'
+
 const app = createApp(App)
 // app.config.silent = true
 // app.config.warnHandler = () => null
