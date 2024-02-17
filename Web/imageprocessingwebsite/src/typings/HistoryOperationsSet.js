@@ -10,6 +10,10 @@ export default class HistoryOpertionsSet {
         this.init()
     }
 
+    isNull() {
+        return this.now_vaild_size === 0
+    }
+
     init() {
         for (let i = 0; i < TheInitSizeOfHistoryOpertionsSet; ++i) {
             this.history_operations.push(new HistoryOperation())
@@ -31,7 +35,7 @@ export default class HistoryOpertionsSet {
         if (index > this.now_vaild_size) {
             return
         }
-        
+
         if (this.history_operations.length < TheInitSizeOfHistoryOpertionsSet) {
             for (let i = 0; i < TheInitSizeOfHistoryOpertionsSet - this.history_operations.length; ++i) {
                 this.history_operations.push(new HistoryOperation())
@@ -51,7 +55,7 @@ export default class HistoryOpertionsSet {
     }
 
     size() {
-        return this.history_operations.length
+        return this.now_vaild_size
     }
     // history_operations_mapping: Map<number, Operation>
     // index: number
