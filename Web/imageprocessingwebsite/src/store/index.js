@@ -28,9 +28,14 @@ export default createStore({
 
       operation: {
         getHistoryOperationsList: '/history_operations',
-        eraseHistoryOperationList: '/earse_history_operation'
+        eraseHistoryOperationList: '/earse_history_operation', 
+        getOperationByHistoryOperationID: '/get_operation_details_by_history_operation_id'
       },
 
+    },
+
+    operating_msg: {
+      is_operation_loaded_in_workspace: false 
     },
 
     abouts: {},

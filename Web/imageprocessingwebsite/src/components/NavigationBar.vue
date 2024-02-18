@@ -9,6 +9,12 @@
           class="menu">
           <div style="display: flex; align-items: center;">
             <el-menu-item 
+              index="0"
+              route="/"
+              style="margin-left: -2%;">
+              <img src="../assets/img/navigation/logo.jpg" style="width: 15vw; border-radius: 5px;">
+            </el-menu-item>
+            <el-menu-item 
               index="1"
               route="/"
               class="menu_item">
@@ -95,8 +101,6 @@ export default {
 <style>
 .menu_item
 {
-  margin: 10%;
-  margin-left: 2%;
 }
 .menu
 {

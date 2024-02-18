@@ -112,7 +112,7 @@ export default {
       if (index > this.$store.getters.getUserBaseMsg.value.history_operations.size()) {
         return
       }
-      axios.get(this.$store.getters.getUrl.operation.eraseHistoryOperationList, {
+      axios.post(this.$store.getters.getUrl.operation.eraseHistoryOperationList, {
         params: {
           token: this.$store.getters.getToken,
           history_operation_id: this.history_operations[index].history_operation_id
@@ -132,6 +132,14 @@ export default {
       })
     },
     useOnceOfHistoryOpearations(row, index) {
+      // 获取操作信息
+ 
+      this.$router.push({ 
+        name: 'image_operation',
+        params: {
+
+        }
+      })
       console.log(row)
       console.log('index: ' + index)
     }
