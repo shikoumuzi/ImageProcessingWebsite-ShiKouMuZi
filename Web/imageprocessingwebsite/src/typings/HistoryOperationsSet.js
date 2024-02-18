@@ -31,10 +31,12 @@ export default class HistoryOpertionsSet {
         this.now_vaild_size += 1
     }
 
-    earse(index) {
+    erase(index) {
         if (index > this.now_vaild_size) {
             return
         }
+
+        this.history_operations.splice(index, 1)
 
         if (this.history_operations.length < TheInitSizeOfHistoryOpertionsSet) {
             for (let i = 0; i < TheInitSizeOfHistoryOpertionsSet - this.history_operations.length; ++i) {

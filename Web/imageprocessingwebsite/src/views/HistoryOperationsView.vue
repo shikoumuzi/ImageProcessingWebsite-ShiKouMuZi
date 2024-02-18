@@ -12,13 +12,13 @@
           @change="changePage"
           stripe="true"
           style="margin: 5%;">
-          <el-table-column label="ID" type="index" width="100"></el-table-column>
+          <el-table-column label="ID" type="index" width="50"></el-table-column>
           <el-table-column label="创建时间" width="100">
             <template v-slot="scope">
               <span>{{ this.displayTimeStamp( scope.row.time_stamp) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注"  fixed="right">
+          <el-table-column label="备注"  fixed="right" min-width='50'>
             <template v-slot="scope">
               <span>{{ scope.row.note }}</span>
             </template>
@@ -26,8 +26,33 @@
           <el-table-column label="操作" width="200" fixed="right">
             <template v-slot="scope" >
               <div style="display: inline-block;">
-                <el-button type="primary" @click="toDo(scope.row)">使用</el-button>
-                <el-button type="danger" @click="toDo(scope.row)">删除</el-button>
+                <el-popconfirm
+                    width="220"
+                    confirm-button-text="OK"
+                    cancel-button-text="No, Thanks"
+                    :icon="InfoFilled"
+                    icon-color="#626AEF"
+                    title="确定使用这条记录吗"
+                    @confirm="useOnceOfHistoryOpearations(scope.row, scope.$index)"
+                  >
+                    <template #reference>
+                      <el-button type="primary">使用</el-button>
+                    </template>
+                  </el-popconfirm>
+                
+                <el-popconfirm
+                    width="220"
+                    confirm-button-text="OK"
+                    cancel-button-text="No, Thanks"
+                    :icon="InfoFilled"
+                    icon-color="#626AEF"
+                    title="确定删除吗"
+                    @confirm="eraseHistoryOperation(scope.row, scope.$index)"
+                  >
+                    <template #reference>
+                        <el-button type="danger">删除</el-button>
+                    </template>
+                  </el-popconfirm>
               </div>
             </template>
           </el-table-column>
@@ -35,13 +60,15 @@
       </el-col>
       <el-col :span="6"></el-col>
     </el-row> 
-
+  
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 import axios from '../plugin/AxiosAPI';
+import { ElNotification } from 'element-plus';
+
 export default {
   mounted() {
     this.initHistoryOperations()
@@ -53,6 +80,7 @@ export default {
   },
   methods: {
     initHistoryOperations() {
+      console.log(this.$store.getters.getUserBaseMsg.value.history_operations.isNull())
       if (this.$store.getters.getUserBaseMsg.value.history_operations.isNull()) {
         axios.get(this.$store.getters.getUrl.operation.getHistoryOperationsList, {
           params: {
@@ -79,7 +107,35 @@ export default {
       }
       // eslint-disable-next-line camelcase
       return time_stamp
+    },
+    eraseHistoryOperation(row, index) {
+      if (index > this.$store.getters.getUserBaseMsg.value.history_operations.size()) {
+        return
+      }
+      axios.get(this.$store.getters.getUrl.operation.eraseHistoryOperationList, {
+        params: {
+          token: this.$store.getters.getToken,
+          history_operation_id: this.history_operations[index].history_operation_id
+        }
+      }).then((response) => {
+        if (response.data != null) {
+          if (response.data.status === 0) {
+            this.history_operations.slice(index, 1)
+            this.$store.commit('eraseHistoryOperation', index)
+            ElNotification.success({
+              title: '成功',
+              message: '删除成功',
+              duration: 4000
+            })
+          }
+        }
+      })
+    },
+    useOnceOfHistoryOpearations(row, index) {
+      console.log(row)
+      console.log('index: ' + index)
     }
+    
   },
 }
 </script>

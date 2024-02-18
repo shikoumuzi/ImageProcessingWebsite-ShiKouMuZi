@@ -27,7 +27,8 @@ export default createStore({
       suggestion: '/suggestion',
 
       operation: {
-        getHistoryOperationsList: '/history_operations'
+        getHistoryOperationsList: '/history_operations',
+        eraseHistoryOperationList: '/earse_history_operation'
       },
 
     },
@@ -128,6 +129,9 @@ export default createStore({
         history_operation.history_operation_id = history_operations[i].history_operation_id
         state.user_base_msg.history_operations.push(history_operation)
       }
+    },
+    eraseHistoryOperation(state, index) {
+      state.user_base_msg.history_operations.erase(index)
     },
     // eslint-disable-next-line camelcase
     pushOnceToHistoryOperations(state, history_operation) {
