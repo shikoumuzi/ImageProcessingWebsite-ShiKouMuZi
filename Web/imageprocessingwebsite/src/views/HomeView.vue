@@ -91,7 +91,7 @@ export default {
       })
     },
     toSuggestion() {
-      if (this.$store.getters.getUserBaseMsg.value.authority === 0) {
+      if (this.$store.getters.getUserBaseMsg.value.authority === 0 && !this.$store.getters.getUserLoginStatus) {
         ElNotification.error({
           title: '错误',
           message: '请先登录',

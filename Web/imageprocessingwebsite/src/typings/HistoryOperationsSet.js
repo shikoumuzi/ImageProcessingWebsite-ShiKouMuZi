@@ -20,6 +20,10 @@ export default class HistoryOpertionsSet {
         }
     }
 
+    getEle(index) {
+        return ref(this.history_operations[index])
+    }
+
     // eslint-disable-next-line camelcase
     push(history_operation) {
         if (this.now_vaild_size < TheInitSizeOfHistoryOpertionsSet) {

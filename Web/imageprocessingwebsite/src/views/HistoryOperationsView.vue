@@ -92,12 +92,12 @@ export default {
           if (response.data != null) {
             if (response.data.status === 0) {
               this.$store.commit('setHistoryOperations', response.data.history_operations)
-              this.history_operations = this.$store.getters.getUserBaseMsg.value.history_operations.toList()
+              this.history_operations = this.$store.getters.getHistoryOperationList
             }
           }
         }) 
       }
-      this.history_operations = this.$store.getters.getUserBaseMsg.value.history_operations.toList()
+      this.history_operations = this.$store.getters.getHistoryOperationList
     },
     // eslint-disable-next-line camelcase
     displayTimeStamp(time_stamp) {
@@ -137,7 +137,7 @@ export default {
         return
       }
       // 如果当前历史操作并没有存储操作详情
-      if (this.$store.getters.getUserBaseMsg.value.history_operations.history_operations[index].isNotStoreOperations()) {
+      if (this.$store.getters.getUserBaseMsg.value.history_operations.getEle(index).value.isNotStoreOperations()) {
         // 获取操作信息
         axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
         params: {
@@ -153,12 +153,12 @@ export default {
               this.$router.push({ 
                 name: 'image_operation',
                 params: {
-
+                  
                 }
               })
             }
           }
-        })
+        })  
       } else {
         // 开始操作
         this.$router.push({ 

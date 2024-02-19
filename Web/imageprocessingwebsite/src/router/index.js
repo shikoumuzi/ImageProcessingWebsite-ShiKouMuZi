@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/image_operation' || to.path === '/history_operation') {
     store.commit('setFrom', '/image_operation')
     // console.log(store.getters.getFrom)
-    if (store.getters.getUserBaseMsg.value.authority === 0) {
+    if (store.getters.getUserBaseMsg.value.authority === 0 && store.getters.getUserLoginStatus) {
       // eslint-disable-next-line quotes
       ElNotification.error({
         title: '错误',
@@ -79,7 +79,7 @@ router.beforeEach((to, from, next) => {
   }
   // 检查前往登录的界面跳转
   if (to.path === '/manager') {
-    if (store.getters.getUserBaseMsg.value.authority !== 2) {
+    if (store.getters.getUserBaseMsg.value.authority !== 2 && store.getters.getUserLoginStatus) {
       ElNotification.error({
         title: '错误',
         message: '权限不足',

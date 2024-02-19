@@ -56,6 +56,7 @@ export default {
       if (this.$store.getters.getFrom === '/register') {
         if (this.$store.getters.getRegisterName !== '') {
           this.login_form.username = this.$store.getters.getRegisterName
+          this.$store.commit('setRegisterName', '')
         }
       }
     },
@@ -104,7 +105,7 @@ export default {
                       this.$store.commit('setToken', response.data.token)
                       this.$store.commit('setAuthority', response.data.authority)
                       this.$store.commit('setTimeStamp', response.data.time_stamp)
-                      
+
                       if (response.data.authority === 2 && response.data.manager_url !== null) {
                         this.$store.commit('setManagerApiUrl', response.data.manager_url)
                       }
