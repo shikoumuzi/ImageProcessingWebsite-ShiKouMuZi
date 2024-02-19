@@ -105,6 +105,10 @@ export default {
                       this.$store.commit('setAuthority', response.data.authority)
                       this.$store.commit('setTimeStamp', response.data.time_stamp)
                       
+                      if (response.data.authority === 2 && response.data.manager_url !== null) {
+                        this.$store.commit('setManagerApiUrl', response.data.manager_url)
+                      }
+                      
                       ElNotification.success({
                             title: '成功',
                             message: '登录成功',

@@ -23,14 +23,17 @@ export default createStore({
         checkPassword: '/checkPassword',
         resetPassword: '/resetPassword',
       },
+
       about: '/about',
-      suggestion: '/suggestion',
+      suggestion: '/submit_suggestion',
 
       operation: {
         getHistoryOperationsList: '/history_operations',
         eraseHistoryOperationList: '/earse_history_operation', 
         getOperationByHistoryOperationID: '/get_operation_details_by_history_operation_id'
       },
+
+      manager: null
 
     },
 
@@ -141,7 +144,13 @@ export default createStore({
     // eslint-disable-next-line camelcase
     pushOnceToHistoryOperations(state, history_operation) {
         state.user_base_msg.history_operations.push(history_operation)
+    },
+    // eslint-disable-next-line camelcase
+    setManagerApiUrl(state, api_url) {
+    // eslint-disable-next-line camelcase
+      state.manager = api_url
     }
+
   },
   actions: {
   },
