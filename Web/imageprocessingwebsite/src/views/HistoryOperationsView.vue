@@ -132,16 +132,42 @@ export default {
       })
     },
     useOnceOfHistoryOpearations(row, index) {
-      // 获取操作信息
- 
-      this.$router.push({ 
-        name: 'image_operation',
+      // 如果此时的操作界面已经有操作正在加载和运行中，那么就先弹出确认框
+      if (this.$store.getters.getTheWorkStatusOfOperationView) {
+        return
+      }
+      // 如果当前历史操作并没有存储操作详情
+      if (this.$store.getters.getUserBaseMsg.value.history_operations.history_operations[index].isNotStoreOperations()) {
+        // 获取操作信息
+        axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
         params: {
-
+          token: this.$store.getters.getToken,
+          history_operation_id: this.history_operations[index].history_operation_id
         }
-      })
-      console.log(row)
-      console.log('index: ' + index)
+        }).then((response) => {
+          if (response.data !== null) {
+            if (response.data.status === 0) {
+              // 存储操作详情存在对应的历史操作当中
+              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsId', response.data.operation_details)
+              // 开始操作
+              this.$router.push({ 
+                name: 'image_operation',
+                params: {
+
+                }
+              })
+            }
+          }
+        })
+      } else {
+        // 开始操作
+        this.$router.push({ 
+                name: 'image_operation',
+                params: {
+
+                }
+              })
+      }
     }
     
   },

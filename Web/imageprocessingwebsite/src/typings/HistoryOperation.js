@@ -2,7 +2,7 @@ import Operation from './Operation'
 import { ref } from 'vue';
 export default class HistoryOperation {
     constructor() {
-        this.operations = []
+        this.operations = null
         this.time_stamp = 0
         this.note = ''
         this.history_operation_id = ''
@@ -18,5 +18,9 @@ export default class HistoryOperation {
 
     get(index) {
         return ref(this.operations[index])
+    }
+
+    isNotStoreOperations() {
+        return this.operations === null
     }
 }

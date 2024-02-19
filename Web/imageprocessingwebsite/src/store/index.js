@@ -80,8 +80,11 @@ export default createStore({
     getAbouts(state) {
       return ref(state.abouts)
     },
-    getHistoryOperationList() {
+    getHistoryOperationList(state) {
       return ref()
+    },
+    getTheWorkStatusOfOperationView(state) {
+      return state.operating_msg.is_operation_loaded_in_workspace
     }
 
   },
@@ -144,6 +147,11 @@ export default createStore({
     // eslint-disable-next-line camelcase
     pushOnceToHistoryOperations(state, history_operation) {
         state.user_base_msg.history_operations.push(history_operation)
+    },
+    // eslint-disable-next-line camelcase
+    setOperationDetailsToOnceOfHistoryOperationByItsId(state, index, operation_details) {
+    // eslint-disable-next-line camelcase
+      state.user_base_msg.history_operations.history_operations[index].operations = operation_details
     },
     // eslint-disable-next-line camelcase
     setManagerApiUrl(state, api_url) {
