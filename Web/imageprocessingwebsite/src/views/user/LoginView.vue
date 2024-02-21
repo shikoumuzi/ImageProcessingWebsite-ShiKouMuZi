@@ -100,13 +100,17 @@ export default {
                 }).then((response) => {
                   if (response.data !== null) {
                     if (response.data.status === 0) {
+                      // 初始化一系列值
                       this.$store.commit('setUserLoginStatus', true)
                       this.$store.commit('setUserName', this.login_form.username)
                       this.$store.commit('setToken', response.data.token)
                       this.$store.commit('setAuthority', response.data.authority)
                       this.$store.commit('setTimeStamp', response.data.time_stamp)
 
-                      if (response.data.authority === 2 && response.data.manager_url !== null) {
+                      if (response.data.authority === 2) {
+                        this.$store.commit('initManagerStore')
+                      }
+                      if (response.data.manager_url !== null) {
                         this.$store.commit('setManagerApiUrl', response.data.manager_url)
                       }
                       

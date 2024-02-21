@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     initHistoryOperations() {
-      console.log(this.$store.getters.getUserBaseMsg.value.history_operations.isNull())
+      // console.log(this.$store.getters.getUserBaseMsg.value.history_operations.isNull())
       if (this.$store.getters.getUserBaseMsg.value.history_operations.isNull()) {
         axios.get(this.$store.getters.getUrl.operation.getHistoryOperationsList, {
           params: {
@@ -88,7 +88,7 @@ export default {
             username: this.$store.getters.getUserBaseMsg.value.username
           }
         }).then((response) => {
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data != null) {
             if (response.data.status === 0) {
               this.$store.commit('setHistoryOperations', response.data.history_operations)
@@ -109,6 +109,7 @@ export default {
       return time_stamp
     },
     eraseHistoryOperation(row, index) {
+      // 如果超出范围则返回
       if (index > this.$store.getters.getUserBaseMsg.value.history_operations.size()) {
         return
       }
@@ -120,7 +121,9 @@ export default {
       }).then((response) => {
         if (response.data != null) {
           if (response.data.status === 0) {
+            // 删除对应位置的元素
             this.history_operations.slice(index, 1)
+            // 删除store中的对应元素
             this.$store.commit('eraseHistoryOperation', index)
             ElNotification.success({
               title: '成功',
@@ -153,7 +156,8 @@ export default {
               this.$router.push({ 
                 name: 'image_operation',
                 params: {
-                  
+                  index: index,
+                  history_operation: this.history_operations[index]
                 }
               })
             }
@@ -164,7 +168,8 @@ export default {
         this.$router.push({ 
                 name: 'image_operation',
                 params: {
-
+                  index: index,
+                  history_operation: this.history_operations[index]
                 }
               })
       }

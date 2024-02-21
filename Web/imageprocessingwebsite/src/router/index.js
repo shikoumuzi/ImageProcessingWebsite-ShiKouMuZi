@@ -4,7 +4,7 @@ import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/user/LoginView.vue'
 import RegisterView from '../views/user/RegisterView.vue';
 import ImageOperationView from '../views/ImageOperationView.vue'
-import UserView from '../views/UserView.vue'
+
 import store from '../store/index';
 import axios from '../plugin/AxiosAPI'
 import { ElNotification } from 'element-plus';
@@ -40,18 +40,35 @@ const routes = [
   {
     path: '/user',
     name: 'user',
-    component: UserView
+    meta: {
+      title: '用户信息'
+    },
+    component: () => import('../views/UserView.vue'),
+
   },
   {
     path: '/manager',
     name: 'manager',
-    component: () => import('../views/ManagerView.vue')
+    meta: {
+      title: '管理站'
+    },
+    component: () => import('../views/ManagerView.vue'),
+    children: [
+      {
+        path: 'suggestion',
+        name: 'suggestion',
+        component: () => import('../views/manager/Suggestion.vue')
+      },
+    ],
 
   },
   {
     path: '/history_operation',
     name: 'history_operation',
-    component: () => import('../views/HistoryOperationsView.vue')
+    meta: {
+      title: '历史操作记录'
+    },
+    component: () => import('../views/HistoryOperationsView.vue'),
 
   }
 ]
@@ -63,11 +80,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => { 
   store.commit('setFrom', from.path)
+  // console.log(store.getters.getUserLoginStatus)
+  if (from.path === '/register') {
+    store.commit('setFrom', '/home')
+  }
+
   // 检查前往操作的路由跳转
   if (to.path === '/image_operation' || to.path === '/history_operation') {
     store.commit('setFrom', '/image_operation')
     // console.log(store.getters.getFrom)
-    if (store.getters.getUserBaseMsg.value.authority === 0 && store.getters.getUserLoginStatus) {
+    if (store.getters.getUserBaseMsg.value.authority === 0 && !store.getters.getUserLoginStatus) {
       // eslint-disable-next-line quotes
       ElNotification.error({
         title: '错误',
@@ -79,7 +101,7 @@ router.beforeEach((to, from, next) => {
   }
   // 检查前往登录的界面跳转
   if (to.path === '/manager') {
-    if (store.getters.getUserBaseMsg.value.authority !== 2 && store.getters.getUserLoginStatus) {
+    if (store.getters.getUserBaseMsg.value.authority !== 2 && !store.getters.getUserLoginStatus) {
       ElNotification.error({
         title: '错误',
         message: '权限不足',

@@ -34,9 +34,25 @@ export default createStore({
         getOperationByHistoryOperationID: '/get_operation_details_by_history_operation_id'
       },
 
+      // manager: {
+      //   getAllSuggestions: '',
+      //   getAllUserMsg: '',
+      //   getAllHistoryOperation: '',
+      //   getAllWebFiles: '',
+      //   getAllOperatingMsg: ''
+      // },
       manager: null
 
     },
+
+    // manager: {
+      // suggestions: [],
+      // user_msg: [],
+      // history_operations: [],
+      // web_files: {},
+      // operatingmsg: []
+    // },
+    manager: null,
 
     operating_msg: {
       is_operation_loaded_in_workspace: false 
@@ -156,10 +172,19 @@ export default createStore({
      */
     getTheWorkStatusOfOperationView(state) {
       return state.operating_msg.is_operation_loaded_in_workspace
+    },
+
+    getManagerStore(state) {
+      return ref(state.manager)
     }
 
   },
   mutations: {
+    /**
+     * 设置token
+     * @param {object} state store.state
+     * @param {string} token token值
+     */
     setToken(state, token) {
       state.token = token
     },
@@ -207,7 +232,15 @@ export default createStore({
      */
     clearUserMsg(state) {
       state.user_base_msg = new UserMsg()
-      console.log(state)
+    },
+
+    /**
+     * 清除所有管理员信息
+     * @param {object} state 
+     */
+    clearAllOfManager(state) {
+      state.api_url.manager = null
+      state.manager = null
     },
 
     /**
@@ -309,6 +342,36 @@ export default createStore({
     setManagerApiUrl(state, api_url) {
     // eslint-disable-next-line camelcase
       state.api_url.manager = api_url
+    },
+
+    /**
+     * 初始化管理员的存储结构
+     * @param {object} state store.state 
+     */
+    initManagerStore(state) {
+      state.manager = {
+          suggestions: null,
+          user_msg: null,
+          history_operations: null,
+          web_files: null,
+          operatingmsg: null
+        }
+    },
+
+    /**
+     * 设置对应的manager store中的属性
+     * @param {object} state 
+     * @param {object} property { property_name: '', data: {}} 属性名和属性值
+     */
+    // eslint-disable-next-line camelcase
+    setThePropertyOfManagerStore(state, property) {
+      console.log('setThePropertyOfManagerStore')
+      console.log(property.property_name)
+      state.manager[property.property_name] = property.data
+    },
+    
+    clearAll() {
+      this.clearUserMsg()
     }
 
   },
