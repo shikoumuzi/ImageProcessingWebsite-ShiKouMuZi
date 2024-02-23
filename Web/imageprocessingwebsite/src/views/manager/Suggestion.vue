@@ -10,9 +10,13 @@
         <el-form-item label="建议ID" prop="user_name">
           <el-input v-model=" suggestion.suggestion_id" readonly></el-input>
         </el-form-item>
+        <el-form-item label="状态" prop="status">
+          
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-input type="textarea" v-model="suggestion.content" readonly/>
         </el-form-item>
+
         <el-form-item label="反馈" prop="response">
           <el-input type="textarea" v-model="suggestion.response"/>
         </el-form-item>
@@ -26,13 +30,14 @@
 </template>
 
 <script>
+import { ElNotification } from 'element-plus'
 import axios from '../../plugin/AxiosAPI'
 export default {
   mounted() {
     if (this.$store.getters.getManagerStore.value !== null) {
       if (this.$store.getters.getManagerStore.value.suggestions === null || 
         this.$store.getters.getManagerStore.value.suggestions === undefined) {
-        axios.post(this.$store.getters.getUrl.manager.getAllSuggestions, {
+        axios.post(this.$store.getters.getUrl.manager.suggestion.getAllSuggestions, {
           params: {
             token: this.$store.getters.getToken
           }
@@ -67,6 +72,11 @@ export default {
         response: '',
         status: '',
         suggestion_id: ''
+      },
+      rules: {
+        response: [
+          {}
+        ]
       }
     }
   },
@@ -75,6 +85,25 @@ export default {
     // eslint-disable-next-line camelcase
     submitResponseToSuggestion(suggestion_id, response) {
       console.log(suggestion_id, response)
+      if (this.$store.getUserBaseMsg.value.authority === 2) {
+        axios.post(this.$store.getUrl.manager.suggestion.submitResponseToSuggestionByID, {
+          params: {
+            token: this.$store.getters.getToken,
+            suggestion_id: suggestion_id,
+            response: response
+          }
+        }).then((response) => {
+          if (response.data !== null) {
+            if (response.data.status === 0) {
+              ElNotification.success({
+                title: '成功',
+                message: '提交反馈成功',
+                duration: 4000
+              })
+            }
+          }
+        })
+      }
     },
     // eslint-disable-next-line camelcase
     ignoreSuggestion(suggestion_id) {
@@ -86,16 +115,14 @@ export default {
 
 <style>
 .suggestion-model {
-  background-color: black;
+  background-color: rgb(255, 255, 255);
   padding-top: 1.5vh;
   padding-bottom: 1vh;
   padding-right: 1.5vw;
   border-radius: 12px;
   margin-bottom: 0.5vh;
-}
-
-.suggestion-user-name {
-  color:aqua;
-  text-align: left;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(207, 204, 204);
 }
 </style>

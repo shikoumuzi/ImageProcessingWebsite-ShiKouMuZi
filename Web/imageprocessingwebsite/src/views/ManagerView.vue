@@ -24,11 +24,11 @@
       <el-container>
         <el-main>
           <el-row :gutter="0">
-            <el-col :span="2"></el-col>
-            <el-col :span="15">
+            <el-col :span="3"></el-col>
+            <el-col :span="16">
               <router-view/>
             </el-col>
-            <el-col :span="7"></el-col>
+            <el-col :span="5"></el-col>
           </el-row>
         </el-main>
       </el-container>

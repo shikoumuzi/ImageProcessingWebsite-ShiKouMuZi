@@ -35,7 +35,14 @@ export default createStore({
       },
 
       // manager: {
-      //   getAllSuggestions: '',
+      //   suggestion: {
+      //     getAllSuggestions: '',
+      //     ignoreSuggestionByID: '',
+      //     submitResponseToSuggestionByID: '',
+      //   },
+      //   history_operation: {
+      //     
+      //   }
       //   getAllUserMsg: '',
       //   getAllHistoryOperation: '',
       //   getAllWebFiles: '',
@@ -48,7 +55,7 @@ export default createStore({
     // manager: {
       // suggestions: [],
       // user_msg: [],
-      // history_operations: [],
+      // history_operations: new HistoryOperations(),
       // web_files: {},
       // operatingmsg: []
     // },
