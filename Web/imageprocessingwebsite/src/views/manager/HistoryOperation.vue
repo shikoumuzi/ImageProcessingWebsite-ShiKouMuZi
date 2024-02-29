@@ -54,6 +54,27 @@ import { ElNotification } from 'element-plus'
 import axios from '../../plugin/AxiosAPI'
 
 export default {
+  mounted() {
+    if (this.$store.getManagerStore.value !== null) {
+      if (this.$store.getters.getManagerStore.value.history_operations === null ||
+      this.$store.getters.getManagerStore.value.history_operations === undefined) {
+        axios.post(this.$store.getters.getUrl.manager.history_operations.getAllHistoryOperation, {
+          params: {
+            token: this.$store.getters.getToken
+          }
+        }).then((response) => {
+ 
+        })
+      }
+    }
+    
+    this.history_operations = ''
+  },
+  data() {
+    return {
+        history_operations: [],
+      };
+  },
   methods: {
     initHistoryOperations() {
       // console.log(this.$store.getters.getUserBaseMsg.value.history_operations.isNull())

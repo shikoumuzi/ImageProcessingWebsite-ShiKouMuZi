@@ -3,8 +3,8 @@ export default class Operation {
         this.id = '' // 操作id
         this.module_name = '' // 用来存储是哪个dll的方法
         this.method_name = '' // 方法名
-        this.src_img = []
         this.args = [] // 参数
+        this.output_image = [] // 输出的图像列表（占位），每个所输出的图像都会生成一个相应的占位
         this.time_stamp = new Date().getTime()
     }
 
