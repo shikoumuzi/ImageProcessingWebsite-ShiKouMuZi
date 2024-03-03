@@ -63,12 +63,14 @@ export default {
             token: this.$store.getters.getToken
           }
         }).then((response) => {
- 
+          if (response.data !== null) {
+            if (response.data.status === 0) {
+              this.history_operations = response.data.history_operations
+            }
+          }
         })
       }
     }
-    
-    this.history_operations = ''
   },
   data() {
     return {

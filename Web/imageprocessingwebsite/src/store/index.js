@@ -372,8 +372,8 @@ export default createStore({
      */
     // eslint-disable-next-line camelcase
     setThePropertyOfManagerStore(state, property) {
-      console.log('setThePropertyOfManagerStore')
-      console.log(property.property_name)
+      // console.log('setThePropertyOfManagerStore')
+      // console.log(property.property_name)
       state.manager[property.property_name] = property.data
     },
     
