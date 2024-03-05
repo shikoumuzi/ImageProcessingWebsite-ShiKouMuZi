@@ -110,7 +110,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   // 检查前往登录的界面跳转
-  if (to.path === '/manager') {
+  if (to.path.indexOf('/manager') !== -1) {
     if (store.getters.getUserBaseMsg.value.authority !== 2 && !store.getters.getUserLoginStatus) {
       ElNotification.error({
         title: '错误',

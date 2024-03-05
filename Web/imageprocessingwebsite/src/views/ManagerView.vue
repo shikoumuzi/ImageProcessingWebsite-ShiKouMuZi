@@ -38,7 +38,9 @@
 
 <script>
 export default {
-
+  mounted() {
+    this.$router.push('/manager/suggestion')
+  }
 }
 </script>
 

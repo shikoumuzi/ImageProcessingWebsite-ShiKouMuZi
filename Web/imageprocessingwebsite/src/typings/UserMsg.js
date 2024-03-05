@@ -4,7 +4,7 @@ import Img from './Img'
 import { ref } from 'vue';
 export default class UserMsg {
     constructor() {
-        this.username = ''
+        this.username = ''  
         this.operation_list = []
         this.history_operations = new HistoryOpertionsSet()
         this.result_image_list = []

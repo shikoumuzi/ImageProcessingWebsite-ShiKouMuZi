@@ -16,49 +16,62 @@
           查看历史操作
           </h>
         </div>
-
-        <el-table
-          title="历史操作"
-          :data="history_operations"
-          :loading="loading"
-          bordered
-          border 
-          rowKey="id"
-          @change="changePage"
-          stripe="true"
-          style="margin-top: 5%;">
-          <el-table-column label="ID" type="index" width="50"></el-table-column>
-          <el-table-column label="创建时间" width="150">
-            <template v-slot="scope">
-              <span>{{ this.displayTimeStamp( scope.row.time_stamp) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="备注"  fixed="right" min-width='50'>
-            <template v-slot="scope">
-              <span>{{ scope.row.note }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" width="150" fixed="right">
-            <template v-slot="scope" >
-              <div style="display: flex; justify-content: center;">     
-                <el-button type="info">查看</el-button>         
-                <el-popconfirm
-                    width="220"     
-                    confirm-button-text="OK"
-                    cancel-button-text="No, Thanks"
-                    :icon="InfoFilled"
-                    icon-color="#626AEF"
-                    title="确定删除吗"
-                    @confirm="eraseHistoryOperation(scope.row, scope.$index)"
-                  >
-                  <template #reference>
-                      <el-button type="danger">删除</el-button>
-                  </template>
-                </el-popconfirm>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div :key="re_patiner_times">
+          <el-table
+            title="历史操作"
+            :data="part_of_history_operations"
+            
+            :loading="loading"
+            bordered
+            border 
+            height="770"
+            rowKey="ID"
+            @change="changePage"
+            stripe="true"
+            style="margin-top: 5%;">
+            <el-table-column label="ID" type="index" width="50"></el-table-column>
+            <el-table-column label="创建时间" width="150">
+              <template v-slot="scope">
+                <span>{{ this.displayTimeStamp( scope.row.time_stamp) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注"  fixed="right" min-width='50'>
+              <template v-slot="scope">
+                <span>{{ scope.row.note }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="150" fixed="right">
+              <template v-slot="scope" >
+                <div style="display: flex; justify-content: center;">     
+                  <el-button type="info">查看</el-button>         
+                  <el-popconfirm
+                      width="220"     
+                      confirm-button-text="OK"
+                      cancel-button-text="No, Thanks"
+                      :icon="InfoFilled"
+                      icon-color="#626AEF"
+                      title="确定删除吗"
+                      @confirm="eraseHistoryOperation(scope.row, scope.$index)"
+                    >
+                    <template #reference>
+                        <el-button type="danger">删除</el-button>
+                    </template>
+                  </el-popconfirm>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+      </div>
+        <el-pagination
+              background
+              layout="prev, pager, next,jumper, ->, total"
+              :total="this.total_data_size"
+              @current-change="handleCurrentChange"
+              :current-page="current_page"
+              :page-count="page_size"
+              
+              style="text-align: center; margin-top: 1%;">
+        </el-pagination>
       </el-col>
       <el-col :span="3"></el-col>
     </el-row> 
@@ -90,18 +103,30 @@ export default {
                 history_operations.push(this.history_operations[i])
               }
               this.$store.commit('setThePropertyOfManagerStore', { property_name: 'history_operations', data: history_operations })
-              console.log(this.$store.getters.getManagerStore.value.history_operations)
+              this.page_size = parseInt((this.history_operations.length / 15) + 1)
+              this.total_data_size = history_operations.size()
+              this.part_of_history_operations = this.history_operations.slice(0, 15)
+              // console.log(this.$store.getters.getManagerStore.value.history_operations)
             }
           }
         })
       } else {
         this.history_operations = this.$store.getters.getManagerStore.value.history_operations.history_operations
+        this.page_size = parseInt((this.history_operations.length / 15) + 1)
+      
+        this.total_data_size = this.$store.getters.getManagerStore.value.history_operations.size()
+        this.part_of_history_operations = this.history_operations.slice(0, 15)
       }
     }
   },
   data() {
     return {
+        re_patiner_times: 1,
+        part_of_history_operations: null,
         history_operations: [],
+        total_data_size: 0,
+        current_page: 1,
+        page_size: 1
       };
   },
   methods: {
@@ -124,10 +149,20 @@ export default {
     eraseHistoryOperation(row, index) {
       // 如果超出范围则返回
       // eslint-disable-next-line no-empty
-      if (index > this.$store.getters.getUserBaseMsg.value.history_operations.size()) {
-        
+      if (index > this.$store.getters.getManagerStore.value.history_operations.size()) {
+        return
       }
+      this.history_operations.splice(index + (this.current_page - 1) * 15, 1) 
+      this.part_of_history_operations.splice(index, 1)
+      this.part_of_history_operations.push(this.history_operations[(this.current_page - 1) * 15])
     },
+    handleCurrentChange(currentPage) {
+      this.current_page = currentPage
+      this.part_of_history_operations = this.history_operations.slice((currentPage - 1) * 15, currentPage * 15)
+    },
+    getRowKey(row) {
+      return row.history_operation_id
+    }
   }
 }
 </script>
