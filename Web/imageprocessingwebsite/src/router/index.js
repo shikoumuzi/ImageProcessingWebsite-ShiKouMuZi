@@ -59,6 +59,16 @@ const routes = [
         name: 'suggestion',
         component: () => import('../views/manager/Suggestion.vue')
       },
+      {
+        path: 'history_operations',
+        name: 'history_operations',
+        component: () => import('../views/manager/HistoryOperation.vue')
+      },
+      {
+        path: 'user_msg',
+        name: 'user_msg',
+        component: () => import('../views/manager/UserMsg.vue')
+      },
     ],
 
   },

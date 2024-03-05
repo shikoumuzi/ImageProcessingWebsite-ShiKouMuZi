@@ -8,10 +8,10 @@
               <router-link to="/manager/suggestion">意见反馈</router-link>
             </el-menu-item>
             <el-menu-item index="2">
-              历史操作
+              <router-link to="/manager/history_operations">查看历史操作</router-link>
             </el-menu-item>
             <el-menu-item index="3">
-              用户管理
+              <router-link to="/manager/user_msg">用户管理</router-link>
             </el-menu-item>
             <el-menu-item index="4">
               网页文件查看

@@ -13,7 +13,7 @@
           stripe="true"
           style="margin: 5%;">
           <el-table-column label="ID" type="index" width="50"></el-table-column>
-          <el-table-column label="创建时间" width="100">
+          <el-table-column label="创建时间" width="150">
             <template v-slot="scope">
               <span>{{ this.displayTimeStamp( scope.row.time_stamp) }}</span>
             </template>
@@ -106,7 +106,7 @@ export default {
         return ''
       }
       // eslint-disable-next-line camelcase
-      return time_stamp
+      return new Date(time_stamp).toDateString()
     },
     eraseHistoryOperation(row, index) {
       // 如果超出范围则返回

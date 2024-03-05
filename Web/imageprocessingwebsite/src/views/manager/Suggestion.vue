@@ -1,6 +1,19 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
+    <div style="
+                  border-width: 1px; 
+                  background-color: white; 
+                  border-color: rgb(207, 204, 204);
+                  border-radius: 12px;
+                  border-style: solid;
+                  padding: 1%;
+                  margin-bottom: 2%;"
+                  >
+          <h style="font-size: large; margin: 2%;">
+          意见反馈
+          </h>
+        </div>
     <div v-for="(suggestion, index) in suggestions" :key="index" class="suggestion-model">
       
       <el-form ref="suggestionForm" :model="suggestion" :rules="rules" label-width="80px">
@@ -19,7 +32,7 @@
         </el-form-item>
       </el-form>
       <div style="display: flex; justify-content: flex-end;">
-        <el-button type="primary" @click="submitResponseToSuggestion(suggestion.suggestion_id, suggestion.response)">提交反馈意见</el-button>
+        <el-button type="primary" @click="submitResponseToSuggestion(suggestion.suggestion_id, suggestion.response, index)">提交反馈意见</el-button>
         <el-button type="danger" @click="eraseSuggestion(suggestion.suggestion_id, index)">忽略该建议</el-button>
       </div>
     </div>
@@ -122,10 +135,10 @@ export default {
 
   methods: {
     // eslint-disable-next-line camelcase
-    submitResponseToSuggestion(suggestion_id, response) {
-      console.log(suggestion_id, response)
-      if (this.$store.getUserBaseMsg.value.authority === 2) {
-        axios.post(this.$store.getUrl.manager.suggestion.submitResponseToSuggestionByID, {
+    submitResponseToSuggestion(suggestion_id, response, index) {
+      // console.log(suggestion_id, response)
+      if (this.$store.getters.getUserBaseMsg.value.authority === 2) {
+        axios.post(this.$store.getters.getUrl.manager.suggestion.submitResponseToSuggestionByID, {
           params: {
             token: this.$store.getters.getToken,
             suggestion_id: suggestion_id,
@@ -139,6 +152,7 @@ export default {
                 message: '提交反馈成功',
                 duration: 4000
               })
+              this.eraseSuggestion(suggestion_id, index)
             }
           }
         })
