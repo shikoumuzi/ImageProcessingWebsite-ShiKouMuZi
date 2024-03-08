@@ -151,7 +151,7 @@ export default {
           if (response.data !== null) {
             if (response.data.status === 0) {
               // 存储操作详情存在对应的历史操作当中
-              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsId', response.data.operation_details)
+              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsId', { index: index, operation_details: response.data.operation_details })
               // 开始操作
               this.$router.push({ 
                 name: 'image_operation',

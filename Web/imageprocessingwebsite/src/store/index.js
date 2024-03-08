@@ -339,9 +339,9 @@ export default createStore({
      * @param {array<Operation>} operation_details 该历史操作信息当中的操作详情信息 
      */
     // eslint-disable-next-line camelcase
-    setOperationDetailsToOnceOfHistoryOperationByItsId(state, index, operation_details) {
+    setOperationDetailsToOnceOfHistoryOperationByItsId(state, property) {
     // eslint-disable-next-line camelcase
-      state.user_base_msg.history_operations.history_operations[index].operations = operation_details
+      state.user_base_msg.history_operations.history_operations[property.index].operations = property.operation_details
     },
 
     /**
@@ -381,6 +381,18 @@ export default createStore({
       state.manager[property.property_name] = property.data
     },
     
+        /**
+     * 设置索引对应的历史操作信息当中的操作详情信息
+     * @param {object} state store.state 
+     * @param {integer} index history_operation在history_operations中的索引号
+     * @param {array<Operation>} operation_details 该历史操作信息当中的操作详情信息 
+     */
+    // eslint-disable-next-line camelcase
+    setOperationDetailsToOnceOfHistoryOperationByItsIdForManagerStore(state, property) {
+      state.manager.history_operations.history_operations[property.index].operations = property.operation_details
+        // console.log(property)
+      },
+
     clearAll() {
       this.clearUserMsg()
     }

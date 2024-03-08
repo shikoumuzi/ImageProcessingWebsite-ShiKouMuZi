@@ -1,30 +1,18 @@
 <template>
   <div>
-    <el-dialog title="title" width="600px" v-model="dialogVisible" @close="onClose">
+    <el-dialog title="查看详情" width="400px" v-model="dialogVisible" @close="onClose" style="border-radius: 10px;">
       <el-table
-        :data="data"
+        :data="operations"
         :scroll="{ x: 1200 }"
         :loading="loading"
         bordered
         rowKey="id"
-        :pagination="{
-          showSizeChanger: true,
-          showTotal: (total) => `共total条数据`,
-          pageSize: pageSize,
-          page: page,
-        }"
         @change="changePage"
       >
-        <el-table-column label="id" prop="id" width="100"></el-table-column>
-        <el-table-column label="name">
-          <template v-slot="scope">
-            <span>{{ scope.index + 1 }}、{{ scope.row.name }}</span>
-          </template>
+        <el-table-column label="id" type="index" width="50"></el-table-column>
+        <el-table-column label="模块名" prop="module_name">
         </el-table-column>
-        <el-table-column label="操作" width="100" fixed="right">
-          <template v-slot="scope">
-            <el-button type="link" @click="toDo(scope.row)">修改</el-button>
-          </template>
+        <el-table-column label="方法名" prop="method_name" width="100" fixed="right">
         </el-table-column>
       </el-table>
     </el-dialog>
@@ -48,15 +36,17 @@ export default {
   methods: {
     listenDialogVisible() {
       mitt.on('setHistroyOperationDialogVisible', (res) => {
+        // console.log(res.dialogVisible)
         this.dialogVisible = res.dialogVisible
         this.operations = res.operations
+        // console.log('hist', res.operations)    
         // console.log('on => setDialogVisible with ' + res)
       })
+      // console.log('dialogVisible', this.dialogVisible)
+
       // console.log('listening')
     },
-    onClose() {
-      this.dialogVisible = false
-    }
+
   }
 };
 </script>

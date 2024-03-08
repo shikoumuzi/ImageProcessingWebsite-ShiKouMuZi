@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <UsertPwdVue/>
         <el-row :gutter="0">
           <el-col :span="1"></el-col>
           <el-col :span="22">
@@ -44,8 +44,22 @@
               </el-table-column>
               <el-table-column label="操作"  fixed="right">
                 <template v-slot="scope">
-                  <el-button type="link" @click="toDo(scope.row)">修改</el-button>
+                  <el-button type="info" @click="changeUserPwd(scope.row.user_id, scope.row.authority, scope.$index)">修改</el-button>
+                  <el-popconfirm
+                      width="220"     
+                      confirm-button-text="OK"
+                      cancel-button-text="No, Thanks"
+                      :icon="InfoFilled"
+                      icon-color="#626AEF"
+                      title="确定删除吗"
+                      @confirm="eraseUserMsg(scope.row, scope.row.authority, scope.$index)"
+                    >
+                    <template #reference>
+                        <el-button type="danger">删除</el-button>
+                    </template>
+                  </el-popconfirm>
                 </template>
+                
               </el-table-column>
             </el-table>
             <el-pagination
@@ -67,9 +81,13 @@
 <script>
 import { ElNotification } from 'element-plus';
 import axios from '../../plugin/AxiosAPI';
+import UsertPwdVue from '../../components/UsertPwd.vue';
+import mitt from '../../plugin/MittAPI';
 export default {
     name: 'WebUserMsg',
-
+    components: {
+      UsertPwdVue
+    },
     data() {
         return {
             users: [],
@@ -130,11 +148,32 @@ export default {
           this.part_of_users = this.users.slice((current_page - 1) * 15, (current_page) * 15)
         },
         // eslint-disable-next-line camelcase
-        changeUserPwd(index, user_id) {
-
+        changeUserPwd(user_id, authority, index) {
+          if (authority === 2) {
+            ElNotification.error({
+              title: '错误',
+              message: '权限不足',
+              duration: 4000
+            })
+            return
+          }
+          // console.log(user_id)
+          mitt.emit('setUserPwdDialog', {
+            dialogVisible: true,
+            user_id: user_id
+          })
         },
         // eslint-disable-next-line camelcase
-        eraseUserMsg(index, user_id) {
+        eraseUserMsg(index, authority, user_id) {
+          if (authority === 2) {
+            ElNotification.error({
+              title: '错误',
+              message: '权限不足',
+              duration: 4000
+            })
+            return
+          }
+
           this.users.splice((this.current_page - 1) * 15 + index, 1)
           this.part_of_users.splice(index, 1)
 
@@ -161,7 +200,7 @@ export default {
             })
           })
 
-          if (this.history_operations.length < (this.current_page) * 15) {
+          if (this.users.length < (this.current_page) * 15) {
             return
           }
           try {

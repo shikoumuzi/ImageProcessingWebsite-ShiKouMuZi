@@ -2,8 +2,8 @@
     <div class="">
     <el-row>
       <el-col :span="8"></el-col>
-      <el-col :span="8" style="padding-top: 10px">
-        <div style="width:250px;height: 250px" ref="animationContainer"></div>
+      <el-col :span="8" style="padding-top: 5px">
+        <div style="width:250px;height: 200px" ref="animationContainer"></div>
         <el-container class="align shadow">
           <el-header>
             <span style="font-size: 2em">ImageProcessingWebsite 登录</span>

@@ -43,7 +43,7 @@
             <el-table-column label="操作" width="150" fixed="right">
               <template v-slot="scope" >
                 <div style="display: flex; justify-content: center;">     
-                  <el-button type="info">查看</el-button>         
+                  <el-button type="info" @click="spanOperationOfHistoryOperation(scope.row, scope.$index)">查看</el-button>         
                   <el-popconfirm
                       width="220"     
                       confirm-button-text="OK"
@@ -173,7 +173,8 @@ export default {
     getRowKey(row) {
       return row.history_operation_id
     },
-    spanOperationOfHistoryOperation(row) {
+    spanOperationOfHistoryOperation(row, index) {
+      // console.log(row)
       if (row.operations === null || row.operations === undefined || row.operations.length === 0) {
         axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
         params: {
@@ -184,15 +185,24 @@ export default {
           if (response.data !== null) {
             if (response.data.status === 0) {
               // 存储操作详情存在对应的历史操作当中
-              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsId', response.data.operation_details)
-              row.operations = response.data.operation_details
+              // eslint-disable-next-line camelcase
+              const current_index = (this.current_page - 1) * 15 + index
+              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsIdForManagerStore', { index: current_index, operation_details: response.data.operation_details })
+              this.history_operations[current_index].operations = response.data.operation_details
               mitt.emit('setHistroyOperationDialogVisible', {
                 dialogVisible: true,
-                operations: row.operations
+                operations: this.history_operations[current_index].operations
               })
             }
           }
         })  
+      } else {
+        // eslint-disable-next-line camelcase
+        const current_index = (this.current_page - 1) * 15 + index
+        mitt.emit('setHistroyOperationDialogVisible', {
+                dialogVisible: true,
+                operations: this.history_operations[current_index].operations
+              })
       }
     }
   }

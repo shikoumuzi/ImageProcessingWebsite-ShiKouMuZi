@@ -114,9 +114,6 @@ export default {
         // console.log('on => setDialogVisible with ' + res)
       })
       // console.log('listening')
-    },
-    onClose() {
-      this.dialogVisible = false
     }
   }
 }
