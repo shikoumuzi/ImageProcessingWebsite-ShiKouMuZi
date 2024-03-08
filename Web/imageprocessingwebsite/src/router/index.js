@@ -117,7 +117,7 @@ router.beforeEach((to, from, next) => {
         message: '权限不足',
         duration: 4000,
       })
-      next('/home')
+      next('/')
     }
     
     axios.post(store.getters.getUrl.user.checkManagerAuthority, 

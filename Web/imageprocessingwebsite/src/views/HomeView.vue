@@ -99,7 +99,7 @@ export default {
         })
         this.$router.push('/login')
       }
-      mitt.emit('setDialogVisible', true)
+      mitt.emit('setSuggetionDialogVisible', true)
       // console.log('emit => setDialogVisible with true')
     }
   },

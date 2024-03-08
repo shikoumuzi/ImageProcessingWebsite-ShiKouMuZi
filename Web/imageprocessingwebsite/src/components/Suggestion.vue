@@ -109,11 +109,14 @@ export default {
       this.dialogVisible = false
     },
     listenDialogVisible() {
-      mitt.on('setDialogVisible', (res) => {
+      mitt.on('setSuggetionDialogVisible', (res) => {
         this.dialogVisible = res
         // console.log('on => setDialogVisible with ' + res)
       })
       // console.log('listening')
+    },
+    onClose() {
+      this.dialogVisible = false
     }
   }
 }

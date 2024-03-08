@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <HistoryOperation/>
     <el-row :gutter="0">
       <el-col :span="3"></el-col>
       <el-col :span="18">
@@ -82,10 +82,13 @@
 import { ElNotification } from 'element-plus'
 import axios from '../../plugin/AxiosAPI'
 import HistoryOpertionsSet from '@/typings/HistoryOperationsSet'
-
+import HistoryOperation from '@/components/HistoryOperation.vue'
+import mitt from '../../plugin/MittAPI'  
 export default {
+  components: {
+    HistoryOperation
+  },
   mounted() {
-    console.log('loading')
     if (this.$store.getters.getManagerStore.value !== null) {
       if (this.$store.getters.getManagerStore.value.history_operations === null ||
       this.$store.getters.getManagerStore.value.history_operations === undefined) {
@@ -154,7 +157,14 @@ export default {
       }
       this.history_operations.splice(index + (this.current_page - 1) * 15, 1) 
       this.part_of_history_operations.splice(index, 1)
-      this.part_of_history_operations.push(this.history_operations[(this.current_page - 1) * 15])
+      if (this.history_operations.length < (this.current_page) * 15) {
+        return
+      }
+      try {
+        this.part_of_history_operations.push(this.history_operations[(this.current_page) * 15])
+      } catch {
+        
+      }
     },
     handleCurrentChange(currentPage) {
       this.current_page = currentPage
@@ -162,6 +172,28 @@ export default {
     },
     getRowKey(row) {
       return row.history_operation_id
+    },
+    spanOperationOfHistoryOperation(row) {
+      if (row.operations === null || row.operations === undefined || row.operations.length === 0) {
+        axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
+        params: {
+          token: this.$store.getters.getToken,
+          history_operation_id: row.history_operation_id
+        }
+        }).then((response) => {
+          if (response.data !== null) {
+            if (response.data.status === 0) {
+              // 存储操作详情存在对应的历史操作当中
+              this.$store.commit('setOperationDetailsToOnceOfHistoryOperationByItsId', response.data.operation_details)
+              row.operations = response.data.operation_details
+              mitt.emit('setHistroyOperationDialogVisible', {
+                dialogVisible: true,
+                operations: row.operations
+              })
+            }
+          }
+        })  
+      }
     }
   }
 }

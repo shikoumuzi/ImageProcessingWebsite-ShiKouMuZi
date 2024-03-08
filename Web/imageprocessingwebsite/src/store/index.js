@@ -42,8 +42,12 @@ export default createStore({
       //   },
       //   history_operation: {
       //     
+      //   },
+      //   user:{
+      //    getAllUserMsg: '',
+      //
       //   }
-      //   getAllUserMsg: '',
+      // 
       //   getAllHistoryOperation: '',
       //   getAllWebFiles: '',
       //   getAllOperatingMsg: ''

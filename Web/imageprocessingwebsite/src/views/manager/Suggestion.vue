@@ -64,8 +64,19 @@
 <script>
 import { ElNotification } from 'element-plus'
 import axios from '../../plugin/AxiosAPI'
+import { onBeforeUnmount, onUnmounted } from 'vue'
 
 export default {
+  setup() {
+    onBeforeUnmount(() => {
+      try {
+        window.removeEventListener('scroll', this.handleScroll)
+      } catch {
+        
+      }
+    })
+  },
+
   mounted() {
     this.is_loading = false
     window.addEventListener('scroll', this.handleScroll, true)
@@ -100,8 +111,8 @@ export default {
       }
     }
   },
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll)
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll, false)
     this.is_loading = false
   },
   data() {
@@ -178,6 +189,10 @@ export default {
     },
     handleScroll(e) {
         if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 3) {
+          if (this.$route.path.indexOf('/manager/suggestion') === -1) {
+            return
+          }
+          console.log('suggestion')
           // console.log(this.is_loading)
           if (this.is_loading === true) {
             return
@@ -253,7 +268,13 @@ export default {
         }
     },
 
+  },
+  watch: {
+  $route: function() {
+    window.removeEventListener('scroll', this.handleScroll)
+    this.is_loading = false
   }
+},
 }
 </script>
 
