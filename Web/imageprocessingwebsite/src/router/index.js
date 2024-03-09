@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/image_operation',
     name: 'image_operation',
-    component: ImageOperationView,
+    component: () => import('../views/ImageOperationView.vue'),
   },
   {
     path: '/user',

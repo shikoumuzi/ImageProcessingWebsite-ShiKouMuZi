@@ -280,6 +280,8 @@ export default {
 
 <style>
 .suggestion-model {
+  border-style: solid;
+
   background-color: rgb(255, 255, 255);
   padding-top: 1.5vh;
   padding-bottom: 1vh;
@@ -287,7 +289,6 @@ export default {
   border-radius: 12px;
   margin-bottom: 0.5vh;
   border-width: 1px;
-  border-style: solid;
   border-color: rgb(207, 204, 204);
 }
 </style>
