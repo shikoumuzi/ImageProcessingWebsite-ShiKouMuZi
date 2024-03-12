@@ -17,10 +17,10 @@
     <div v-for="(suggestion, index) in suggestions" :key="index" class="suggestion-model">
       
       <el-form ref="suggestionForm" :model="suggestion" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="user_name">
-          <el-input v-model=" suggestion.user_name" readonly></el-input>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model=" suggestion.username" readonly></el-input>
         </el-form-item>
-        <el-form-item label="建议ID" prop="user_name">
+        <el-form-item label="建议ID" prop="username">
           <el-input v-model=" suggestion.suggestion_id" readonly></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
@@ -43,10 +43,10 @@
         :element-loading-spinner="svg"
         element-loading-svg-view-box="-10, -10, 50, 50"
         element-loading-background="rgba(122, 122, 122, 0.8)">
-          <el-form-item label="用户名" prop="user_name">
-            <el-input v-model=" suggestion_form.user_name" readonly></el-input>
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model=" suggestion_form.username" readonly></el-input>
           </el-form-item>
-          <el-form-item label="建议ID" prop="user_name">
+          <el-form-item label="建议ID" prop="username">
             <el-input v-model=" suggestion_form.suggestion_id" readonly></el-input>
           </el-form-item>
           <el-form-item label="内容" prop="content">
@@ -131,7 +131,7 @@ export default {
       is_end: false,
       suggestions: [],
       suggestion_form: {
-        user_name: '',
+        username: '',
         content: '',
         response: '',
         suggestion_id: ''

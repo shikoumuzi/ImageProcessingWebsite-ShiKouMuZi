@@ -29,7 +29,7 @@
               style="margin-top: 2%; text-align: center;"
             >
               <el-table-column label="ID" type="index" width="50"></el-table-column>
-              <el-table-column label="UserID" prop="user_id" width="100"></el-table-column>
+              <el-table-column label="UserID" prop="username" width="100"></el-table-column>
               <el-table-column label="权限" width="100">
                 <template v-slot="scope">
                   {{ this.displayAuthority(scope.row.authority) }}
@@ -44,7 +44,7 @@
               </el-table-column>
               <el-table-column label="操作"  fixed="right">
                 <template v-slot="scope">
-                  <el-button type="info" @click="changeUserPwd(scope.row.user_id, scope.row.authority, scope.$index)">修改</el-button>
+                  <el-button type="info" @click="changeUserPwd(scope.$index, scope.row.username, scope.row.authority)">修改</el-button>
                   <el-popconfirm
                       width="220"     
                       confirm-button-text="OK"
@@ -52,7 +52,7 @@
                       :icon="InfoFilled"
                       icon-color="#626AEF"
                       title="确定删除吗"
-                      @confirm="eraseUserMsg(scope.row, scope.row.authority, scope.$index)"
+                      @confirm="eraseUserMsg( scope.$index, scope.row.username, scope.row.authority)"
                     >
                     <template #reference>
                         <el-button type="danger">删除</el-button>
@@ -148,7 +148,7 @@ export default {
           this.part_of_users = this.users.slice((current_page - 1) * 15, (current_page) * 15)
         },
         // eslint-disable-next-line camelcase
-        changeUserPwd(user_id, authority, index) {
+        changeUserPwd(index, username, authority) {
           if (authority === 2) {
             ElNotification.error({
               title: '错误',
@@ -160,11 +160,11 @@ export default {
           // console.log(user_id)
           mitt.emit('setUserPwdDialog', {
             dialogVisible: true,
-            user_id: user_id
+            username: username
           })
         },
         // eslint-disable-next-line camelcase
-        eraseUserMsg(index, authority, user_id) {
+        eraseUserMsg(index, username, authority) {
           if (authority === 2) {
             ElNotification.error({
               title: '错误',
@@ -180,7 +180,7 @@ export default {
           axios.post(this.$store.getters.getUrl.manager.user.eraseUserMsg, {
             params: {
               token: this.$store.getters.getToken,
-              user_id: user_id
+              username: username
             }
           }).then(response => {
             if (response.data !== null) {

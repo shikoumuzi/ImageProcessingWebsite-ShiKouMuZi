@@ -26,6 +26,8 @@ fn index() -> &'static str {
     "
 }
 
+
+
 #[launch]
 fn rocket() -> _ {
     // rocket::build().attach(AdHoc::config::<AppConfig>())

@@ -1,8 +1,8 @@
 <template>
     <el-dialog title="修改用户密码" width="600px" v-model="dialogVisible" @close="onClose" style="border-radius: 10px;">
         <el-form ref="userForm" :model="user_form" :rules="rules" label-width="80px">
-          <el-form-item label="UserID" prop="user_id">
-            <el-input  :maxLength="20" v-model="user_form.user_id" readonly/>
+          <el-form-item label="UserID" prop="username">
+            <el-input  :maxLength="20" v-model="user_form.username" readonly/>
           </el-form-item>
           <el-form-item label="新密码" prop="password" >
             <el-input placeholder="请输入新密码" :maxLength="20" v-model="user_form.password"/>
@@ -38,7 +38,7 @@ export default {
         return {
             dialogVisible: false,
             user_form: {
-                user_id: '',
+                username: '',
                 password: ''
             },
             rules: {
@@ -56,7 +56,7 @@ export default {
     mounted() {
         mitt.on('setUserPwdDialog', (res) => {
             this.dialogVisible = res.dialogVisible
-            this.user_form.user_id = res.user_id
+            this.user_form.username = res.username
         })
     },
     methods: {
@@ -75,7 +75,7 @@ export default {
             axios.post(this.$store.getters.getUrl.user.resetPassword, {
                 params: {
                     token: this.$store.getters.getToken,
-                    username: this.user_form.user_id,
+                    username: this.user_form.username,
                     new_password: this.user_form.password
                 }
             }).then((res) => {
