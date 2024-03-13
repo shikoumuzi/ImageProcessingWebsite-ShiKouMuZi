@@ -9,6 +9,7 @@ dependencies = [
  "rocket",
  "rocket_ws",
  "rusqlite",
+ "serde",
 ]
 
 [[package]]

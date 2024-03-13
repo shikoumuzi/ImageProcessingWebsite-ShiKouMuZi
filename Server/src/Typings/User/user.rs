@@ -1,9 +1,10 @@
 use std::collections::BTreeMap;
+use rocket::serde::{Deserialize, Serialize};
 
+#[derive(Clone, Deserialize, Serialize)]
 pub struct User {
     pub username: String,
     pub password: String,
-    pub userid: String
 }
 
 impl User {
@@ -12,7 +13,6 @@ impl User {
         return User{
             username: "".to_string(),
             password: "".to_string(),
-            userid: "".to_string(),
         }
     }
 
@@ -26,10 +26,6 @@ impl User {
         self.password = password;
     }
 
-    pub fn set_userid(&mut self, userid: String)
-    {
-        self.userid = userid;
-    }
 }
 
 pub struct UserGroup{
@@ -44,11 +40,25 @@ impl UserGroup{
         }
     }
 
-    pub fn find_user(&mut self, user_id: &String)->Option<&mut User>
+    pub fn find_user(&mut self, user_name: &String)->Option<&User>
     {
-        return self.users.get_mut(user_id)
+        return self.users.get(user_name)
     }
 
+    pub fn insert_user(&mut self, user: &User)
+    {
+        self.users.insert(user.username.clone(), user.clone());
+    }
+
+    pub fn erase_user(&mut self, user_name: &String)
+    {
+        self.users.remove(user_name);
+    }
+
+    pub fn change_user(&mut self, user_name:&String, password: &String)
+    {
+        self.users.get_mut(user_name).unwrap().password = password.clone();
+    }
 
 
 }
