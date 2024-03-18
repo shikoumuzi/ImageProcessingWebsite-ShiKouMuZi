@@ -22,9 +22,9 @@ pub struct Response {
     pub status: u8,
 }
 
-impl Response {
-    pub fn new(status: u8) -> Response {
-        return Response{
+impl crate::backend_api::response::user::common::Response {
+    pub fn new(status: u8) -> crate::backend_api::response::user::common::Response {
+        return crate::backend_api::response::user::common::Response {
             status
         }
     }

@@ -6,7 +6,7 @@ use rocket::{Route, State};
 use rocket::serde::json::Json;
 use crate::typings::user::user::UserGroup;
 use crate::backend_api::response::user::login::Response as LoginResponse;
-use crate::backend_api::response::user::resigter::Response as ResigterResponse;
+use crate::backend_api::response::user::common::Response as CommonResponse;
 
 
 #[post("/image_processing_website_api/login?<username>&<password>")]
@@ -18,12 +18,33 @@ fn login(users: &State<Mutex<UserGroup>>, username: String, password: String)-> 
 }
 
 #[post("/image_processing_website_api/register?<username>&<password>&<time_stamp>")]
-fn register(users: &State<Mutex<UserGroup>>, username: String, password: String, time_stamp: u64) -> Json<ResigterResponse>{
+fn register(users: &State<Mutex<UserGroup>>, username: String, password: String, time_stamp: u64) -> Json<CommonResponse>{
 
-    let resigter_response = ResigterResponse::new(0);
+    let resigter_response = CommonResponse::new(0);
+    Json(resigter_response)
+}
+
+#[post("/image_processing_website_api/resetPassword?<token>&<username>&<old_password>&<new_password>")]
+fn resetPassword(token: String, username: String, old_password: String, new_password: String) -> Json<CommonResponse> {
+
+    let resigter_response = CommonResponse::new(0);
+    Json(resigter_response)
+}
+
+#[post("/image_processing_website_api/checkManagerAuthority?<token>")]
+fn checkManagerAuthority(token: String)-> Json<CommonResponse> {
+
+    let resigter_response = CommonResponse::new(0);
+    Json(resigter_response)
+}
+
+#[post("/image_processing_website_api/checkPassword?<token>&<username>&<password>")]
+fn checkPassword(token: String, username: String, password: String) -> Json<CommonResponse> {
+
+    let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
 }
 
 pub fn get_routes() -> Vec<Route> {
-    return routes![self::login, self::register]
+    return routes![self::login, self::register, self::resetPassword, self::checkManagerAuthority, self::checkPassword]
 }
