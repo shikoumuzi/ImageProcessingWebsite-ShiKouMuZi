@@ -25,21 +25,21 @@ fn register(users: &State<Mutex<UserGroup>>, username: String, password: String,
 }
 
 #[post("/image_processing_website_api/resetPassword?<token>&<username>&<old_password>&<new_password>")]
-fn resetPassword(token: String, username: String, old_password: String, new_password: String) -> Json<CommonResponse> {
+fn resetPassword(users: &State<Mutex<UserGroup>>, token: String, username: String, old_password: String, new_password: String) -> Json<CommonResponse> {
 
     let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
 }
 
 #[post("/image_processing_website_api/checkManagerAuthority?<token>")]
-fn checkManagerAuthority(token: String)-> Json<CommonResponse> {
+fn checkManagerAuthority(users: &State<Mutex<UserGroup>>, token: String)-> Json<CommonResponse> {
 
     let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
 }
 
 #[post("/image_processing_website_api/checkPassword?<token>&<username>&<password>")]
-fn checkPassword(token: String, username: String, password: String) -> Json<CommonResponse> {
+fn checkPassword(users: &State<Mutex<UserGroup>>, token: String, username: String, password: String) -> Json<CommonResponse> {
 
     let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
