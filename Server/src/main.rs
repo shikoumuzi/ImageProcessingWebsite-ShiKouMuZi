@@ -15,6 +15,9 @@ use typings::user::user as User;
 use typings::user::user::UserGroup;
 
 use backend_api::user_api;
+use backend_api::about_api;
+use backend_api::suggestion_api;
+use backend_api::manager_api;
 
 
 // file server 如果需要绑定vue文件的话需要index和files函数配合 并且要记得介入到routes当中
@@ -38,6 +41,9 @@ fn rocket() -> _ {
     let mut routes = routes![index, files];
 
     routes.append(&mut user_api::get_routes());
+    routes.append(&mut about_api::get_routes());
+    routes.append(&mut suggestion_api::get_routes());
+    routes.append(&mut manager_api::get_routes());
 
     println!("{:?}", routes);
     // rocket::build().attach(AdHoc::config::<AppConfig>())

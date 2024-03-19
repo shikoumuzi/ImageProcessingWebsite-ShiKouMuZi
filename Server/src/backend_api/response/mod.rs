@@ -1,2 +1,4 @@
 pub mod user;
-mod about;
+pub mod about;
+pub mod suggestion;
+pub mod manager;

@@ -35,7 +35,7 @@ pub struct Response {
 
     /// 状态码
     #[serde(rename = "status")]
-    pub status: i64,
+    pub status: u8,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -63,4 +63,28 @@ pub struct RecommendedArticleUrl {
 
     #[serde(rename = "url")]
     pub url: String,
+}
+
+impl Response {
+    pub fn new(download_url: Vec<DownloadUrl>, introduction: String, offical_url: Vec<OfficalUrl>, recommended_article_url: Vec<RecommendedArticleUrl>, status: u8) -> Self {
+        Self { download_url, introduction, offical_url, recommended_article_url, status }
+    }
+}
+
+impl DownloadUrl {
+    pub fn new(title: String, url: String) -> Self {
+        Self { title, url }
+    }
+}
+
+impl OfficalUrl {
+    pub fn new(title: String, url: String) -> Self {
+        Self { title, url }
+    }
+}
+
+impl RecommendedArticleUrl {
+    pub fn new(title: String, url: String) -> Self {
+        Self { title, url }
+    }
 }
