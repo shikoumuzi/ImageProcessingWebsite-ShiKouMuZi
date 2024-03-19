@@ -75,39 +75,6 @@ pub struct ManagerUrl {
     pub user: User,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct HistoryOperations {
-    #[serde(rename = "getAllHistoryOperation")]
-    pub get_all_history_operation: String,
-
-    #[serde(rename = "getOnceOfHistoryOperation")]
-    pub get_once_of_history_operation: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Suggestion {
-    #[serde(rename = "getAllSuggestions")]
-    pub get_all_suggestions: String,
-
-    #[serde(rename = "ignoreSuggestionByID")]
-    pub ignore_suggestion_by_id: String,
-
-    #[serde(rename = "submitResponseToSuggestionByID")]
-    pub submit_response_to_suggestion_by_id: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct User {
-    #[serde(rename = "changeUserPwd")]
-    pub change_user_pwd: String,
-
-    #[serde(rename = "eraseUserMsg")]
-    pub erase_user_msg: String,
-
-    #[serde(rename = "getAllUserMsg")]
-    pub get_all_user_msg: String,
-}
-
 impl ManagerUrl {
     pub fn new(authority: u8) -> Option<ManagerUrl> {
         if authority == 2 {
@@ -124,6 +91,15 @@ impl ManagerUrl {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct HistoryOperations {
+    #[serde(rename = "getAllHistoryOperation")]
+    pub get_all_history_operation: String,
+
+    #[serde(rename = "getOnceOfHistoryOperation")]
+    pub get_once_of_history_operation: String,
+}
+
 impl HistoryOperations{
     pub fn new()->HistoryOperations{
         return HistoryOperations{
@@ -131,6 +107,18 @@ impl HistoryOperations{
             get_once_of_history_operation: url!("/manager/get_once_of_history_operation")
         }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Suggestion {
+    #[serde(rename = "getAllSuggestions")]
+    pub get_all_suggestions: String,
+
+    #[serde(rename = "ignoreSuggestionByID")]
+    pub ignore_suggestion_by_id: String,
+
+    #[serde(rename = "submitResponseToSuggestionByID")]
+    pub submit_response_to_suggestion_by_id: String,
 }
 
 impl Suggestion{
@@ -141,6 +129,18 @@ impl Suggestion{
             submit_response_to_suggestion_by_id: url!("/manager/submit_response_to_suggestion_by_id")
         }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct User {
+    #[serde(rename = "changeUserPwd")]
+    pub change_user_pwd: String,
+
+    #[serde(rename = "eraseUserMsg")]
+    pub erase_user_msg: String,
+
+    #[serde(rename = "getAllUserMsg")]
+    pub get_all_user_msg: String,
 }
 
 impl User{

@@ -24,10 +24,16 @@ pub struct Response {
     pub user_msg: Vec<UserMsg>,
 }
 
+impl Response {
+    pub fn new(status: u8, user_msg: Vec<UserMsg>) -> Self {
+        Self { status, user_msg }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct UserMsg {
     #[serde(rename = "authority")]
-    pub authority: i64,
+    pub authority: u8,
 
     #[serde(rename = "history_operation_count")]
     pub history_operation_count: u64,
@@ -40,4 +46,10 @@ pub struct UserMsg {
 
     #[serde(rename = "username")]
     pub username: String,
+}
+
+impl UserMsg {
+    pub fn new(authority: u8, history_operation_count: u64, result_image_count: u64, time_stamp: u64, username: String) -> Self {
+        Self { authority, history_operation_count, result_image_count, time_stamp, username }
+    }
 }

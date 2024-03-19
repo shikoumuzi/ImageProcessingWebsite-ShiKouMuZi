@@ -38,6 +38,12 @@ pub struct Response {
     pub status: u8,
 }
 
+impl Response {
+    pub fn new(download_url: Vec<DownloadUrl>, introduction: String, offical_url: Vec<OfficalUrl>, recommended_article_url: Vec<RecommendedArticleUrl>, status: u8) -> Self {
+        Self { download_url, introduction, offical_url, recommended_article_url, status }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct DownloadUrl {
     #[serde(rename = "title")]
@@ -46,6 +52,13 @@ pub struct DownloadUrl {
     #[serde(rename = "url")]
     pub url: String,
 }
+
+impl DownloadUrl {
+    pub fn new(title: String, url: String) -> Self {
+        Self { title, url }
+    }
+}
+
 
 #[derive(Serialize, Deserialize)]
 pub struct OfficalUrl {
@@ -56,6 +69,13 @@ pub struct OfficalUrl {
     pub url: String,
 }
 
+impl OfficalUrl {
+    pub fn new(title: String, url: String) -> Self {
+        Self { title, url }
+    }
+}
+
+
 #[derive(Serialize, Deserialize)]
 pub struct RecommendedArticleUrl {
     #[serde(rename = "title")]
@@ -63,24 +83,6 @@ pub struct RecommendedArticleUrl {
 
     #[serde(rename = "url")]
     pub url: String,
-}
-
-impl Response {
-    pub fn new(download_url: Vec<DownloadUrl>, introduction: String, offical_url: Vec<OfficalUrl>, recommended_article_url: Vec<RecommendedArticleUrl>, status: u8) -> Self {
-        Self { download_url, introduction, offical_url, recommended_article_url, status }
-    }
-}
-
-impl DownloadUrl {
-    pub fn new(title: String, url: String) -> Self {
-        Self { title, url }
-    }
-}
-
-impl OfficalUrl {
-    pub fn new(title: String, url: String) -> Self {
-        Self { title, url }
-    }
 }
 
 impl RecommendedArticleUrl {

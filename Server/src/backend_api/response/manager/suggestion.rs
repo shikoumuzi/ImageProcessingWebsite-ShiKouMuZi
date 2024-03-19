@@ -26,6 +26,12 @@ pub struct Response {
     pub suggestions: Vec<Suggestion>,
 }
 
+impl Response {
+    pub fn new(status: u8, suggestions: Vec<Suggestion>) -> Self {
+        Self { status, suggestions }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Suggestion {
     #[serde(rename = "content")]
@@ -39,12 +45,6 @@ pub struct Suggestion {
 
     #[serde(rename = "username")]
     pub username: String,
-}
-
-impl Response {
-    pub fn new(status: u8, suggestions: Vec<Suggestion>) -> Self {
-        Self { status, suggestions }
-    }
 }
 
 impl Suggestion {
