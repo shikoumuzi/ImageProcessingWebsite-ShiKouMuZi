@@ -194,7 +194,30 @@ fn checkManagerAuthority(users: &State<Mutex<UserGroup>>, token: String)-> Json<
 }
 
 #[post("/image_processing_website_api/checkPassword?<token>&<username>&<password>")]
-fn checkPassword(users: &State<Mutex<UserGroup>>, token: String, username: String, password: String) -> Json<CommonResponse> {
+fn checkPassword(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, username: String, password: String) -> Json<CommonResponse> {
+    let mut _users = users.lock().unwrap();
+    if _users.find_token(&token) == false {
+        let resigter_response = CommonResponse::new(1);
+        return Json(resigter_response);
+    }
+
+    let mut _sqlite = sqlite.lock().unwrap();
+    let conn = _sqlite.getConn();
+    let stmt_result = conn.prepare(format!("SELECT COUNT(*) FROM USERS WHERE USER_NAME='{}' AND USER_PWD='{}'", username, password).as_str());
+    if stmt_result.is_err(){
+        println!("stmt is error {:?}", stmt_result);
+        let resigter_response = CommonResponse::new(1);
+        return Json(resigter_response);
+    }
+
+    let mut stmt = stmt_result.unwrap();
+    let count: i64 =  stmt.query_row(params![], |row| row.get(0)).unwrap();
+    if count == 0 {
+        println!("query_row is error");
+        let resigter_response = CommonResponse::new(1);
+        return Json(resigter_response);
+    }
+
 
     let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
