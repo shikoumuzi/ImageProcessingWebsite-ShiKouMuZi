@@ -3,6 +3,7 @@
 mod typings;
 mod backend_api;
 mod base_macro;
+mod sqlite;
 
 
 use std::path::{Path, PathBuf};
@@ -20,6 +21,8 @@ use backend_api::suggestion_api;
 use backend_api::manager_api;
 use backend_api::histroy_operation_api;
 use backend_api::operation_api;
+
+use crate::sqlite::sqlite::SQLite;
 
 
 // file server 如果需要绑定vue文件的话需要index和files函数配合 并且要记得介入到routes当中
@@ -41,6 +44,7 @@ fn rocket() -> _ {
     let users = Mutex::new( UserGroup::new() );
 
     let mut routes = routes![index, files];
+    let mut sqlite = Mutex::new(SQLite::new("F:/University/WorkAndReport/GraduationProject/ImageProcessingWebsite/ImagProcessingWebsite.db"));
 
     routes.append(&mut user_api::get_routes());
     routes.append(&mut about_api::get_routes());
@@ -53,6 +57,7 @@ fn rocket() -> _ {
     // rocket::build().attach(AdHoc::config::<AppConfig>())
     rocket::build().
         manage(users).
+        manage(sqlite).
         mount("/", routes)
 
 }

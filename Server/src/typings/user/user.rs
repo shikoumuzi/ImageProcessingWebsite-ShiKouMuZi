@@ -7,12 +7,16 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::serde::json::Json;
 use serde::Deserializer;
 use uuid::Uuid;
+use std::time::{SystemTime, UNIX_EPOCH};
+use std::option::Option;
 
 #[derive(Clone, Deserialize, Serialize, FromForm, Debug)]
 pub struct User {
     pub token: String,
     pub username: String,
     pub password: String,
+    pub authority: u8,
+    pub time_stamp: u64,
 }
 
 impl User {
@@ -22,6 +26,8 @@ impl User {
             token: Uuid::new_v4().to_hyphenated().to_string(),
             username: "".to_string(),
             password: "".to_string(),
+            authority: 0,
+            time_stamp: SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs()
         }
     }
 
@@ -47,7 +53,7 @@ impl std::fmt::Display for User {
 
 pub struct UserGroup{
     pub users: BTreeMap<String, User>,
-    pub tokens: HashMap<String, u8>
+    pub tokens: HashMap<String, User>
 }
 
 impl UserGroup{
@@ -59,15 +65,25 @@ impl UserGroup{
         }
     }
 
-    pub fn find_user(&mut self, user_name: &String)->Option<&User>
+    pub fn find_user_by_username(&mut self, user_name: &String) ->Option<&User>
     {
         return self.users.get(user_name)
     }
 
-    pub fn insert_user(&mut self, user: &User)
+    pub fn find_user_by_token(&mut self, token: &String)-> Option<&User>
     {
+        let user = self.tokens.get(token);
+        if user.is_none(){
+            return None
+        }
+        return Option::from(user);
+    }
+
+    pub fn insert_user(& mut self, user: &User)
+    {
+        let token = user.token.clone();
         self.users.insert(user.username.clone(), user.clone());
-        self.tokens.insert(user.token.clone(), 0);
+        self.tokens.insert(user.token.clone(), user.clone());
     }
 
     pub fn erase_user(&mut self, user_name: &String)
@@ -79,10 +95,12 @@ impl UserGroup{
     pub fn change_user(&mut self, user_name:&String, password: &String)
     {
         self.users.get_mut(user_name).unwrap().password = password.clone();
+        self.tokens.get_mut(&self.users.get(user_name).unwrap().token).unwrap().password = password.clone()
     }
 
     pub fn find_token(&mut self, token: &String)->bool
     {
         return !self.tokens.get(token).is_none()
     }
+
 }
