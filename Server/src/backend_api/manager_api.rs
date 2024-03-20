@@ -16,7 +16,7 @@ use super::response::manager::suggestion::Response as SuggestionResponse;
 use super::response::manager::suggestion::Suggestion;
 use super::response::manager::user::{Response as UserResponse, UserMsg};
 use super::response::manager::history_operation::{HistoryOperation, Response as HistoryOperationResponse};
-use super::base_method::base_method::{verifyToken};
+use super::base_method::base::{verifyToken};
 // ================= suggestion ==============================
 
 #[post("/image_processing_website_api/manager/get_all_suggestions?<token>&<now_len>")]
@@ -109,20 +109,50 @@ fn ignoreSuggestionById(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQ
 
 // ================= user ==============================
 #[post("/image_processing_website_api/manager/get_all_user_msg?<token>")]
-fn getAllUserMsg(token: String) -> Json<UserResponse>{
+fn getAllUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String) -> Json<UserResponse>{
+    let user = verifyToken(&users, &token);
+    if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {
+        let UserResponse = UserResponse::new(1, vec![]);
+        return Json(UserResponse);
+    }
+
+    let mut _sqlite = sqlite.lock().unwrap();
+    let conn = _sqlite.getConn();
+    let user_stmt_result = conn.prepare("SELECT USER_NAME, TIME_STAMP FROM USERS");
+    if user_stmt_result.is_err(){
+        println!("stmt is error {:?}", user_stmt_result);
+        let UserResponse = UserResponse::new(1, vec![]);
+        return Json(UserResponse);
+    }
+
+
+
     let user_response = UserResponse::new(0, vec![UserMsg::new(0, 0, 0, 0, "".to_string())]);
     Json(user_response)
 }
 
 #[post("/image_processing_website_api/manager/erase_user_msg?<token>&<username>")]
-fn eraseUserMsg(users: &State<Mutex<UserGroup>>, token: String, username: String) -> Json<CommonResponse>{
+fn eraseUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, username: String) -> Json<CommonResponse>{
+    let user = verifyToken(&users, &token);
+    if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {
+        let common_response = CommonResponse::new(1);
+        return Json(common_response);
+    }
+
     let common_response = CommonResponse::new(0);
     Json(common_response)
 }
 
 // ================= history_operation ==============================
 #[post("/image_processing_website_api/manager/get_all_history_operation?<token>")]
-fn getAllHistoryOperation(users: &State<Mutex<UserGroup>>, token: String) -> Json<HistoryOperationResponse>{
+fn getAllHistoryOperation(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String) -> Json<HistoryOperationResponse>{
+    let user = verifyToken(&users, &token);
+    if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {
+        let history_operation_response =
+            HistoryOperationResponse::new(vec![HistoryOperation::new("".to_string(), vec![], "".to_string(), Option::from(vec![]), 0)], 1);
+        return Json(history_operation_response);
+    }
+
     let history_operation_response =
         HistoryOperationResponse::new(vec![HistoryOperation::new("".to_string(), vec![], "".to_string(), Option::from(vec![]), 0)], 0);
     Json(history_operation_response)

@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
 use super::super::typings::user::user::User;
@@ -12,6 +13,9 @@ use crate::sqlite::sqlite::SQLite;
 use rusqlite::{Transaction, Connection, params};
 use uuid::Uuid;
 use regex::Regex;
+use std::fs;
+use rocket::tokio::fs::create_dir;
+use super::base_method::base::USER_IMG_PATH;
 
 struct Password{
     pub password: String
@@ -74,6 +78,16 @@ fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, usernam
                     println!("{}", tmp_user);
                     _users.insert_user(&tmp_user);
 
+                    let user_img_path_str = USER_IMG_PATH.to_string();
+                    let tmp_user_img_path = Path::new(&user_img_path_str);
+                    let user_img_path = tmp_user_img_path.join(username);
+                    if !user_img_path.exists(){
+                        let create_result = std::fs::create_dir(user_img_path);
+                        if create_result.is_err(){
+                            println!("create dir is error {:?}", create_result);
+                        }
+                    }
+
                     let login_response = LoginResponse::new(tmp_user.authority, 0, tmp_user.time_stamp, tmp_user.token);
                     return Json(login_response);
                 }
@@ -105,6 +119,17 @@ fn register(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, user
     if insert_result.is_err(){
         let resigter_response = CommonResponse::new(1);
         return Json(resigter_response);
+    }
+
+    let user_img_path_str = USER_IMG_PATH.to_string();
+    let tmp_user_img_path = Path::new(&user_img_path_str);
+    let user_img_path = tmp_user_img_path.join(username);
+
+    if !user_img_path.exists(){
+        let create_result = std::fs::create_dir(user_img_path);
+        if create_result.is_err(){
+            println!("create dir is error {:?}", create_result);
+        }
     }
     let resigter_response = CommonResponse::new(0);
     Json(resigter_response)
