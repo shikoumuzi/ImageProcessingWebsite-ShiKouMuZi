@@ -20,6 +20,13 @@ struct Password{
 #[post("/image_processing_website_api/login?<username>&<password>")]
 fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, username: String, password: String)-> Json<LoginResponse> {
 
+    let mut _users = users.lock().unwrap();
+    let user = _users.find_user_by_username(&username);
+    if !user.is_none(){
+        let login_response = LoginResponse::new(0, 1, 0, "".to_string());
+        return Json(login_response);
+    }
+
     let mut re = Regex::new("^[\\u0391-\\uFFE5A-Za-z0-9]+$").unwrap();
     if re.is_match(username.as_str()) == false{
         let login_response = LoginResponse::new(0, 1, 0, "".to_string());
@@ -65,7 +72,7 @@ fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, usernam
                 }else {
                     let tmp_user = user.unwrap();
                     println!("{}", tmp_user);
-                    users.lock().unwrap().insert_user(&tmp_user);
+                    _users.insert_user(&tmp_user);
 
                     let login_response = LoginResponse::new(tmp_user.authority, 0, tmp_user.time_stamp, tmp_user.token);
                     return Json(login_response);

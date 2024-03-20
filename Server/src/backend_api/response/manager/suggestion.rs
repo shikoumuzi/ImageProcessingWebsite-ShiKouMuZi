@@ -38,7 +38,7 @@ pub struct Suggestion {
     pub content: String,
 
     #[serde(rename = "suggestion_id")]
-    pub suggestion_id: String,
+    pub suggestion_id: u64,
 
     #[serde(rename = "time_stamp")]
     pub time_stamp: u64,
@@ -48,7 +48,7 @@ pub struct Suggestion {
 }
 
 impl Suggestion {
-    pub fn new(content: String, suggestion_id: String, time_stamp: u64, username: String) -> Self {
+    pub fn new(content: String, suggestion_id: u64, time_stamp: u64, username: String) -> Self {
         Self { content, suggestion_id, time_stamp, username }
     }
 }
