@@ -53,7 +53,11 @@
                     @change="changePage"
                     class="item-table">
                     <el-table-column label='ID' type="index"></el-table-column>
-                    <el-table-column label="URL" prop="url" width="350"></el-table-column>
+                    <el-table-column label="URL" prop="url" width="350">
+                      <template v-slot="scope">
+                      <a :href="scope.row.url">{{scope.row.url}}</a>
+                    </template>
+                    </el-table-column>
                     <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
                   </el-table>
 
@@ -67,7 +71,11 @@
                   @change="changePage"
                   class="item-table">
                   <el-table-column label='ID' type="index"></el-table-column>
-                  <el-table-column label="URL" prop="url" width="350"></el-table-column>
+                  <el-table-column label="URL" prop="url" width="350">
+                    <template v-slot="scope">
+                      <a :href="scope.row.url">{{scope.row.url}}</a>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
 
                 </el-table>
@@ -83,7 +91,11 @@
                   @change="changePage"
                   class="item-table">
                   <el-table-column label='ID' type="index"></el-table-column>
-                  <el-table-column label="URL" prop="url" width="350"></el-table-column>
+                  <el-table-column label="URL" prop="url" width="350">
+                    <template v-slot="scope">
+                      <a :href="scope.row.url">{{scope.row.url}}</a>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
 
                 </el-table>
@@ -101,7 +113,7 @@
 <script>
 import { ref } from 'vue';
 import axios from '../plugin/AxiosAPI';
-import { toRaw } from '@vue/reactivity'
+
 export default ({
   setup() {
     
@@ -203,7 +215,7 @@ export default ({
       let result = true
       // console.log(title)
       // console.log(!(title in (this.$store.getters.getAbouts)))
-      if (!(title in (this.$store.getters.getAbouts))) {
+      if (!(title in (this.$store.getters.getAbouts.value))) {
          axios.get(this.$store.getters.getUrl.about, {
           params: {
             token: this.$store.getters.getToken,
@@ -221,7 +233,8 @@ export default ({
                   recommended_article_url: response.data.recommended_article_url,
                 }
               })
-              callback(response.data)
+
+              callback((this.$store.getters.getAbouts.value)[title])
               return
             }
             result = false
@@ -229,7 +242,7 @@ export default ({
           result = false
         }).catch((e) => { result = false })
       } else {
-        callback((this.$store.getters.getAbouts)[title])
+        callback((this.$store.getters.getAbouts.value)[title])
       }
       // console.log(result)
       return result

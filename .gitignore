@@ -9,3 +9,4 @@ bin
 out
 *.db
 .vscode
+__pycache__
