@@ -43,7 +43,7 @@ pub struct HistoryOperation {
     pub note: String,
 
     #[serde(rename = "operations")]
-    pub operations: Option<Vec<Operations>>,
+    pub operations: Option<Vec<Operation>>,
 
     #[serde(rename = "time_stamp")]
     pub time_stamp: u64,
@@ -73,7 +73,7 @@ impl ArgPlaceholder {
 
 /// Operations
 #[derive(Serialize, Deserialize)]
-pub struct Operations {
+pub struct Operation {
     #[serde(rename = "args")]
     pub args: Vec<ArgPlaceholder>,
 
@@ -93,7 +93,7 @@ pub struct Operations {
     pub time_stamp: i64,
 }
 
-impl Operations {
+impl Operation {
     pub fn new(args: Vec<ArgPlaceholder>, method_name: String, module_name: String, operation_id: String, output_image: Vec<ImagePlaceholder>, time_stamp: i64) -> Self {
         Self { args, method_name, module_name, operation_id, output_image, time_stamp }
     }

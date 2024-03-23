@@ -9,7 +9,7 @@ use rusqlite::params;
 use crate::backend_api::response::about::about::{OfficalUrl, Response as AboutResponse};
 use crate::sqlite::sqlite::SQLite;
 
-struct About{
+struct AboutRow {
     pub introduction: String,
     pub offical_url: String,
     pub download_url: String,
@@ -33,7 +33,7 @@ fn about(sqlite: &State<Mutex<SQLite>>, token: String, target_content_title: Str
 
     let about_result = stmt.query_map(params![], |row| {
         Ok(
-            About{
+            AboutRow {
                 introduction: row.get(0)?,
                 offical_url: row.get(1)?,
                 download_url: row.get(2)?,
