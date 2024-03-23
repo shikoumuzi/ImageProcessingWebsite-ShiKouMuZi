@@ -1,7 +1,6 @@
 use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
 use super::super::typings::user::user::User;
-use crate::backend_api::request;
 use rocket::fairing::AdHoc;
 use rocket::{Route, State};
 use rocket::serde::json::Json;

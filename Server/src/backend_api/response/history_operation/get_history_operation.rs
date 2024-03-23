@@ -44,11 +44,11 @@ pub struct HistoryOperation {
 
     /// 创建时间戳
     #[serde(rename = "time_stamp")]
-    pub time_stamp: i64,
+    pub time_stamp: u64,
 }
 
 impl HistoryOperation {
-    pub fn new(history_operation_id: String, note: String, time_stamp: i64) -> Self {
+    pub fn new(history_operation_id: String, note: String, time_stamp: u64) -> Self {
         Self { history_operation_id, note, time_stamp }
     }
 }

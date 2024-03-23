@@ -3,7 +3,6 @@ use std::vec;
 use std::option::Option;
 use std::path::Path;
 use super::super::typings::user::user::User;
-use crate::backend_api::request;
 use rocket::fairing::AdHoc;
 use rocket::{Route, State};
 use rocket::serde::json::Json;
@@ -284,7 +283,7 @@ fn getAllHistoryOperation(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<
         }else {
             tmp_history_operation.operations = Option::from(operations.operation_detals);
         }
-
+        history_operation_vec.push(tmp_history_operation);
     }
 
     let history_operation_response =

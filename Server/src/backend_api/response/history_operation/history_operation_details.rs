@@ -19,7 +19,7 @@ use rocket::serde::{Deserialize, Serialize};
 pub struct Response {
     /// 操作详情，所有操作列表
     #[serde(rename = "operation_details")]
-    pub operation_details: Vec<Operations>,
+    pub operation_details: Vec<Operation>,
 
     /// 状态码，0为成功，1为失败
     #[serde(rename = "status")]
@@ -27,14 +27,14 @@ pub struct Response {
 }
 
 impl Response {
-    pub fn new(operation_details: Vec<Operations>, status: u8) -> Self {
+    pub fn new(operation_details: Vec<Operation>, status: u8) -> Self {
         Self { operation_details, status }
     }
 }
 
 /// Operations
 #[derive(Serialize, Deserialize)]
-pub struct Operations {
+pub struct Operation {
     #[serde(rename = "args")]
     pub args: Vec<ArgPlaceholder>,
 
@@ -54,7 +54,7 @@ pub struct Operations {
     pub time_stamp: u64,
 }
 
-impl Operations {
+impl Operation {
     pub fn new(args: Vec<ArgPlaceholder>, method_name: String, module_name: String, operation_id: String, output_image: Vec<ImagePlaceholder>, time_stamp: u64) -> Self {
         Self { args, method_name, module_name, operation_id, output_image, time_stamp }
     }
