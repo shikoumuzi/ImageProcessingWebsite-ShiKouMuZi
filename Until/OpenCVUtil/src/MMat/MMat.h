@@ -12,7 +12,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
+#include<mutex>
 #define __MUZI_MAX_MAT_SIZE__ 2048
 namespace MUZI
 {
@@ -32,6 +32,7 @@ namespace MUZI
 		{
 			MatVecotr m_mats;
 			MMatIndex_t m_tail_index; // 尾部最新的元素的索引
+			std::mutex m_lock;
 		};
 		struct Attribute
 		{

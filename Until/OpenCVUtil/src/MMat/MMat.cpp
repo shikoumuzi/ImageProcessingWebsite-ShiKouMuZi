@@ -82,7 +82,14 @@ namespace MUZI
 
 	void MMatManger::saveImg(MMatIndex_t index, const Path& file_path)
 	{
-		cv::imwrite(file_path.string(), this->getMat(index));
+		try
+		{
+			cv::imwrite(file_path.string(), this->getMat(index));
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
 		return;
 	}
 
@@ -168,17 +175,33 @@ namespace MUZI
 		return this->setMat(dst_mat);
 	}
 
-	MMatIndex_t MMatManger::hstack(std::vector<MMatIndex_t>& imgs)
+	MMatIndex_t MMatManger::hstack(std::vector<MMatIndex_t>& matindexs)
 	{
 		cv::Mat dst_mat;
-		cv::hconcat(imgs, dst_mat);
+		std::vector<cv::Mat> mats(matindexs.size());
+		for (int i = 0; i < matindexs.size(); ++i) {
+			mats[i] = this->getManager().getMat(matindexs[i]);
+		}
+
+		try
+		{
+			cv::hconcat(mats, dst_mat);
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
 		return this->setMat(dst_mat);
 	}
 
-	MMatIndex_t MMatManger::vstack(std::vector<MMatIndex_t>& imgs)
+	MMatIndex_t MMatManger::vstack(std::vector<MMatIndex_t>& matindexs)
 	{
 		cv::Mat dst_mat;
-		cv::vconcat(imgs, dst_mat);
+		std::vector<cv::Mat> mats(matindexs.size());
+		for (int i = 0; i < matindexs.size(); ++i) {
+			mats[i] = this->getManager().getMat(matindexs[i]);
+		}
+		cv::vconcat(mats, dst_mat);
 		return this->setMat(dst_mat);
 	}
 
@@ -194,12 +217,14 @@ namespace MUZI
 
 	MMatIndex_t MMatManger::getNewIndex()
 	{
+		std::unique_lock<std::mutex> un_lock(this->m_data->m_lock);
 		MMatIndex_t now_index = this->m_data->m_tail_index;
 		for (MMatIndex_t i = now_index; i < this->m_data->m_mats.size(); ++i)
 		{
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
 				this->m_data->m_mats[i].is_allocated == true;
+				this->m_data->m_tail_index = i;
 				return i;
 			}
 		}
@@ -208,6 +233,7 @@ namespace MUZI
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
 				this->m_data->m_mats[i].is_allocated == true;
+				this->m_data->m_tail_index = i;
 				return i;
 			}
 		}
@@ -236,8 +262,8 @@ namespace MUZI
 		{
 			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
-		this->m_data->m_mats[this->m_data->m_tail_index].mat = mat;
-		this->m_data->m_mats[this->m_data->m_tail_index].is_allocated = true;
+		this->m_data->m_mats[ret_index].mat = mat;
+		this->m_data->m_mats[ret_index].is_allocated = true;
 		return ret_index;
 	}
 	void MMatManger::freeMat(MMatIndex_t index)

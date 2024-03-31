@@ -4,7 +4,7 @@
 #include<stdint.h>
 extern "C"
 {
-	enum MAT_READIMG_FLAG 
+	enum MAT_READIMG_FLAG
 	{
 		COLOR = 1,
 		GRAY_SCALE = 0,
