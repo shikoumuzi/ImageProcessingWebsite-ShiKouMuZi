@@ -14,7 +14,7 @@ extern "C"
 
 	void mat_showImg(MMat_t img, const char* title)
 	{
-		MUZI::MMatManger::getManager().saveImg(img, title);
+		MUZI::MMatManger::getManager().showImgWithBlock(img, title);
 	}
 
 	void mat_freeImg(MMat_t img)

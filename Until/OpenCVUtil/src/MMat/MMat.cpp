@@ -1,5 +1,8 @@
 #include"MMat.h"
-
+#include<fstream>
+#include<boost/filesystem.hpp>
+#include<boost/filesystem/string_file.hpp>
+#include<iostream>
 namespace MUZI
 {
 	MMatManger& MMatManger::getManager()
@@ -42,7 +45,30 @@ namespace MUZI
 		}
 		try
 		{
-			this->m_data->m_mats[ret_index].mat = cv::imread(path.string(), flag);
+			/*std::ifstream ifs(path.string(), std::ios::binary | std::ios::in);
+
+			if (!ifs.is_open())
+			{
+				return MERROR::MATMANAGER_READ_IMG_FAILED;
+			}
+			auto file_begin = ifs.tellg();
+			ifs.seekg(0, std::ios::end);
+			auto file_end = ifs.tellg();
+			std::string img_buffer_str;
+
+			img_buffer_str.reserve(file_end - file_begin);
+			ifs.seekg(0, std::ios::beg);
+
+			std::string line_buffer;
+			while (std::getline(ifs, line_buffer))
+			{
+				img_buffer_str += line_buffer;
+			}
+			std::vector<char> img_buffer_vec(img_buffer_str.begin(), img_buffer_str.end());
+			img_buffer_vec.push_back('\0');*/
+
+			//this->m_data->m_mats[ret_index].mat = cv::imdecode(img_buffer_vec, flag);;
+			this->m_data->m_mats[ret_index].mat = cv::imread(path.string(), flag);;
 			this->m_data->m_mats[ret_index].is_allocated = true;
 		}
 		catch (const std::exception& e)
@@ -67,7 +93,14 @@ namespace MUZI
 
 	void MMatManger::showImg(MMatIndex_t index, const std::string& title)
 	{
-		cv::imshow(title, this->getMat(index));
+		try
+		{
+			cv::imshow(title, this->getMat(index));
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
 	}
 
 	void MMatManger::showImgWithBlock(MMatIndex_t index, const std::string& title)
@@ -84,12 +117,12 @@ namespace MUZI
 	MMatManger::Attribute MMatManger::getAttribute(MMatIndex_t index)
 	{
 		auto& mat = this->getMat(index);
-		
-		return {.dims = mat.dims,
+
+		return { .dims = mat.dims,
 				.rows = mat.rows,
 				.cols = mat.cols,
 				.channels = mat.channels(),
-				.ele_size = mat.elemSize()};
+				.ele_size = mat.elemSize() };
 	}
 
 	MMatIndex_t MMatManger::createMat(uint32_t width, uint32_t height, uint8_t channels, uint8_t init_value)
@@ -122,7 +155,7 @@ namespace MUZI
 		Mat dst_mat;
 		if (mat.rows < height && mat.cols < width)
 		{
-			cv::resize(mat, dst_mat, cv::Size(width, height), 0,0, cv::INTER_AREA);
+			cv::resize(mat, dst_mat, cv::Size(width, height), 0, 0, cv::INTER_AREA);
 		}
 		else if (mat.rows > height && mat.cols > width)
 		{
@@ -161,15 +194,12 @@ namespace MUZI
 
 	MMatIndex_t MMatManger::getNewIndex()
 	{
-		MMatIndex_t now_index = this->getNewIndex();
-		if (now_index == -1)
-		{
-			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
-		}
+		MMatIndex_t now_index = this->m_data->m_tail_index;
 		for (MMatIndex_t i = now_index; i < this->m_data->m_mats.size(); ++i)
 		{
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
+				this->m_data->m_mats[i].is_allocated == true;
 				return i;
 			}
 		}
@@ -177,6 +207,7 @@ namespace MUZI
 		{
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
+				this->m_data->m_mats[i].is_allocated == true;
 				return i;
 			}
 		}

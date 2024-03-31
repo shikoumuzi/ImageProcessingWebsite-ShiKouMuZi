@@ -81,6 +81,7 @@ macro(initOpenCV)
 		message(STATUS "OpenCV 库信息")
 		message(STATUS "OpenCV_INCLUDE_DIRS=${OpenCV_INCLUDE_DIRS}")
 		message(STATUS "OpenCV_LIBRARY_DIRS=${OpenCV_LIBRARY_DIRS}")
+		message(STATUS "OpenCV_LIBRARYS=${OpenCV_LIBRARIES}")
 	endif()
 endmacro()
 initOpenCV()
@@ -141,7 +142,7 @@ add_executable (OpenCVUtil
 				"src/MNumericCalculation/MNumericCalculation.h" 
 				"src/MNumericCalculation/MNumericCalculation.cpp" 
 				"src/MNumericCalculation/MNumericCalculationInf.h" 
-				"src/MNumericCalculation/MNumericCalculationInf.cpp" "src/MAffineTransformation/MAffineTransform.h" "src/MAffineTransformation/MAffineTransform.cpp")
+				"src/MNumericCalculation/MNumericCalculationInf.cpp" "src/MAffineTransformation/MAffineTransform.h" "src/MAffineTransformation/MAffineTransform.cpp" "src/MConfig.h")
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)
@@ -162,6 +163,7 @@ endmacro()
 targetLinkLib()
 
 install(FILES ${SQLITE3_CODE_LIBRARY_PATH}/sqlite-dll-win-x64-3440200/sqlite3.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/../bin)
+install(FILES ${OpenCV_DIR}/x64/vc16/bin/opencv_world480.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH}/../bin)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET OpenCVUtil PROPERTY CXX_STANDARD 20)

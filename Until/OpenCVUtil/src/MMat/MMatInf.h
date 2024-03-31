@@ -4,6 +4,13 @@
 #include<stdint.h>
 extern "C"
 {
+	enum MAT_READIMG_FLAG 
+	{
+		COLOR = 1,
+		GRAY_SCALE = 0,
+		UNCHANGED = -1
+	};
+
 	typedef MUZI::MMatIndex_t MMat_t;
 	MMat_t mat_readImg(const char* path, int flag);
 
