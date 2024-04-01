@@ -12,3 +12,4 @@ rocket_ws = { package = "rocket_ws", version = "0.1.0" }
 serde = { version = "1.0.190", features = ["derive"] }
 uuid = {version = "0.8", features = ["v4"]}
 regex = "1.10.3"
+libc = "0.2.149"

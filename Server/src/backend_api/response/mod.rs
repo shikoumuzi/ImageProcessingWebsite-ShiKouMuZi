@@ -3,3 +3,4 @@ pub mod about;
 pub mod suggestion;
 pub mod manager;
 pub mod history_operation;
+mod operation;
