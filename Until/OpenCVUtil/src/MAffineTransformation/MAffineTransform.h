@@ -2,6 +2,11 @@
 #ifndef __MUZI_MAFFINETRANSFORM_H__
 #define __MUZI_MAFFINETRANSFORM_H__
 #include"../MMat/MMat.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
 namespace MUZI
 {
 	class MAffineTransform
@@ -14,12 +19,14 @@ namespace MUZI
 			VERTICAL_AND_HORIZINTAL = -1
 		};
 	public:
+		static int checkMat(MMatIndex_t index);
+	public:
 
 		static void translation();
 
 		static void rotate();
-		static void leftRotate90();
-		static void rightRotate90();
+		static MMatIndex_t leftRotate90(MMatIndex_t index);
+		static MMatIndex_t rightRotate90(MMatIndex_t index);
 
 		static MMatIndex_t flip(MMatIndex_t index, int flip_code);
 

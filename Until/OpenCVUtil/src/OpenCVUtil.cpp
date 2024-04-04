@@ -19,16 +19,16 @@ int main()
 	MMat_t mat[2] = { mat_2, mat_2 };
 
 	//auto mat_h = vstack(mat, 2);
-	auto mat_h = mat_addBetweenMats(mat_1, mat_1);
+	auto mat_h = mat_subBetweenMats(mat_1, mat_1);
 	mat_showImg(mat_h, "img");
 	mat_saveImg(mat_h, "F://University//WorkAndReport//GraduationProject//ImageProcessingWebsite//Until//OpenCVUtil//test_resource//img//output/mat_addBetweenMats.jpg");
 
-	mat_h = mat_addBetweenMatAndValue(mat_1, 100);
+	mat_h = mat_subBetweenMatAndValue(mat_1, 100);
 	mat_saveImg(mat_h, "F://University//WorkAndReport//GraduationProject//ImageProcessingWebsite//Until//OpenCVUtil//test_resource//img//output/mat_addBetweenMatAndValue.jpg");
 	mat_showImg(mat_h, "img value");
 
 	Scalar s{ 10, 20, 120};
-	mat_h = mat_addBetweenMatAndScalar(mat_1, &s);
+	mat_h = mat_subBetweenMatAndScalar(mat_1, &s);
 
 	mat_saveImg(mat_h, "F://University//WorkAndReport//GraduationProject//ImageProcessingWebsite//Until//OpenCVUtil//test_resource//img//output/mat_addBetweenMatAndScalar.jpg");
 	mat_showImg(mat_h, "img scalar");
