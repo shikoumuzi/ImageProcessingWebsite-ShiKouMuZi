@@ -2,6 +2,19 @@
 
 namespace MUZI
 {
+	void MAffineTransform::translation()
+	{
+	}
+	void MAffineTransform::rotate()
+	{
+	}
+	void MAffineTransform::leftRotate90()
+	{
+		
+	}
+	void MAffineTransform::rightRotate90()
+	{
+	}
 	MMatIndex_t MAffineTransform::flip(MMatIndex_t index, int flip_code)
 	{
 		if (flip_code > 1 || flip_code < -1)
@@ -14,5 +27,8 @@ namespace MUZI
 		Mat dst_mat;
 		cv::flip(manager.getMat(index), dst_mat, flip_code);
 		return manager.setMat(dst_mat);
+	}
+	void MAffineTransform::pyrDown()
+	{
 	}
 }

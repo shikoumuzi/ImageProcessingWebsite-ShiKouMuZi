@@ -76,6 +76,7 @@ namespace MUZI
 		MMatIndex_t vstack(std::vector<MMatIndex_t>& imgs);
 		int32_t split(MMatIndex_t index, std::vector<MMatIndex_t>& mats);
 		MMatIndex_t merge(const std::vector<MMatIndex_t>& index);
+
 	private:
 		MMatIndex_t getNewIndex();
 	public:

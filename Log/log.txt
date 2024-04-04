@@ -38,3 +38,19 @@ LineID.[2024-04-01 00:31:54][][ThreadID]->main:this is warning message
 LineID.[2024-04-01 00:34:18][][ThreadID]->main:this is warning message
 LineID.[2024-04-01 00:35:57][][ThreadID]->main:this is warning message
 LineID.[2024-04-01 00:38:10][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 20:44:15][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 20:46:18][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 20:46:32][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 20:46:34][][ThreadID]->MNumericCalculation::add:OpenCV(4.8.0) C:\GHA-OCV-1\_work\ci-gha-workflow\ci-gha-workflow\opencv\modules\core\src\arithm.cpp:650: error: (-209:Sizes of input arguments do not match) The operation is neither 'array op array' (where arrays have the same size and the same number of channels), nor 'array op scalar', nor 'scalar op array' in function 'cv::arithm_op'
+LineID.[2024-04-04 20:47:57][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 21:29:43][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 21:34:09][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 21:35:20][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 21:45:11][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 21:45:53][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:11:30][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:12:02][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:13:51][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:15:55][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:16:24][][ThreadID]->main:this is warning message
+LineID.[2024-04-04 23:17:23][][ThreadID]->main:this is warning message

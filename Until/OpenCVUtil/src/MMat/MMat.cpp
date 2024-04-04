@@ -146,7 +146,7 @@ namespace MUZI
 		case 3:
 			return this->setMat(Mat::zeros(cv::Size(width, height), CV_8UC3));
 		default:
-			return MERROR::MNUMBERICCALCULATION_UNKONU_CHANNELS;
+			return MERROR::MNUMBERICCALCULATION_UNKONW_CHANNELS;
 			break;
 		}
 	}
@@ -179,8 +179,16 @@ namespace MUZI
 	{
 		cv::Mat dst_mat;
 		std::vector<cv::Mat> mats(matindexs.size());
+		int rows = 0, cols = 0;
 		for (int i = 0; i < matindexs.size(); ++i) {
 			mats[i] = this->getManager().getMat(matindexs[i]);
+			if (i > 0) {
+				if (mats[i].rows != rows || mats[i].cols != cols) {
+					return MERROR::MATMANAGER_NOT_MATCH_SHAPE;
+				}
+			}
+			rows = mats[i].rows;
+			cols = mats[i].cols;
 		}
 
 		try
@@ -198,8 +206,16 @@ namespace MUZI
 	{
 		cv::Mat dst_mat;
 		std::vector<cv::Mat> mats(matindexs.size());
+		int rows = 0, cols = 0;
 		for (int i = 0; i < matindexs.size(); ++i) {
 			mats[i] = this->getManager().getMat(matindexs[i]);
+			if (i > 0) {
+				if (mats[i].rows != rows || mats[i].cols != cols) {
+					return MERROR::MATMANAGER_NOT_MATCH_SHAPE;
+				}
+			}
+			rows = mats[i].rows;
+			cols = mats[i].cols;
 		}
 		cv::vconcat(mats, dst_mat);
 		return this->setMat(dst_mat);
@@ -263,7 +279,6 @@ namespace MUZI
 			return MERROR::MATMANAGER_MAT_COUNT_REACH_MAX;
 		}
 		this->m_data->m_mats[ret_index].mat = mat;
-		this->m_data->m_mats[ret_index].is_allocated = true;
 		return ret_index;
 	}
 	void MMatManger::freeMat(MMatIndex_t index)

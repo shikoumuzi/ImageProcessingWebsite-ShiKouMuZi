@@ -13,6 +13,9 @@ namespace MUZI
 		{
 			return MERROR::MNUMBERICCALCULATION__MATS_CHANNELS_IS_NOT_EQUAL;
 		}
+		if (a.rows != b.rows || a.cols != b.cols) {
+			return MERROR::MNUMBERICCALCULATION_NOT_MATCH_SHAPE;
+		}
 		return 0;
 	}
 
@@ -155,7 +158,7 @@ namespace MUZI
 			cv::Mat dst_mat;
 			cv::add(manager.getMat(mat_a), value, dst_mat);
 
-			return manager.getNewMat(dst_mat);
+			return manager.setMat(dst_mat);
 		}
 		catch (const std::exception& e)
 		{
@@ -178,7 +181,7 @@ namespace MUZI
 			cv::Mat dst_mat;
 			cv::addWeighted(mat_a, alpha, mat_b, beta, gamma, dst_mat);
 
-			return manager.getNewMat(dst_mat);
+			return manager.setMat(dst_mat);
 		}
 		catch (const std::exception& e)
 		{
@@ -278,7 +281,7 @@ namespace MUZI
 		}
 		cv::Mat dst_mat;
 		cv::subtract(manager.getMat(mat_a), cv::Scalar(std::get<0>(scalar), std::get<1>(scalar), std::get<2>(scalar)), dst_mat);
-		return manager.getNewMat(dst_mat);
+		return manager.setMat(dst_mat);
 	}
 
 	MMatIndex_t MNumericCalculation::sub(MMatIndex_t mat_a, uint8_t value, MMatIndex_t mask_index)
@@ -306,7 +309,7 @@ namespace MUZI
 		cv::Mat dst_mat;
 		cv::subtract(manager.getMat(mat_a), value, dst_mat);
 
-		return manager.getNewMat(dst_mat);
+		return manager.setMat(dst_mat);
 	}
 
 	MMatIndex_t MNumericCalculation::multiply(MMatIndex_t mat_a, MMatIndex_t mat_b)
