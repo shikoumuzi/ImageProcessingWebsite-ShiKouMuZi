@@ -12,10 +12,11 @@ extern "C"
 	{
 		return MUZI::MAffineTransform::leftRotate90(mat);
 	}
-	MMat_t mat_flip()
+	MMat_t mat_flip(MMat_t mat, int8_t file_code)
 	{
-		return MMat_t();
+		return MUZI::MAffineTransform::flip(file_code);
 	}
+
 }
 
 

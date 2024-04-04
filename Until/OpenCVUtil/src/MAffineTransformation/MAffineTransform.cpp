@@ -54,7 +54,7 @@ namespace MUZI
 		cv::rotate(mat, dst_mat, cv::ROTATE_90_CLOCKWISE);
 		return manager.setMat(dst_mat);
 	}
-	MMatIndex_t MAffineTransform::flip(MMatIndex_t index, int flip_code)
+	MMatIndex_t MAffineTransform::flip(MMatIndex_t index, int8_t flip_code)
 	{
 		if (flip_code > 1 || flip_code < -1)
 		{

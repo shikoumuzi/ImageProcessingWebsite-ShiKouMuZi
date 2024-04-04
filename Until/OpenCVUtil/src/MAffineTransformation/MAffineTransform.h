@@ -28,7 +28,7 @@ namespace MUZI
 		static MMatIndex_t leftRotate90(MMatIndex_t index);
 		static MMatIndex_t rightRotate90(MMatIndex_t index);
 
-		static MMatIndex_t flip(MMatIndex_t index, int flip_code);
+		static MMatIndex_t flip(MMatIndex_t index, int8_t flip_code);
 
 		static void pyrDown();
 	};
