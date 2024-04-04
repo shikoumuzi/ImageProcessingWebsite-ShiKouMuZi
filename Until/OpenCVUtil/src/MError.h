@@ -22,6 +22,7 @@ namespace MUZI
 
 			// AffineTransform
 			MAFFINETRANSFORM_FLIP_CODE_IS_NOT_MATCH = -301,
+			MAFFINETRANSFORM_IMAGE_IS_EMPTY = -302,
 		};
 	}
 }

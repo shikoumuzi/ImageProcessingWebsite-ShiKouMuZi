@@ -19,12 +19,12 @@ namespace MUZI
 			VERTICAL_AND_HORIZINTAL = -1
 		};
 	public:
-		static int checkMat(MMatIndex_t index);
+		static int checkMat(Mat& index);
 	public:
 
 		static void translation();
 
-		static void rotate();
+		static MMatIndex_t rotate(MMatIndex_t index);
 		static MMatIndex_t leftRotate90(MMatIndex_t index);
 		static MMatIndex_t rightRotate90(MMatIndex_t index);
 
