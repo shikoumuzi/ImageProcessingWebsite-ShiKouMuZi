@@ -115,6 +115,10 @@ fn earseHistoryOperation(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<S
     Json(earse_history_operation_response)
 }
 
+struct OperationDetailsString{
+    operations: String
+}
+
 #[post("/image_processing_website_api/get_operation_details_by_history_operation_id?<token>&<history_operation_id>")]
 fn getOperationDetailsByHistoryOperationId(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String,  history_operation_id: String) -> Json<HistoryOperationDetailsResponse> {
 
@@ -135,7 +139,13 @@ fn getOperationDetailsByHistoryOperationId(users: &State<Mutex<UserGroup>>, sqli
     }
 
     let mut stmt = stmt_result.unwrap();
-    let details_result = stmt.query_map(params![], |row| row.get(0));
+    let details_result = stmt.query_map(params![], |row| {
+        Ok(
+            OperationDetailsString{
+                operations: row.get(0)?
+            }
+        )
+    });
     if details_result.is_err(){
         println!("details_result is error");
         let history_operation_detail_response = HistoryOperationDetailsResponse::new( vec![], 1);
@@ -151,7 +161,7 @@ fn getOperationDetailsByHistoryOperationId(users: &State<Mutex<UserGroup>>, sqli
             return Json(history_operation_detail_response);
         }
         let unwrap_detail = detail.unwrap();
-        let operations: Operations = rocket::serde::json::from_str(unwrap_detail).unwrap();
+        let operations: Operations = rocket::serde::json::from_str(unwrap_detail.operations.as_str()).unwrap();
         operation_details_vec = operations.operation_detals;
         let history_operation_response = HistoryOperationDetailsResponse::new(operation_details_vec, 0);
         return Json(history_operation_response);

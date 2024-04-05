@@ -39,6 +39,9 @@ file(GLOB_RECURSE CPP_FILE_PATH src/*.cpp)
 file(GLOB_RECURSE TEST_PATH test/*.h test/*.cpp)
 file(GLOB_RECURSE H_FILE_PATH src/*.h)
 
+# 设置是否为动态库模式
+set(DLL_FLAG 1)
+
 macro(initBoost)
 	# BOOST的设置
 	# 设置不使用静态库
@@ -126,10 +129,15 @@ macro(initRapidJson)
 endmacro()
 initRapidJson()
 
-# 将源代码添加到此项目的可执行文件。
-add_executable (OpenCVUtil 
-				"src/OpenCVUtil.cpp" 
-				"src/OpenCVUtil.h" 
+
+
+# 添加预定义宏
+add_compile_definitions(
+	WINDOWS
+)
+
+set(SOURCE_FILE 
+
 				"src/MObjectBase.h" 
 				"src/MError.h" 
 				"src/MLog.h" 
@@ -142,7 +150,33 @@ add_executable (OpenCVUtil
 				"src/MNumericCalculation/MNumericCalculation.h" 
 				"src/MNumericCalculation/MNumericCalculation.cpp" 
 				"src/MNumericCalculation/MNumericCalculationInf.h" 
-				"src/MNumericCalculation/MNumericCalculationInf.cpp" "src/MAffineTransformation/MAffineTransform.h" "src/MAffineTransformation/MAffineTransform.cpp" "src/MConfig.h" "src/MAffineTransformation/MAffineTransformInf.h" "src/MAffineTransformation/MAffineTransformInf.cpp")
+				"src/MNumericCalculation/MNumericCalculationInf.cpp" 
+				"src/MAffineTransformation/MAffineTransform.h" 
+				"src/MAffineTransformation/MAffineTransform.cpp" 
+				"src/MConfig.h" 
+				"src/MAffineTransformation/MAffineTransformInf.h" 
+				"src/MAffineTransformation/MAffineTransformInf.cpp")
+set(MAIN_FILE
+			"src/OpenCVUtil.cpp" 
+			"src/OpenCVUtil.h" )
+
+if(${DLL_FLAG} EQUAL 1)
+	add_compile_definitions(
+		DLL_MODE
+	)
+	# 将源代码添加到此项目动态库。
+	add_library(OpenCVUtil
+		SHARED
+		${SOURCE_FILE})
+
+else()
+	# 将源代码添加到此项目的可执行文件。
+	add_executable (OpenCVUtil 
+		${SOURCE_FILE}
+		${MAIN_FILE}
+	)
+endif()
+
 
 # cmake变量名是区分大小写的
 macro(targetLinkLib)

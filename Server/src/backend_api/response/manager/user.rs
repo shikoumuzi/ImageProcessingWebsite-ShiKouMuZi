@@ -30,7 +30,7 @@ impl Response {
     }
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct UserMsg {
     #[serde(rename = "authority")]
     pub authority: u8,

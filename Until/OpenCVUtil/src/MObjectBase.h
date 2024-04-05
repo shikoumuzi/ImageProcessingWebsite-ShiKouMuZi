@@ -3,10 +3,21 @@
 #define __MUZI_MACRO_H__
 
 #define WINDOWS
+#define DLL_MODE
 #ifdef  WINDOWS
+
+#ifdef DLL_MODE
 #define DLLEXPORT __declspec(dllexport)
 #define FUNCTION
 #define DLLIMPORT __declspec(dllexport)
+#else 
+#define DLLEXPORT 
+#define FUNCTION
+#define DLLIMPORT 
+
+#endif // DLL_MODE
+
+
 #endif //  WINDOWS
 
 #ifdef LINUX

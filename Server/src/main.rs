@@ -5,7 +5,6 @@ mod backend_api;
 mod base_macro;
 mod sqlite;
 
-
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 

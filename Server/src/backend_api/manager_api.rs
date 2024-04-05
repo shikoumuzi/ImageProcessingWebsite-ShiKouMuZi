@@ -175,7 +175,7 @@ fn getAllUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>,
         }
 
         let mut history_operation_stmt = history_operation_stmt_result.unwrap();
-        tmp_user.history_operation_count = history_operation_stmt.query_map(params![], |row| row.get(0)?);
+        tmp_user.history_operation_count = history_operation_stmt.query_row(params![], |row| row.get(0)).unwrap();
         response_usermsg.push(tmp_user);
     }
 

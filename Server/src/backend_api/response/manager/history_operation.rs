@@ -50,7 +50,7 @@ pub struct HistoryOperation {
 }
 
 impl HistoryOperation {
-    pub fn new(history_operation_id: String, init_args: Vec<ArgPlaceholder>, note: String, operations: Option<Vec<Operations>>, time_stamp: u64) -> Self {
+    pub fn new(history_operation_id: String, init_args: Vec<ArgPlaceholder>, note: String, operations: Option<Vec<Operation>>, time_stamp: u64) -> Self {
         Self { history_operation_id, init_args, note, operations, time_stamp }
     }
 }

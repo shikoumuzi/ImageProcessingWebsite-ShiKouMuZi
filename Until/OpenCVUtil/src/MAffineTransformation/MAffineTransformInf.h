@@ -8,7 +8,7 @@ extern "C"
 		X_Y_AXIS = -1
 	};
 
-	MMat_t mat_leftRotate90(MMat_t mat);
-	MMat_t mat_rightRotate90(MMat_t mat);
-	MMat_t mat_flip(MMat_t mat, int8_t flip_code);
+	DLLEXPORT MMat_t mat_leftRotate90(MMat_t mat);
+	DLLEXPORT MMat_t mat_rightRotate90(MMat_t mat);
+	DLLEXPORT MMat_t mat_flip(MMat_t mat, int8_t flip_code);
 }
