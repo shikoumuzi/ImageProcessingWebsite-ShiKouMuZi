@@ -16,7 +16,6 @@ use super::super::super::response::operation::{common::Response as CommonRespons
 use super::typngs::Image::Image;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::ptr::copy;
 use rocket::fs::NamedFile;
 use std::option::Option;
 use super::super::super::base_method::base::USER_IMG_PATH;
@@ -83,6 +82,10 @@ pub fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_t
     let path_buf = self::saveFileToUserStoreByForm(&form, _user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     let mat_index = mat_method.readImg(path_buf.to_str().unwrap(), 1);
+    if mat_index < 0{
+        let response = ReadImgResponse::new(1, -1);
+        return Json(response);
+    }
 
     let response = ReadImgResponse::new(0, mat_index);
     Json(response)
@@ -101,7 +104,90 @@ pub async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: 
     return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
 }
 
+#[post("/image_processing_website_api/operation/mat/free_img?<token>&<mat_index>")]
+pub fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Json<CommonResponse>{
+    let _user = verifyToken(&users, &token);
+    if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        let response = CommonResponse::new(1);
+        return Json(response);
+    }
+    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+    let mut mat_method: Mat = Mat{};
+    mat_method.freeImg(mat_index);
+
+    let response = CommonResponse::new(0);
+    return Json(response);
+}
+
+#[post("/image_processing_website_api/operation/mat/copy?<token>&<src_mat_index>&<dst_mat_index>")]
+pub async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Option<NamedFile> {
+    let _user = verifyToken(&users, &token);
+    if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        return Option::None;
+    }
+    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+    let mut mat_method: Mat = Mat{};
+    mat_method.copy(src_mat_index, dst_mat_index);
+    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
+
+    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+}
+#[post("/image_processing_website_api/operation/mat/hstack?<token>&<mat_index_vec>")]
+pub async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+    let _user = verifyToken(&users, &token);
+    if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        return Option::None;
+    }
+
+    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+    let mut mat_method: Mat = Mat{};
+    let dst_mat_index = mat_method.hstack(mat_index_vec.as_ptr(), mat_index_vec.len() as u32);
+    if dst_mat_index < 0{
+        return Option::None;
+    }
+
+    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
+
+    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+}
+
+#[post("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index_vec>")]
+pub async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+    let _user = verifyToken(&users, &token);
+    if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        return Option::None;
+    }
+
+    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+    let mut mat_method: Mat = Mat{};
+    let dst_mat_index = mat_method.vstack(mat_index_vec.as_ptr(), mat_index_vec.len() as u32);
+    if dst_mat_index < 0{
+        return Option::None;
+    }
+
+    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
+
+    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+}
+
+#[post("/image_processing_website_api/operation/mat/vstack?<token>&<width>&<height>")]
+pub async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Option<NamedFile>{
+    let _user = verifyToken(&users, &token);
+    if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        return Option::None;
+    }
+
+    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+    let mut mat_method: Mat = Mat{};
+    let dst_mat_index = mat_method.resize(mat_index, width, height);
+    if dst_mat_index < 0{
+        return Option::None;
+    }
+
+    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
+    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+}
 
 pub fn get_routes() -> Vec<Route>{
-    return routes![readImg, saveImg]
+    return routes![readImg, saveImg, freeImg, copy, hstack, vstack, resize]
 }

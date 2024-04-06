@@ -8,8 +8,8 @@ extern {
     fn mat_freeImg(mat_index: i32) -> c_void;
     fn mat_createImg(mat_index: i32) -> i32;
     fn copy(mat_index_src: i32, mat_index_dest: i32) -> c_void;
-    fn hstack(mat_indexs_array: * mut i32, mats_count: u32) -> i32;
-    fn vstack(mat_indexs_array: * mut i32, mats_count: u32) -> i32;
+    fn hstack(mat_indexs_array: * const i32, mats_count: u32) -> i32;
+    fn vstack(mat_indexs_array: * const i32, mats_count: u32) -> i32;
     fn  resize(mat_index: i32, width: u32, height: u32) -> i32;
 }
 
@@ -43,12 +43,12 @@ impl Mat{
             copy(mat_index_src, mat_index_dest)
         }
     }
-    pub fn hstack(&mut self, mat_indexs_array: * mut i32, mats_count: u32) -> i32{
+    pub fn hstack(&mut self, mat_indexs_array: * const i32, mats_count: u32) -> i32{
         unsafe {
             hstack(mat_indexs_array, mats_count)
         }
     }
-    pub fn vstack(&mut self, mat_indexs_array: * mut i32, mats_count: u32) -> i32{
+    pub fn vstack(&mut self, mat_indexs_array: * const i32, mats_count: u32) -> i32{
         unsafe {
             vstack(mat_indexs_array, mats_count)
         }
