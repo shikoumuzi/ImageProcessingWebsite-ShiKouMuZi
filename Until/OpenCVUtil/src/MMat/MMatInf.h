@@ -24,9 +24,9 @@ extern "C"
 
 	DLLEXPORT void copy(MMat_t src, MMat_t dst);
 
-	DLLEXPORT MMat_t hstack(MMat_t*, uint32_t mat_size);
+	DLLEXPORT MMat_t hstack(const MMat_t*, uint32_t mat_size);
 
-	DLLEXPORT MMat_t vstack(MMat_t*, uint32_t mat_size);
+	DLLEXPORT MMat_t vstack(const MMat_t*, uint32_t mat_size);
 
 	DLLEXPORT MMat_t resize(MMat_t img, uint32_t width, uint32_t height);
 }

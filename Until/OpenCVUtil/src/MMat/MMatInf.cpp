@@ -35,7 +35,7 @@ extern "C"
 		MUZI::MMatManger::getManager().copy(src, dst);
 	}
 
-	MMat_t hstack(MMat_t* mats, uint32_t mat_size)
+	MMat_t hstack(const MMat_t* mats, uint32_t mat_size)
 	{
 		std::vector<MMat_t> mats_vec(mat_size);
 		for (int i = 0; i < mat_size; ++i)
@@ -45,7 +45,7 @@ extern "C"
 		return MUZI::MMatManger::getManager().hstack(mats_vec);
 	}
 
-	MMat_t vstack(MMat_t* mats, uint32_t mat_size)
+	MMat_t vstack(const MMat_t* mats, uint32_t mat_size)
 	{
 		std::vector<MMat_t> mats_vec(mat_size);
 		for (int i = 0; i < mat_size; ++i)

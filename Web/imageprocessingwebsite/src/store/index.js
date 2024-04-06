@@ -31,7 +31,36 @@ export default createStore({
       operation: {
         getHistoryOperationsList: '/history_operations',
         eraseHistoryOperationList: '/earse_history_operation', 
-        getOperationByHistoryOperationID: '/get_operation_details_by_history_operation_id'
+        getOperationByHistoryOperationID: '/get_operation_details_by_history_operation_id',
+
+        operation: {
+          mat: {
+            save_img: '/operation/mat/save_img',
+            read_img: '/operation/mat/read_img',
+            free_img: '/operation/mat/free_img',
+            copy: '/operation/mat/copy',
+            hstack: '/operation/mat/hstack',
+            vstack: '/operation/mat/vstack',
+            resize: '/operation/mat/resize'
+          },
+          numberic_calculation: {
+            add_between_mats: '/operation/numeric_calculation/add_between_mats',
+            add_between_mat_and_value: '/operation/numeric_calculation/add_between_mat_and_value',
+            add_between_mat_and_scalar: '/operation/numeric_calculation/add_between_mat_and_scalar',
+            sub_between_mats: '/operation/numeric_calculation/sub_between_mats',
+            sub_between_mat_and_value: '/operation/numeric_calculation/sub_between_mat_and_value',
+            sub_between_mat_and_scalar: '/operation/numeric_calculation/sub_between_mat_and_scalar',
+            bitwise_and: '/operation/numeric_calculation/bitwise_and',
+            bitwise_or: '/operation/numeric_calculation/bitwise_or',
+            bitwise_not: '/operation/numeric_calculation/bitwise_not',
+            bitwise_xor: '/operation/numeric_calculation/bitwise_xor',
+          },
+          affine_transform: {
+            left_rotate_90: '/operation/affine_transform/leftRotate90',
+            right_rotate_90: '/operation/affine_transform/rightRotate90',
+            flip: '/operation/affine_transform/flip'
+          }
+        }
       },
 
       // manager: {
