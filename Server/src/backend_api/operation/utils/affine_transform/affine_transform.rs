@@ -1,5 +1,6 @@
+use std::ffi::{c_void, CString};
 use libc;
-
+use super::super::mat::mat::Mat;
 #[link(name = "F:\\University\\WorkAndReport\\GraduationProject\\ImageProcessingWebsite\\Until\\OpenCVUtil\\out\\build\\x64-debug\\OpenCVUtil")]
 extern {
     fn mat_leftRotate90(mat: i32) -> i32;
@@ -32,4 +33,9 @@ impl AffineTransForm{
             mat_flip(mat, flip_code)
         }
     }
+    pub fn saveImg(&mut self, mat_index: i32, path: &str) -> c_void{
+        let mut mat: Mat = Mat{};
+        mat.saveImg(mat_index, path)
+    }
+
 }

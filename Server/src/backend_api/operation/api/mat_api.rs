@@ -112,7 +112,7 @@ async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
         return Option::None;
     }
 
-    for i in 0..mat_index_vec.size(){
+    for i in 0..mat_index_vec.len(){
         if mat_index_vec[i] < 0{
             return Option::None;
         }
@@ -136,7 +136,7 @@ async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
     }
-    for i in 0..mat_index_vec.size(){
+    for i in 0..mat_index_vec.len(){
         if mat_index_vec[i] < 0{
             return Option::None;
         }
@@ -153,7 +153,7 @@ async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
 }
 
-#[post("/image_processing_website_api/operation/mat/vstack?<token>&<width>&<height>")]
+#[post("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index>&<width>&<height>")]
 async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {

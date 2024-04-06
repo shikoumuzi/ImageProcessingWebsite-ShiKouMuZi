@@ -1,4 +1,7 @@
+use std::ffi::c_void;
 use libc;
+use crate::backend_api::operation::utils::mat::mat::Mat;
+
 #[repr(C)]
 pub struct Scalar
 {
@@ -81,6 +84,11 @@ impl NumericCalculation{
         unsafe {
             mat_BitwiseXor(img_a, img_b)
         }
+    }
+
+    pub fn saveImg(&mut self, mat_index: i32, path: &str) -> c_void{
+        let mut mat: Mat = Mat{};
+        mat.saveImg(mat_index, path)
     }
 
 }

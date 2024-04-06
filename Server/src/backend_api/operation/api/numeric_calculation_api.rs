@@ -57,7 +57,7 @@ async fn addBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, 
     let scalar = Scalar{r, g , b};
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut numeric_calculation_method: NumericCalculation = NumericCalculation{};
-    let dst_mat_index = numeric_calculation_method.addBetweenMatAndScalar(img_a, *scalar);
+    let dst_mat_index = numeric_calculation_method.addBetweenMatAndScalar(img_a, &scalar);
     if dst_mat_index < 0{
         return Option::None;
     }
@@ -118,7 +118,7 @@ async fn subBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, 
     let scalar = Scalar{r, g , b};
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut numeric_calculation_method: NumericCalculation = NumericCalculation{};
-    let dst_mat_index = numeric_calculation_method.subBetweenMatAndScalar(img_a, *scalar);
+    let dst_mat_index = numeric_calculation_method.subBetweenMatAndScalar(img_a, &scalar);
     if dst_mat_index < 0{
         return Option::None;
     }
