@@ -6,9 +6,12 @@ use rocket::fairing::AdHoc;
 use rocket::{Route, State};
 use rocket::serde::json::Json;
 
-use super::operation::api::mat_api::{readImg};
+use super::operation::api::mat_api;
 
 
 pub fn get_routes() -> Vec<Route>{
-    return routes![readImg]
+    let mut routes = routes![];
+    routes.append(&mut mat_api::get_routes());
+
+    return routes
 }

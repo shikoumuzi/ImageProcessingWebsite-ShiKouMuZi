@@ -16,14 +16,14 @@ use rocket::serde::{Serialize, Deserialize};
 #[derive(Serialize, Deserialize)]
 pub struct Response {
     #[serde(rename = "mat_index")]
-    pub mat_index: i64,
+    pub mat_index: i32,
 
     #[serde(rename = "status")]
     pub status: u8,
 }
 
 impl Response {
-    pub fn new(status: u8, mat_index: i64) -> Self {
+    pub fn new(status: u8, mat_index: i32) -> Self {
         Self { mat_index, status }
     }
 }

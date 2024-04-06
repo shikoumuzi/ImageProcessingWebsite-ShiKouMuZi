@@ -38,6 +38,7 @@ namespace MUZI
 
 	MMatIndex_t MMatManger::readImg(const Path& path, int flag)
 	{
+		//std::cout << path << std::endl;
 		MMatIndex_t ret_index = this->getNewIndex();
 		if (ret_index == -1)
 		{
@@ -68,6 +69,7 @@ namespace MUZI
 			img_buffer_vec.push_back('\0');*/
 
 			//this->m_data->m_mats[ret_index].mat = cv::imdecode(img_buffer_vec, flag);;
+			std::cout << "path is " << path.string() << std::endl;
 			this->m_data->m_mats[ret_index].mat = cv::imread(path.string(), flag);;
 			this->m_data->m_mats[ret_index].is_allocated = true;
 		}

@@ -1,20 +1,7 @@
-[development]
-address = "localhost"
-port = 10086
-keep_alive = 5
-log = "normal"
-limits = { forms = 32768 }
-
-[staging]
-address = "0.0.0.0"
-port = 10086
-keep_alive = 5
-log = "normal"
-limits = { forms = 32768 }
-
-[production]
-address = "0.0.0.0"
-port = 10086
-keep_alive = 5
-log = "critical"
-limits = { forms = 32768 }
+[default.limits]
+file = "50 MiB"
+"file/zip" = "50 MiB"
+forms = "20 MiB"
+json = "20 MiB"
+bytes = "20 MiB"
+data-form="50 MiB"

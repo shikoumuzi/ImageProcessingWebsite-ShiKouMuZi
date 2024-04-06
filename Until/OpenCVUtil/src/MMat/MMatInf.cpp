@@ -7,6 +7,7 @@ extern "C"
 {
 	MMat_t mat_readImg(const char* path, int flag)
 	{
+		//printf("%s", path);
 		return MUZI::MMatManger::getManager().readImg(path, flag);
 	}
 	void mat_saveImg(MMat_t img, const char* path)
