@@ -60,6 +60,9 @@ async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32)
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
     }
+    if mat_index < 0{
+        return Option::None
+    }
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     mat_method.saveImg(mat_index, path_buf.to_str().unwrap());
@@ -71,6 +74,10 @@ async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32)
 fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Json<CommonResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
+        let response = CommonResponse::new(1);
+        return Json(response);
+    }
+    if mat_index < 0{
         let response = CommonResponse::new(1);
         return Json(response);
     }
@@ -88,6 +95,9 @@ async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
     }
+    if (src_mat_index < 0) || (dst_mat_index < 0){
+        return Option::None;
+    }
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     mat_method.copy(src_mat_index, dst_mat_index);
@@ -100,6 +110,12 @@ async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
+    }
+
+    for i in 0..mat_index_vec.size(){
+        if mat_index_vec[i] < 0{
+            return Option::None;
+        }
     }
 
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
@@ -120,7 +136,11 @@ async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
     }
-
+    for i in 0..mat_index_vec.size(){
+        if mat_index_vec[i] < 0{
+            return Option::None;
+        }
+    }
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     let dst_mat_index = mat_method.vstack(mat_index_vec.as_ptr(), mat_index_vec.len() as u32);
@@ -138,6 +158,10 @@ async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, 
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
+    }
+
+    if mat_index < 0{
+        return Option::None
     }
 
     let path_buf = self::saveFileToUserStore(_user.unwrap().username);
