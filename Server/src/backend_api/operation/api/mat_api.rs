@@ -20,47 +20,10 @@ use rocket::fs::NamedFile;
 use std::option::Option;
 use super::super::super::base_method::base::USER_IMG_PATH;
 use super::super::utils::mat::mat::Mat;
-
-fn get_extension_from_filename(filename: &str) -> Option<&str> {
-    Path::new(filename)
-        .extension()
-        .and_then(OsStr::to_str)
-}
-
-fn saveFileToUserStoreByForm<'f>(form: &'f Form<Image<'_>>, username: String)-> PathBuf{
-    let user_img_path_str = USER_IMG_PATH.to_string();
-    let tmp_user_img_path = Path::new(&user_img_path_str);
-    let file_extenion: String = get_extension_from_filename(form.file_name.as_str()).unwrap().to_string();
-
-    let user_img_path_buf = tmp_user_img_path.join(username)
-        .join(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs().to_string() + "." + file_extenion.as_str());
-
-    let mut user_img_path: &Path = user_img_path_buf.as_path();
-    unsafe { std::fs::copy(form.file.path().unwrap(), user_img_path); }
-
-    return user_img_path_buf
-}
-
-fn saveFileToUserStore(username: String)-> PathBuf{
-    let user_img_path_str = USER_IMG_PATH.to_string();
-    let tmp_user_img_path = Path::new(&user_img_path_str);
-
-    let user_img_path_buf = tmp_user_img_path.join(username)
-        .join(SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs().to_string() + ".jpg");
-
-    return user_img_path_buf
-}
-
-fn path2CString(path_buf: PathBuf) -> CString{
-    let mut path = path_buf.as_os_str().to_str().unwrap().to_string().replace("\\", "/");
-    println!("{}", path);
-    let cpath = CString::new(path).unwrap();
-    println!("path is {:?}", cpath);
-    return cpath
-}
+use super::base_method::*;
 
 #[post("/image_processing_website_api/operation/mat/read_img", data="<form>")]
-pub fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type: &ContentType)-> Json<ReadImgResponse>{
+fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type: &ContentType)-> Json<ReadImgResponse>{
 
 
     let _user = verifyToken(&users, &form.token);
@@ -92,7 +55,7 @@ pub fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_t
 
 }
 #[post("/image_processing_website_api/operation/mat/save_img?<token>&<mat_index>")]
-pub async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> std::option::Option<NamedFile>{
+async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> std::option::Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
@@ -105,7 +68,7 @@ pub async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: 
 }
 
 #[post("/image_processing_website_api/operation/mat/free_img?<token>&<mat_index>")]
-pub fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Json<CommonResponse>{
+fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Json<CommonResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         let response = CommonResponse::new(1);
@@ -120,7 +83,7 @@ pub fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -
 }
 
 #[post("/image_processing_website_api/operation/mat/copy?<token>&<src_mat_index>&<dst_mat_index>")]
-pub async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Option<NamedFile> {
+async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Option<NamedFile> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
@@ -133,7 +96,7 @@ pub async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index:
     return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
 }
 #[post("/image_processing_website_api/operation/mat/hstack?<token>&<mat_index_vec>")]
-pub async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
@@ -152,7 +115,7 @@ pub async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_ve
 }
 
 #[post("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index_vec>")]
-pub async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;
@@ -171,7 +134,7 @@ pub async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_ve
 }
 
 #[post("/image_processing_website_api/operation/mat/vstack?<token>&<width>&<height>")]
-pub async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Option<NamedFile>{
+async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
         return Option::None;

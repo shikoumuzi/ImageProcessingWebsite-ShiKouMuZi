@@ -4,3 +4,10 @@ use libc;
 extern {
 
 }
+
+pub struct AffineTransForm{
+}
+
+impl AffineTransForm{
+
+}
