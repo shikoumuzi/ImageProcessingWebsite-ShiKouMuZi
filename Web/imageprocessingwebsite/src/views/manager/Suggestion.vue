@@ -83,7 +83,7 @@ export default {
     if (this.$store.getters.getManagerStore.value !== null) {
       if (this.$store.getters.getManagerStore.value.suggestions === null || 
         this.$store.getters.getManagerStore.value.suggestions === undefined) {
-        axios.post(this.$store.getters.getUrl.manager.suggestion.getAllSuggestions, {
+        axios.get(this.$store.getters.getUrl.manager.suggestion.getAllSuggestions, {
           params: {
             token: this.$store.getters.getToken,
             now_len: 0
@@ -149,7 +149,7 @@ export default {
     submitResponseToSuggestion(suggestion_id, response, index) {
       // console.log(suggestion_id, response)
       if (this.$store.getters.getUserBaseMsg.value.authority === 2) {
-        axios.post(this.$store.getters.getUrl.manager.suggestion.submitResponseToSuggestionByID, {
+        axios.get(this.$store.getters.getUrl.manager.suggestion.submitResponseToSuggestionByID, {
           params: {
             token: this.$store.getters.getToken,
             suggestion_id: suggestion_id,
@@ -172,7 +172,7 @@ export default {
     // eslint-disable-next-line camelcase
     eraseSuggestion(suggestion_id, index) {
       if (this.$store.getters.getUrl.manager !== null) {
-        axios.post(this.$store.getters.getUrl.manager.suggestion.ignoreSuggestionByID, 
+        axios.get(this.$store.getters.getUrl.manager.suggestion.ignoreSuggestionByID, 
         {
           params: {
             token: this.$store.getters.getToken,
@@ -217,7 +217,7 @@ export default {
               if (!this.is_end) {
               // console.log(e.target.scrollTop + e.target.clientHeight, e.target.scrollHeight)
               // console.log('loading')
-              axios.post(this.$store.getters.getUrl.manager.suggestion.getAllSuggestions, {
+              axios.get(this.$store.getters.getUrl.manager.suggestion.getAllSuggestions, {
               params: {
                 token: this.$store.getters.getToken,
                 now_len: this.suggestions.length

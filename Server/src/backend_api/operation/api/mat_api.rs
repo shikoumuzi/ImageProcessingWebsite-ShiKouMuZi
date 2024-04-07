@@ -23,7 +23,7 @@ use super::super::utils::mat::mat::Mat;
 use super::base_method::*;
 
 
-#[post("/image_processing_website_api/operation/mat/read_img", data="<form>")]
+#[get("/image_processing_website_api/operation/mat/read_img", data="<form>")]
 fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type: &ContentType)-> Json<ReadImgResponse>{
 
 
@@ -56,7 +56,7 @@ fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type:
 
 }
 
-#[post("/image_processing_website_api/operation/mat/save_img?<token>&<mat_index>")]
+#[get("/image_processing_website_api/operation/mat/save_img?<token>&<mat_index>")]
 async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> std::option::Option<NamedFile>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -72,7 +72,7 @@ async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32)
     return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
 }
 
-#[post("/image_processing_website_api/operation/mat/free_img?<token>&<mat_index>")]
+#[get("/image_processing_website_api/operation/mat/free_img?<token>&<mat_index>")]
 fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Json<CommonResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -91,7 +91,7 @@ fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Js
     return Json(response);
 }
 
-#[post("/image_processing_website_api/operation/mat/copy?<token>&<src_mat_index>&<dst_mat_index>")]
+#[get("/image_processing_website_api/operation/mat/copy?<token>&<src_mat_index>&<dst_mat_index>")]
 async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -109,7 +109,7 @@ async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32
     let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
     return Json(image_index_response);
 }
-#[post("/image_processing_website_api/operation/mat/hstack?<token>&<mat_index_vec>")]
+#[get("/image_processing_website_api/operation/mat/hstack?<token>&<mat_index_vec>")]
 async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -134,7 +134,7 @@ async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index_vec>")]
+#[get("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index_vec>")]
 async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -159,7 +159,7 @@ async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: V
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/mat/resize?<token>&<mat_index>&<width>&<height>")]
+#[get("/image_processing_website_api/operation/mat/resize?<token>&<mat_index>&<width>&<height>")]
 async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {

@@ -120,7 +120,7 @@ router.beforeEach((to, from, next) => {
       next('/')
     }
     
-    axios.post(store.getters.getUrl.user.checkManagerAuthority, 
+    axios.get(store.getters.getUrl.user.checkManagerAuthority, 
     {
       params: {
         token: store.getters.getToken

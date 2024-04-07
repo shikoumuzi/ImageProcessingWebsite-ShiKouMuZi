@@ -92,7 +92,7 @@ export default {
           this.$refs.loginForm.validate(
             (valid) => { 
               if (valid) {
-                axios.post(this.$store.getters.getUrl.user.login, {
+                axios.get(this.$store.getters.getUrl.user.login, {
                   params: {
                     username: this.login_form.username,
                     password: this.login_form.password

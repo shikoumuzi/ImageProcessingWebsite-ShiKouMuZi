@@ -74,7 +74,7 @@ export default {
             callback(new Error('密码长度为6-20位'))
           } else {
             console.log(this.$store.getters.getUrl.user.checkPassword)
-            axios.post(this.$store.getters.getUrl.user.checkPassword, {
+            axios.get(this.$store.getters.getUrl.user.checkPassword, {
               params: {
                 token: this.$store.getters.getToken,
                 username: this.$store.getters.getUserBaseMsg.value.username,
@@ -165,7 +165,7 @@ export default {
       this.is_reset = false
     },
     submitResetForm() {
-      axios.post(this.$store.getters.getUrl.user.resetPassword, {
+      axios.get(this.$store.getters.getUrl.user.resetPassword, {
         params: {
           token: this.$store.getters.getToken,
           username: this.$store.getters.getUserBaseMsg.value.username,

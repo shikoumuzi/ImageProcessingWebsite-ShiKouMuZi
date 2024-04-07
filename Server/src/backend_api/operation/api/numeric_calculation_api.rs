@@ -7,7 +7,7 @@ use crate::backend_api::operation::utils::numeric_calculation::numeric_calculati
 use crate::typings::user::user::UserGroup;
 use super::super::super::response::operation::image_index::Response as ImageIndexResponse;
 
-#[post("/image_processing_website_api/operation/numeric_calculation/add_between_mats?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/add_between_mats?<token>&<img_a>&<img_b>")]
 async fn addBetweenMats(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -30,7 +30,7 @@ async fn addBetweenMats(users: &State<Mutex<UserGroup>>, token: String, img_a: i
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/add_between_mat_and_value?<token>&<img_a>&<value>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/add_between_mat_and_value?<token>&<img_a>&<value>")]
 async fn addBetweenMatAndValue(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, value: u8)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -53,7 +53,7 @@ async fn addBetweenMatAndValue(users: &State<Mutex<UserGroup>>, token: String, i
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/add_between_mat_and_scalar?<token>&<img_a>&<r>&<g>&<b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/add_between_mat_and_scalar?<token>&<img_a>&<r>&<g>&<b>")]
 async fn addBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, r: u8, g: u8, b:u8)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -77,7 +77,7 @@ async fn addBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, 
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/sub_between_mats?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/sub_between_mats?<token>&<img_a>&<img_b>")]
 async fn subBetweenMats(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -100,7 +100,7 @@ async fn subBetweenMats(users: &State<Mutex<UserGroup>>, token: String, img_a: i
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/sub_between_mat_and_value?<token>&<img_a>&<value>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/sub_between_mat_and_value?<token>&<img_a>&<value>")]
 async fn subBetweenMatAndValue(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, value: u8)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -123,7 +123,7 @@ async fn subBetweenMatAndValue(users: &State<Mutex<UserGroup>>, token: String, i
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/sub_between_mat_and_scalar?<token>&<img_a>&<r>&<g>&<b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/sub_between_mat_and_scalar?<token>&<img_a>&<r>&<g>&<b>")]
 async fn subBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, r: u8, g: u8, b:u8)-> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -147,7 +147,7 @@ async fn subBetweenMatAndScalar(users: &State<Mutex<UserGroup>>, token: String, 
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/bitwise_and?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/bitwise_and?<token>&<img_a>&<img_b>")]
 async fn bitwiseAnd(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -170,7 +170,7 @@ async fn bitwiseAnd(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, 
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/bitwise_or?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/bitwise_or?<token>&<img_a>&<img_b>")]
 async fn bitwiseOr(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -193,7 +193,7 @@ async fn bitwiseOr(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, i
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/bitwise_not?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/bitwise_not?<token>&<img_a>&<img_b>")]
 async fn bitwiseNot(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -216,7 +216,7 @@ async fn bitwiseNot(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, 
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/numeric_calculation/bitwise_xor?<token>&<img_a>&<img_b>")]
+#[get("/image_processing_website_api/operation/numeric_calculation/bitwise_xor?<token>&<img_a>&<img_b>")]
 async fn bitwiseXor(users: &State<Mutex<UserGroup>>, token: String, img_a: i32, img_b: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {

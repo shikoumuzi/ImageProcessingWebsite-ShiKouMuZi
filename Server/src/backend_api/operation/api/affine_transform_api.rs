@@ -9,7 +9,7 @@ use super::super::utils::affine_transform::affine_transform::AffineTransForm;
 use super::base_method::*;
 use super::super::super::response::operation::image_index::Response as ImageIndexResponse;
 
-#[post("/image_processing_website_api/operation/affine_transform/leftRotate90?<token>&<mat>")]
+#[get("/image_processing_website_api/operation/affine_transform/leftRotate90?<token>&<mat>")]
 async fn leftRotate90(users: &State<Mutex<UserGroup>>, token: String, mat: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -31,7 +31,7 @@ async fn leftRotate90(users: &State<Mutex<UserGroup>>, token: String, mat: i32)-
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/affine_transform/rightRotate90?<token>&<mat>")]
+#[get("/image_processing_website_api/operation/affine_transform/rightRotate90?<token>&<mat>")]
 async fn rightRotate90(users: &State<Mutex<UserGroup>>, token: String, mat: i32)-> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
@@ -53,7 +53,7 @@ async fn rightRotate90(users: &State<Mutex<UserGroup>>, token: String, mat: i32)
     return Json(image_index_response);
 }
 
-#[post("/image_processing_website_api/operation/affine_transform/flip?<token>&<mat>&<flip_code>")]
+#[get("/image_processing_website_api/operation/affine_transform/flip?<token>&<mat>&<flip_code>")]
 async fn flip(users: &State<Mutex<UserGroup>>, token: String, mat: i32, flip_code: i8)->Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {

@@ -92,7 +92,7 @@ export default {
     if (this.$store.getters.getManagerStore.value !== null) {
       if (this.$store.getters.getManagerStore.value.history_operations === null ||
       this.$store.getters.getManagerStore.value.history_operations === undefined) {
-        axios.post(this.$store.getters.getUrl.manager.history_operations.getAllHistoryOperation, {
+        axios.get(this.$store.getters.getUrl.manager.history_operations.getAllHistoryOperation, {
           params: {
             token: this.$store.getters.getToken
           }
@@ -176,7 +176,7 @@ export default {
     spanOperationOfHistoryOperation(row, index) {
       // console.log(row)
       if (row.operations === null || row.operations === undefined || row.operations.length === 0) {
-        axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
+        axios.get(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
         params: {
           token: this.$store.getters.getToken,
           history_operation_id: row.history_operation_id

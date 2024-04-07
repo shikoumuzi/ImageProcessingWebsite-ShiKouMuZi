@@ -102,7 +102,7 @@ export default {
         if (this.$store.getters.getManagerStore.value !== null) {
             if (this.$store.getters.getManagerStore.value.user_msg === null || 
             this.$store.getters.getManagerStore.value.user_msg === undefined) {
-                axios.post(this.$store.getters.getUrl.manager.user.getAllUserMsg, {
+                axios.get(this.$store.getters.getUrl.manager.user.getAllUserMsg, {
                     params: {
                         token: this.$store.getters.getToken
                     }
@@ -177,7 +177,7 @@ export default {
           this.users.splice((this.current_page - 1) * 15 + index, 1)
           this.part_of_users.splice(index, 1)
 
-          axios.post(this.$store.getters.getUrl.manager.user.eraseUserMsg, {
+          axios.get(this.$store.getters.getUrl.manager.user.eraseUserMsg, {
             params: {
               token: this.$store.getters.getToken,
               username: username

@@ -107,7 +107,7 @@ export default {
         this.$ref[register_form_name].validate(
           (valid) => {
             if (valid) {
-              axios.post(this.$store.getters.getUrl.user.register, {
+              axios.get(this.$store.getters.getUrl.user.register, {
                 params: {
                   username: this.register_form.username,
                   password: this.register_form.password,

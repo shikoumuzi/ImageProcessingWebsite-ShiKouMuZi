@@ -20,7 +20,7 @@ use super::response::manager::history_operation::{HistoryOperation, Operation, R
 use super::base_method::base::{USER_IMG_PATH, verifyToken};
 // ================= suggestion ==============================
 
-#[post("/image_processing_website_api/manager/get_all_suggestions?<token>&<now_len>")]
+#[get("/image_processing_website_api/manager/get_all_suggestions?<token>&<now_len>")]
 fn getAllSuggestions(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, now_len: u16) -> Json<SuggestionResponse>{
     let user = verifyToken(users, &token);
     if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) || (now_len > 100){
@@ -64,7 +64,7 @@ fn getAllSuggestions(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLit
     Json(suggestion_response)
 }
 
-#[post("/image_processing_website_api/manager/submit_response_to_suggestion_by_id?<token>&<suggestion_id>&<response>")]
+#[get("/image_processing_website_api/manager/submit_response_to_suggestion_by_id?<token>&<suggestion_id>&<response>")]
 fn submitResponseToSuggestionById(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, suggestion_id: u64, response: String) -> Json<CommonResponse>{
     let user = verifyToken(&users, &token);
     if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {
@@ -85,7 +85,7 @@ fn submitResponseToSuggestionById(users: &State<Mutex<UserGroup>>, sqlite: &Stat
     Json(common_response)
 }
 
-#[post("/image_processing_website_api/manager/ignore_suggestion_by_id?<token>&<suggestion_id>")]
+#[get("/image_processing_website_api/manager/ignore_suggestion_by_id?<token>&<suggestion_id>")]
 fn ignoreSuggestionById(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, suggestion_id: String) -> Json<CommonResponse>{
     let user = verifyToken(&users, &token);
     if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {
@@ -109,7 +109,7 @@ fn ignoreSuggestionById(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQ
 
 
 // ================= user ==============================
-#[post("/image_processing_website_api/manager/get_all_user_msg?<token>")]
+#[get("/image_processing_website_api/manager/get_all_user_msg?<token>")]
 fn getAllUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String) -> Json<UserResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 2) {
@@ -183,7 +183,7 @@ fn getAllUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>,
     Json(user_response)
 }
 
-#[post("/image_processing_website_api/manager/erase_user_msg?<token>&<username>")]
+#[get("/image_processing_website_api/manager/erase_user_msg?<token>&<username>")]
 fn eraseUserMsg(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, username: String) -> Json<CommonResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 2) || (_user.as_ref().unwrap().username == username){
@@ -229,7 +229,7 @@ impl Operations {
     }
 }
 
-#[post("/image_processing_website_api/manager/get_all_history_operation?<token>")]
+#[get("/image_processing_website_api/manager/get_all_history_operation?<token>")]
 fn getAllHistoryOperation(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String) -> Json<HistoryOperationResponse>{
     let user = verifyToken(&users, &token);
     if (user.as_ref().is_none()) || (user.as_ref().unwrap().authority != 2) {

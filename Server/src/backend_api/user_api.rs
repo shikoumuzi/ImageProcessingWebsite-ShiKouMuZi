@@ -20,7 +20,7 @@ struct Password{
     pub password: String
 }
 
-#[post("/image_processing_website_api/login?<username>&<password>")]
+#[get("/image_processing_website_api/login?<username>&<password>")]
 fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, username: String, password: String)-> Json<LoginResponse> {
 
     let mut _users = users.lock().unwrap();
@@ -97,7 +97,7 @@ fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, usernam
     }
 }
 
-#[post("/image_processing_website_api/register?<username>&<password>&<time_stamp>")]
+#[get("/image_processing_website_api/register?<username>&<password>&<time_stamp>")]
 fn register(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, username: String, password: String, time_stamp: u64) -> Json<CommonResponse>{
 
     let re = Regex::new("^([a-zA-Z]*)(\\d*)([~!@#$%^&*()_+`\\-={}:\";'<>?,./]*).{6,20}$").unwrap();
@@ -134,7 +134,7 @@ fn register(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, user
     Json(resigter_response)
 }
 
-#[post("/image_processing_website_api/resetPassword?<token>&<username>&<old_password>&<new_password>")]
+#[get("/image_processing_website_api/resetPassword?<token>&<username>&<old_password>&<new_password>")]
 fn resetPassword(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, username: String, old_password: String, new_password: String) -> Json<CommonResponse> {
 
     let re = Regex::new("^([a-zA-Z]*)(\\d*)([~!@#$%^&*()_+`\\-={}:\";'<>?,./]*).{6,20}$").unwrap();
@@ -210,7 +210,7 @@ fn resetPassword(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>,
     return Json(reset_password_response);
 }
 
-#[post("/image_processing_website_api/checkManagerAuthority?<token>")]
+#[get("/image_processing_website_api/checkManagerAuthority?<token>")]
 fn checkManagerAuthority(users: &State<Mutex<UserGroup>>, token: String)-> Json<CommonResponse> {
 
     let mut users_result = users.lock().unwrap();
@@ -224,7 +224,7 @@ fn checkManagerAuthority(users: &State<Mutex<UserGroup>>, token: String)-> Json<
     Json(resigter_response)
 }
 
-#[post("/image_processing_website_api/checkPassword?<token>&<username>&<password>")]
+#[get("/image_processing_website_api/checkPassword?<token>&<username>&<password>")]
 fn checkPassword(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String, username: String, password: String) -> Json<CommonResponse> {
     let mut _users = users.lock().unwrap();
     if _users.find_token(&token) == false {

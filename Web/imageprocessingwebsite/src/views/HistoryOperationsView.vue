@@ -113,7 +113,7 @@ export default {
       if (index > this.$store.getters.getUserBaseMsg.value.history_operations.size()) {
         return
       }
-      axios.post(this.$store.getters.getUrl.operation.eraseHistoryOperationList, {
+      axios.get(this.$store.getters.getUrl.operation.eraseHistoryOperationList, {
         params: {
           token: this.$store.getters.getToken,
           history_operation_id: this.history_operations[index].history_operation_id
@@ -142,7 +142,7 @@ export default {
       // 如果当前历史操作并没有存储操作详情
       if (this.$store.getters.getUserBaseMsg.value.history_operations.getEle(index).value.isNotStoreOperations()) {
         // 获取操作信息
-        axios.post(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
+        axios.get(this.$store.getters.getUrl.operation.getOperationByHistoryOperationID, {
         params: {
           token: this.$store.getters.getToken,
           history_operation_id: this.history_operations[index].history_operation_id

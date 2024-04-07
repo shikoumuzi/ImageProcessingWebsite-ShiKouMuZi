@@ -72,7 +72,7 @@ export default {
                 this.user_form.password = ''
                 return
             }
-            axios.post(this.$store.getters.getUrl.user.resetPassword, {
+            axios.get(this.$store.getters.getUrl.user.resetPassword, {
                 params: {
                     token: this.$store.getters.getToken,
                     username: this.user_form.username,

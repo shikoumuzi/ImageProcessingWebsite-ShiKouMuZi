@@ -92,7 +92,7 @@ fn getHistoryOperations(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQ
 
 }
 
-#[post("/image_processing_website_api/earse_history_operation?<token>&<history_operation_id>")]
+#[get("/image_processing_website_api/earse_history_operation?<token>&<history_operation_id>")]
 fn earseHistoryOperation(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String,  history_operation_id: String) ->Json<EarseHistoryOperationResponse>{
 
     let user = verifyToken(&users, &token);
@@ -119,7 +119,7 @@ struct OperationDetailsString{
     operations: String
 }
 
-#[post("/image_processing_website_api/get_operation_details_by_history_operation_id?<token>&<history_operation_id>")]
+#[get("/image_processing_website_api/get_operation_details_by_history_operation_id?<token>&<history_operation_id>")]
 fn getOperationDetailsByHistoryOperationId(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, token: String,  history_operation_id: String) -> Json<HistoryOperationDetailsResponse> {
 
     let user = verifyToken(&users, &token);
