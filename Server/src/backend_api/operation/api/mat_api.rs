@@ -12,7 +12,7 @@ use rocket::http::ContentType;
 use rocket::serde::json::Json;
 use rocket_multipart_form_data::{mime, MultipartFormDataOptions, MultipartFormData, MultipartFormDataField, Repetition};
 use crate::backend_api::base_method::base::verifyToken;
-use super::super::super::response::operation::{common::Response as CommonResponse, mat::read_img::Response as ReadImgResponse};
+use super::super::super::response::operation::{common::Response as CommonResponse, mat::read_img::Response as ReadImgResponse, image_index::Response as ImageIndexResponse};
 use super::typngs::Image::Image;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -21,6 +21,7 @@ use std::option::Option;
 use super::super::super::base_method::base::USER_IMG_PATH;
 use super::super::utils::mat::mat::Mat;
 use super::base_method::*;
+
 
 #[post("/image_processing_website_api/operation/mat/read_img", data="<form>")]
 fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type: &ContentType)-> Json<ReadImgResponse>{
@@ -54,6 +55,7 @@ fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type:
     Json(response)
 
 }
+
 #[post("/image_processing_website_api/operation/mat/save_img?<token>&<mat_index>")]
 async fn saveImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> std::option::Option<NamedFile>{
     let _user = verifyToken(&users, &token);
@@ -90,91 +92,95 @@ fn freeImg(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32) -> Js
 }
 
 #[post("/image_processing_website_api/operation/mat/copy?<token>&<src_mat_index>&<dst_mat_index>")]
-async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Option<NamedFile> {
+async fn copy(users: &State<Mutex<UserGroup>>, token: String, src_mat_index: i32, dst_mat_index: i32) -> Json<ImageIndexResponse> {
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
     if (src_mat_index < 0) || (dst_mat_index < 0){
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
-    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+
     let mut mat_method: Mat = Mat{};
     mat_method.copy(src_mat_index, dst_mat_index);
-    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
 
-    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+    let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
+    return Json(image_index_response);
 }
 #[post("/image_processing_website_api/operation/mat/hstack?<token>&<mat_index_vec>")]
-async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+async fn hstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
 
     for i in 0..mat_index_vec.len(){
         if mat_index_vec[i] < 0{
-            return Option::None;
+            let image_index_response = ImageIndexResponse::new(1, -1);
+            return Json(image_index_response);
         }
     }
 
-    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     let dst_mat_index = mat_method.hstack(mat_index_vec.as_ptr(), mat_index_vec.len() as u32);
     if dst_mat_index < 0{
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
-
-    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
-
-    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+    let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
+    return Json(image_index_response);
 }
 
 #[post("/image_processing_website_api/operation/mat/vstack?<token>&<mat_index_vec>")]
-async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Option<NamedFile>{
+async fn vstack(users: &State<Mutex<UserGroup>>, token: String, mat_index_vec: Vec<i32>) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
+
     for i in 0..mat_index_vec.len(){
         if mat_index_vec[i] < 0{
-            return Option::None;
+            let image_index_response = ImageIndexResponse::new(1, -1);
+            return Json(image_index_response);
         }
     }
-    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
+
     let mut mat_method: Mat = Mat{};
     let dst_mat_index = mat_method.vstack(mat_index_vec.as_ptr(), mat_index_vec.len() as u32);
     if dst_mat_index < 0{
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
-
-    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
-
-    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+    let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
+    return Json(image_index_response);
 }
 
 #[post("/image_processing_website_api/operation/mat/resize?<token>&<mat_index>&<width>&<height>")]
-async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Option<NamedFile>{
+async fn resize(users: &State<Mutex<UserGroup>>, token: String, mat_index: i32, width: u32, height: u32) -> Json<ImageIndexResponse>{
     let _user = verifyToken(&users, &token);
     if (_user.as_ref().is_none()) || (_user.as_ref().unwrap().authority != 1) {
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
 
     if mat_index < 0{
-        return Option::None
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
 
-    let path_buf = self::saveFileToUserStore(_user.unwrap().username);
     let mut mat_method: Mat = Mat{};
     let dst_mat_index = mat_method.resize(mat_index, width, height);
     if dst_mat_index < 0{
-        return Option::None;
+        let image_index_response = ImageIndexResponse::new(1, -1);
+        return Json(image_index_response);
     }
-
-    mat_method.saveImg(dst_mat_index, path_buf.to_str().unwrap());
-    return std::option::Option::from(NamedFile::open(path_buf).await.ok()?);
+    let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
+    return Json(image_index_response);
 }
-
 pub fn get_routes() -> Vec<Route>{
     return routes![readImg, saveImg, freeImg, copy, hstack, vstack, resize]
 }
