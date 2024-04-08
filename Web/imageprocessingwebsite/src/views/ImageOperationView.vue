@@ -81,6 +81,34 @@
                     <div v-if="this.now_show_method=='ReadImg'">
                       <ReadImg/>
                     </div>
+                    <div v-else-if="this.now_show_method=='FreeImg'">
+                      <FreeImg/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='HVStack'">
+                      <HVStack/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='Bitwise'">
+                      <Bitwise/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='Resize'">
+                      <Resize/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='Flip'">
+                      <Flip/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='Rotate'">
+                      <Rotate/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='AddOrSubBetweenMats'">
+                      <AddOrSubBetweenMats/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='AddOrSubBetweenMatAndValue'">
+                      <AddOrSubBetweenMatAndValue/>
+                    </div>
+                    <div v-else-if="this.now_show_method=='AddOrSubBetweenMatAndScalar'">
+                      <AddOrSubBetweenMatAndScalar/>
+                    </div>
+
                 </div>
               </el-col>
             </el-row>
@@ -165,10 +193,30 @@
 
 <script>
 import Operation from '@/typings/Operation'
+import AddOrSubBetweenMats from '@/components/ImgOperations/NumericCalculation/AddOrSubBetweenMats.vue'
+import AddOrSubBetweenMatAndValue from '@/components/ImgOperations/NumericCalculation/AddOrSubBetweenMatAndValue.vue'
+import AddOrSubBetweenMatAndScalar from '@/components/ImgOperations/NumericCalculation/AddOrSubBetweenMatAndScalar.vue'
 import ReadImg from '@/components/ImgOperations/Mat/ReadImg.vue'
+import FreeImg from '@/components/ImgOperations/Mat/FreeImg.vue'
+import HVStack from '@/components/ImgOperations/Mat/HVStack.vue'
+import Bitwise from '@/components/ImgOperations/NumericCalculation/Bitwise.vue'
+import Resize from '@/components/ImgOperations/Mat/Resize.vue'
+
+import Flip from '@/components/ImgOperations/AffineTransform/Flip.vue'
+import Rotate from '@/components/ImgOperations/AffineTransform/Rotate.vue'
+
 export default {
     components: {
       ReadImg,
+      FreeImg,
+      HVStack,
+      Bitwise,
+      Resize,
+      Flip,
+      Rotate,
+      AddOrSubBetweenMats,
+      AddOrSubBetweenMatAndValue,
+      AddOrSubBetweenMatAndScalar
     },
 
     // created() {
