@@ -78,8 +78,9 @@
                   height: 100%; 
                   margin-top: 70px;
                   margin-bottom: 50px;">
-                  方法参数填写区
-
+                    <div v-if="this.now_show_method=='ReadImg'">
+                      <ReadImg/>
+                    </div>
                 </div>
               </el-col>
             </el-row>
@@ -164,8 +165,12 @@
 
 <script>
 import Operation from '@/typings/Operation'
-
+import ReadImg from '@/components/ImgOperations/Mat/ReadImg.vue'
 export default {
+    components: {
+      ReadImg,
+    },
+
     // created() {
     //   for (let i = 0; i < 50; ++i) {
     //     const operation = new Operation()
@@ -176,7 +181,7 @@ export default {
     mounted() {
       // 在进入前先检查有无缓存操作或者路由有无给进来
           // this.result_img_count = ((this.$store.getters.getResultImgList).value.length)
-      for (let i = 0; i < 50; ++i) {
+      for (let i = 0; i < 0; ++i) {
         const operation = new Operation()
         operation.output_image = [1, 2]
         operation.module_name = '123'
@@ -189,7 +194,8 @@ export default {
         return {
             operations_list: [], 
             result_img_count: 0,
-            max_operation_count: 20
+            max_operation_count: 20,
+            now_show_method: 'ReadImg',
         }
     },
     beforeUnmount() {

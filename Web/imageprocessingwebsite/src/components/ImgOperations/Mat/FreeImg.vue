@@ -6,10 +6,13 @@
           <el-input placeholder="请填写图像编号" :maxLength="20" v-model="form.img_a" />
         </el-form-item>
       </el-form>
+      <el-button type="primary" @click="submit"></el-button>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
+  
+import axios from '../../../plugin/AxiosAPI'
   export default {
       data() {
           return {
@@ -18,8 +21,25 @@
               },
               rules: [
                   {}
-              ]
+              ],
+              return_index: -1,
           }
+      },
+      methods: {
+        submit() {
+          axios.get(this.$store.getters.getUrl.operation.operation.mat.free_img, {
+            params: {
+              token: this.$store.getters.getToken,
+              mat_index: this.form.img_a
+            }
+          }).then(response => {
+            if (response.data != null) {
+              if (response.data.status != null) {
+                console.log('ok')
+              }
+            }
+          })
+        }
       }
   }
   </script>

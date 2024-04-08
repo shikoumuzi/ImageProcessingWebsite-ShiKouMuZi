@@ -7,9 +7,11 @@
         </el-form-item>
       </el-form>
     </div>
-  </template>
+</template>
   
   <script>
+  import mitt from '../../../plugin/MittAPI'
+  import axios from '../../../plugin/AxiosAPI'
   export default {
       data() {
           return {
@@ -18,8 +20,47 @@
               },
               rules: [
                   {}
-              ]
+              ],
+              mode: ''
           }
+      },
+      mounted() {
+        mitt.on('mode', (res) => {
+          this.mode = res
+        })
+      },
+      methods: {
+
+        submit() {
+          if (this.mode === 'left') {
+            axios.get(this.$store.getters.getUrl.operation.affine_transform.left_rotate_90, {
+            params: {
+              token: this.$store.getters.getToken,
+              mat: this.form.img_a
+            }
+            }).then(response => {
+              if (response.data != null) {
+                if (response.data.status != null) {
+                  console.log('ok')
+                }
+              }
+            })
+          } else {
+            axios.get(this.$store.getters.getUrl.operation.affine_transform.right_rotate_90, {
+            params: {
+              token: this.$store.getters.getToken,
+              mat: this.form.img_a
+            }
+            }).then(response => {
+              if (response.data != null) {
+                if (response.data.status != null) {
+                  console.log('ok')
+                }
+              }
+            })
+          }
+        }
+
       }
   }
   </script>

@@ -10,20 +10,66 @@
 
       </el-form>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
+import axios from '../../../plugin/AxiosAPI'
+import mitt from '../../../plugin/MittAPI'
   export default {
       data() {
           return {
               form: {
                   img_a: -1,
-                  value: -1,
+                  value: -1
               },
               rules: [
                   {}
-              ]
+              ],
+              mode: '',
+              result_index: ''
           }
+      },
+      mounted() {
+        mitt.on('mode', (res) => {
+          this.mode = res
+        })
+      },
+      methods: {
+        submit() {
+          if (this.mode === 'add') {
+            axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.add_between_mat_and_value, {
+            params: {
+              token: this.$store.getters.getToken,
+              img_a: this.form.img_a,
+              value: this.form.value,
+            }
+            }).then(response => {
+              if (response.data != null) {
+                if (response.data.status != null) {
+                  console.log('ok')
+                  this.result_index = response.mat_index
+                  mitt.emit('result_index', this.result_index)
+                }
+              }
+            })
+        } else {
+          axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.sub_between_mat_and_value, {
+            params: {
+              token: this.$store.getters.getToken,
+              mat_index: this.form.img_a
+            }
+            }).then(response => {
+              if (response.data != null) {
+                if (response.data.status != null) {
+                  console.log('ok')
+                  this.result_index = response.mat_index
+                  mitt.emit('result_index', this.result_index)
+                }
+              }
+            })
+        }
+      }
+          
       }
   }
   </script>

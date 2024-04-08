@@ -24,11 +24,11 @@ struct Password{
 fn login(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLite>>, username: String, password: String)-> Json<LoginResponse> {
 
     let mut _users = users.lock().unwrap();
-    let user = _users.find_user_by_username(&username);
-    if !user.is_none(){
-        let login_response = LoginResponse::new(0, 1, 0, "".to_string());
-        return Json(login_response);
-    }
+    // let user = _users.find_user_by_username(&username);
+    // if !user.is_none(){
+    //     let login_response = LoginResponse::new(0, 1, 0, "".to_string());
+    //     return Json(login_response);
+    // }
 
     let mut re = Regex::new("^[\\u0391-\\uFFE5A-Za-z0-9]+$").unwrap();
     if re.is_match(username.as_str()) == false{

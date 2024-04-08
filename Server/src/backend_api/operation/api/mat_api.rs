@@ -23,7 +23,7 @@ use super::super::utils::mat::mat::Mat;
 use super::base_method::*;
 
 
-#[get("/image_processing_website_api/operation/mat/read_img", data="<form>")]
+#[post("/image_processing_website_api/operation/mat/read_img", data="<form>")]
 fn readImg(users: &State<Mutex<UserGroup>>, form: Form<Image<'_>>, content_type: &ContentType)-> Json<ReadImgResponse>{
 
 
