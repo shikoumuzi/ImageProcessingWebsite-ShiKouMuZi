@@ -13,6 +13,7 @@
       </el-form-item>
 
     </el-form>
+    <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
   </div>
 </template>
 

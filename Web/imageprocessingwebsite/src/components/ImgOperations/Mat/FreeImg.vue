@@ -6,7 +6,7 @@
           <el-input placeholder="请填写图像编号" :maxLength="20" v-model="form.img_a" />
         </el-form-item>
       </el-form>
-      <el-button type="primary" @click="submit"></el-button>
+      <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
     </div>
 </template>
   

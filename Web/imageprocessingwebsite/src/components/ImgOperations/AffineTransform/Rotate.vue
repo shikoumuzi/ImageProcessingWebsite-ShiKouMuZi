@@ -6,6 +6,7 @@
           <el-input placeholder="请填写图像编号" :maxLength="20" v-model="form.img_a" />
         </el-form-item>
       </el-form>
+      <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
     </div>
 </template>
   
@@ -45,7 +46,7 @@
                 }
               }
             })
-          } else {
+          } else if (this.mode === 'right') {
             axios.get(this.$store.getters.getUrl.operation.affine_transform.right_rotate_90, {
             params: {
               token: this.$store.getters.getToken,

@@ -6,6 +6,7 @@ use crate::backend_api::base_method::base::USER_IMG_PATH;
 use crate::backend_api::operation::api::typngs::Image::Image;
 
 pub fn get_extension_from_filename(filename: &str) -> Option<&str> {
+    println!("{}", filename);
     Path::new(filename)
         .extension()
         .and_then(OsStr::to_str)

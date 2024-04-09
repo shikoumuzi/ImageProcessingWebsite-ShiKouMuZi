@@ -78,6 +78,7 @@
                   height: 100%; 
                   margin-top: 70px;
                   margin-bottom: 50px;">
+                  <div style="margin-top: 2%;"> 
                     <div v-if="this.now_show_method=='ReadImg'">
                       <ReadImg/>
                     </div>
@@ -108,7 +109,7 @@
                     <div v-else-if="this.now_show_method=='AddOrSubBetweenMatAndScalar'">
                       <AddOrSubBetweenMatAndScalar/>
                     </div>
-
+                  </div>
                 </div>
               </el-col>
             </el-row>
@@ -161,7 +162,7 @@
                     <div v-for="(item_j, j) in item_i.output_image.length" :key="item_j" class="result_img_list_item">
 
                       <div class="result_img">
-                          <el-image :src="getImgSrc(this.operations_list.length - i, j)" :fit="contain" style="width: 80%; max-width: 80%; border: solid rgb(207, 204, 204) 5px;" lazy/>
+                          <el-image :src="getImgSrc(i, j)" :fit="contain" style="width: 80%; max-width: 80%; border: solid rgb(207, 204, 204) 5px;" lazy/>
                           <div style="  
                               display: flex; 
                               flex-direction: column;; 
@@ -178,7 +179,7 @@
                           
                       </div>
                       <div>
-                        {{ "操作方法名：" + item_i.module_name + " => " + item_i.method_name }}
+                        {{ "图片序列号" + " => " + item_i.mat_index }}
                       </div>
                     </div>
                       
@@ -204,7 +205,7 @@ import Resize from '@/components/ImgOperations/Mat/Resize.vue'
 
 import Flip from '@/components/ImgOperations/AffineTransform/Flip.vue'
 import Rotate from '@/components/ImgOperations/AffineTransform/Rotate.vue'
-
+import mitt from '../plugin/MittAPI'
 export default {
     components: {
       ReadImg,
@@ -229,17 +230,27 @@ export default {
     mounted() {
       // 在进入前先检查有无缓存操作或者路由有无给进来
           // this.result_img_count = ((this.$store.getters.getResultImgList).value.length)
-      for (let i = 0; i < 0; ++i) {
-        const operation = new Operation()
-        operation.output_image = [1, 2]
-        operation.module_name = '123'
-        operation.method_name = '123'
-        this.operations_list.push(operation)
-      }
+      // for (let i = 0; i < 0; ++i) {
+      //   const operation = new Operation()
+      //   operation.output_image = [1, 2]
+      //   operation.module_name = '123'
+      //   operation.method_name = '123'
+      //   this.operations_list.push(operation)
+      // }
       console.log(this.operations_list)
+    },
+    created() {
+      mitt.on('result_index', (res) => {
+        const operation = new Operation()
+        console.log(this.getimg_url + res)
+        operation.output_image.push(this.getimg_url + res)
+        operation.mat_index = res
+        this.operations_list.push(operation)
+      })
     },
     data () {
         return {
+            getimg_url: 'http://127.0.0.1:8000/image_processing_website_api/operation/mat/save_img?token=' + this.$store.getters.getToken + '&mat_index=',
             operations_list: [], 
             result_img_count: 0,
             max_operation_count: 20,
@@ -252,11 +263,14 @@ export default {
     methods: {
         getImgSrc(i, j) {
           this.result_img_count += 1
-          try {
-            return window.URL.createObjectURL(this.operations_list[i].output_image[j])
-          } catch {
-            console.log('getImgSrc is loading error')
-          }
+          // console.log(this.operations_list)
+          console.log(i, j)
+          return this.operations_list[i].output_image[j]
+          // try {
+          //   return window.URL.createObjectURL(this.operations_list[i].output_image[j])
+          // } catch {
+          //   console.log('getImgSrc is loading error')
+          // }
         },
         getNowOperatedImg() {
            

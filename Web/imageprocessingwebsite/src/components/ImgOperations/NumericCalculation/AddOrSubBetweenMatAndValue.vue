@@ -9,6 +9,7 @@
         </el-form-item>
 
       </el-form>
+      <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
     </div>
 </template>
   
@@ -52,7 +53,7 @@ import mitt from '../../../plugin/MittAPI'
                 }
               }
             })
-        } else {
+        } else if (this.mode === 'sub') {
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.sub_between_mat_and_value, {
             params: {
               token: this.$store.getters.getToken,

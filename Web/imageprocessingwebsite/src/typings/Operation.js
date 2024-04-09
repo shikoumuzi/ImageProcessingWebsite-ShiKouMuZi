@@ -6,6 +6,7 @@ export default class Operation {
         this.args = [] // 参数
         this.output_image = [] // 输出的图像列表（占位），每个所输出的图像都会生成一个相应的占位
         this.time_stamp = new Date().getTime()
+        this.mat_index = -1
     }
 
     toDict() {

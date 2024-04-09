@@ -8,6 +8,7 @@
           <el-input placeholder="请填写图像编号" :maxLength="20" v-model="form.img_b" />
         </el-form-item>
       </el-form>
+      <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
     </div>
 </template>
   
@@ -51,7 +52,7 @@ import mitt from '../../../plugin/MittAPI'
                 }
               }
             })
-        } else {
+        } else if (this.mode === 'sub') {
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.sub_between_mats, {
             params: {
               token: this.$store.getters.getToken,
