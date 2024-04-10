@@ -1,3 +1,4 @@
+<!-- eslint-disable camelcase -->
 <template>
     <el-container>
 
@@ -9,31 +10,31 @@
                 <template #title>
                   <span>MMat 基本图像处理</span>
                   </template>
-                  <el-menu-item index="m-1-1">createMat</el-menu-item>
-                  <el-menu-item index="m-1-1">readImg</el-menu-item>
-                  <el-menu-item index="m-1-1">saveImg</el-menu-item>
-                  <el-menu-item index="m-1-2">copy</el-menu-item>
-                  <el-menu-item index="m-1-3">resize</el-menu-item>
-                  <el-menu-item index="m-1-4">hstack</el-menu-item>
-                  <el-menu-item index="m-1-5">vstack</el-menu-item>
-                  <el-menu-item index="m-1-6">split</el-menu-item>
-                  <el-menu-item index="m-1-6">merge</el-menu-item>
+                  <el-menu-item index="m-1-1" @click="changeNowSHowModule('', '')">createMat</el-menu-item>
+                  <el-menu-item index="m-1-1" @click="changeNowSHowModule('ReadImg', '')">readImg</el-menu-item>
+                  <el-menu-item index="m-1-1" @click="changeNowSHowModule('', '')">saveImg</el-menu-item>
+                  <el-menu-item index="m-1-2" @click="changeNowSHowModule('', '')">copy</el-menu-item>
+                  <el-menu-item index="m-1-3" @click="changeNowSHowModule('Resize', '')">resize</el-menu-item>
+                  <el-menu-item index="m-1-4" @click="changeNowSHowModule('HVStack', 'h')">hstack</el-menu-item>
+                  <el-menu-item index="m-1-5" @click="changeNowSHowModule('HVStack', 'v')">vstack</el-menu-item>
+                  <el-menu-item index="m-1-6" @click="changeNowSHowModule('')">split</el-menu-item>
+                  <el-menu-item index="m-1-6" @click="changeNowSHowModule('')">merge</el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="m-2">
                 <template #title>
                   <span>MNumericCalculation 数值计算</span>
                   </template>
-                  <el-menu-item index="m-2-1">addBetweenMats</el-menu-item>
-                  <el-menu-item index="m-2-1">addBetweenMatAndValue</el-menu-item>
-                  <el-menu-item index="m-2-1">addBetweenMatAndScalar</el-menu-item>
-                  <el-menu-item index="m-2-2">addWeighted</el-menu-item>
-                  <el-menu-item index="m-2-3">subBetweenMats</el-menu-item>
-                  <el-menu-item index="m-2-4">subBetweenMatAndValue</el-menu-item>
-                  <el-menu-item index="m-2-5">subBetweenMatAndScalar</el-menu-item>
-                  <el-menu-item index="m-2-6">bitwiseAnd</el-menu-item>
-                  <el-menu-item index="m-2-6">bitwiseOr</el-menu-item>
-                  <el-menu-item index="m-2-6">bitwiseNo</el-menu-item>
-                  <el-menu-item index="m-2-6">bitwiseXor</el-menu-item>
+                  <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMats', 'add')">addBetweenMats</el-menu-item>
+                  <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMatAndValue', 'add')">addBetweenMatAndValue</el-menu-item>
+                  <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMatAndScalar', 'aff')">addBetweenMatAndScalar</el-menu-item>
+                  <el-menu-item index="m-2-2" @click="changeNowSHowModule()">addWeighted</el-menu-item>
+                  <el-menu-item index="m-2-3" @click="changeNowSHowModule('AddOrSubBetweenMats', 'sub')">subBetweenMats</el-menu-item>
+                  <el-menu-item index="m-2-4" @click="changeNowSHowModule('AddOrSubBetweenMatAndValue', 'sub')">subBetweenMatAndValue</el-menu-item>
+                  <el-menu-item index="m-2-5" @click="changeNowSHowModule('AddOrSubBetweenMatAndScalar', 'sub')">subBetweenMatAndScalar</el-menu-item>
+                  <el-menu-item index="m-2-6" @click="changeNowSHowModule('Bitwise', 'and')">bitwiseAnd</el-menu-item>
+                  <el-menu-item index="m-2-6" @click="changeNowSHowModule('Bitwise', 'or')">bitwiseOr</el-menu-item>
+                  <el-menu-item index="m-2-6" @click="changeNowSHowModule('Bitwise', 'not')">bitwiseNot</el-menu-item>
+                  <el-menu-item index="m-2-6" @click="changeNowSHowModule('Bitwise', 'xor')">bitwiseXor</el-menu-item>
               </el-sub-menu>
  
               <el-menu-item index="3">
@@ -283,6 +284,12 @@ export default {
         },
         saveToHistoryOperation() {
           
+        },
+        // eslint-disable-next-line camelcase
+        changeNowSHowModule(show_module_name, mode) {
+          // eslint-disable-next-line camelcase
+          this.now_show_method = show_module_name
+          mitt.emit('mode', mode)
         }
     },
 
