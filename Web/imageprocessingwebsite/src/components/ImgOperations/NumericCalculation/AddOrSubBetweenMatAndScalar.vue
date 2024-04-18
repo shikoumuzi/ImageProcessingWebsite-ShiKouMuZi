@@ -55,9 +55,9 @@ import mitt from '../../../plugin/MittAPI'
             }
             }).then(response => {
               if (response.data != null) {
-                if (response.data.status != null) {
+                if (response.data.status === 0) {
                   console.log('ok')
-                  this.result_index = response.mat_index
+                  this.result_index = response.data.mat_index
                   mitt.emit('result_index', this.result_index)
                 }
               }
@@ -70,9 +70,9 @@ import mitt from '../../../plugin/MittAPI'
             }
             }).then(response => {
               if (response.data != null) {
-                if (response.data.status != null) {
+                if (response.data.status === 0) {
                   console.log('ok')
-                  this.result_index = response.mat_index
+                  this.result_index = response.data.mat_index
                   mitt.emit('result_index', this.result_index)
                 }
               }

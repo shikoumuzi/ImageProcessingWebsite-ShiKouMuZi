@@ -26,7 +26,7 @@
                   </template>
                   <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMats', 'add')">addBetweenMats</el-menu-item>
                   <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMatAndValue', 'add')">addBetweenMatAndValue</el-menu-item>
-                  <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMatAndScalar', 'aff')">addBetweenMatAndScalar</el-menu-item>
+                  <el-menu-item index="m-2-1" @click="changeNowSHowModule('AddOrSubBetweenMatAndScalar', 'add')">addBetweenMatAndScalar</el-menu-item>
                   <el-menu-item index="m-2-2" @click="changeNowSHowModule()">addWeighted</el-menu-item>
                   <el-menu-item index="m-2-3" @click="changeNowSHowModule('AddOrSubBetweenMats', 'sub')">subBetweenMats</el-menu-item>
                   <el-menu-item index="m-2-4" @click="changeNowSHowModule('AddOrSubBetweenMatAndValue', 'sub')">subBetweenMatAndValue</el-menu-item>
@@ -57,7 +57,7 @@
                   <el-col :span="23">
                     <div style="height: 50vh; width: 100%; margin-top: 100px; background-color: aqua;">
                       
-                      <el-image :src="getNowOperatedImg" :fit="contain" style="height: 100%; width: 100%;"/>
+                      <el-image :src="this.now_operation_img_url" :fit="contain" style="height: 100%; width: 100%;"/>
                       <div style="margin-top: 5px;">
                         图像展示区
 
@@ -173,7 +173,7 @@
                               <span style="margin-right: 2pt; margin-bottom: 10px; border: solid rgb(207, 204, 204); background-color: rgb(207, 204, 204); width: 20px;">{{ this.operations_list.length - i}}</span>
 
                               <div style="border: solid rgb(207, 204, 204); background-color: rgb(207, 204, 204); width: 20px;">
-                                  <el-icon @click="dowloadResultImg(item_j)"><Download /></el-icon>
+                                  <el-icon @click="dowloadResultImg(item_i.mat_index)"><Download /></el-icon>
                               </div>
 
                           </div>
@@ -207,6 +207,10 @@ import Resize from '@/components/ImgOperations/Mat/Resize.vue'
 import Flip from '@/components/ImgOperations/AffineTransform/Flip.vue'
 import Rotate from '@/components/ImgOperations/AffineTransform/Rotate.vue'
 import mitt from '../plugin/MittAPI'
+
+import download from 'downloadjs'
+import axios from '../plugin/AxiosAPI'
+
 export default {
     components: {
       ReadImg,
@@ -247,6 +251,7 @@ export default {
         operation.output_image.push(this.getimg_url + res)
         operation.mat_index = res
         this.operations_list.push(operation)
+        this.now_operation_img_url = this.getimg_url + res
       })
     },
     data () {
@@ -256,6 +261,7 @@ export default {
             result_img_count: 0,
             max_operation_count: 20,
             now_show_method: 'ReadImg',
+            now_operation_img_url: ''
         }
     },
     beforeUnmount() {
@@ -265,7 +271,7 @@ export default {
         getImgSrc(i, j) {
           this.result_img_count += 1
           // console.log(this.operations_list)
-          console.log(i, j)
+          // console.log(i, j)
           return this.operations_list[i].output_image[j]
           // try {
           //   return window.URL.createObjectURL(this.operations_list[i].output_image[j])
@@ -274,10 +280,43 @@ export default {
           // }
         },
         getNowOperatedImg() {
-           
+            console.log('getNowOperatedImg')
+           return this.getimg_url + this.now_operation_img_index
         },
-        dowloadResultImg(img) {
+        async dowloadResultImg(index) {
+          // const link = document.createElement('a');
+          // link.style.display = 'none';
+          // link.href = this.getimg_url + index;
+          // document.body.appendChild(link);
+          // link.click();
           
+          // download(this.getimg_url + index, this.$store.getters.getUserBaseMsg.value.username, 'jpg');
+          axios.get('/operation/mat/save_img', {
+            params: {
+              token: this.$store.getters.getToken,
+              mat_index: index
+            },
+            responseType: 'blob',
+          }).then((res) => {
+            if (res.status === 200) {
+              if (res.data !== null) {
+                const content = res.data;
+                const blob = new Blob([content]);
+                if ('download' in document.createElement('a')) {
+                // 非IE下载
+                const a = document.createElement('a');
+                a.download = this.$store.getters.getUserBaseMsg.value.username + index + '.jpg';
+                a.style.display = 'none';
+                a.href = window.URL.createObjectURL(blob);
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(a.href);
+                document.body.removeChild(a);
+            }
+          }
+          } 
+}
+          )
         },
         getServetStatus() {
           return '良好'

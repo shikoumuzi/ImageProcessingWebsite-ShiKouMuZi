@@ -22,7 +22,7 @@
       <el-button size="large" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
-    <el-button type="primary" size="large" @click="submit">提交到服务器</el-button>
+    <!-- <el-button type="primary" size="large" @click="submit">提交到服务器</el-button> -->
   </div>
 </template>
 

@@ -30,7 +30,7 @@ fn getAllSuggestions(users: &State<Mutex<UserGroup>>, sqlite: &State<Mutex<SQLit
 
     let mut _sqlite = sqlite.lock().unwrap();
     let conn = _sqlite.getConn();
-    let sql_lang = format!("SELECT SUGGECTION_ID, TIME_STAMP, USER_NAME, SUGGESTION_CONTENT FROM SUGGESTION WHERE RESPONSE IS NULL LIMIT {}, {}", now_len, 100);
+    let sql_lang = format!("SELECT SUGGESTION_ID, TIME_STAMP, USER_NAME, SUGGESTION_CONTENT FROM SUGGESTION WHERE RESPONSE IS NULL LIMIT {}, {}", now_len, 100);
     println!("{}", sql_lang);
     let stmt_result = conn.prepare(sql_lang.as_str());
     if stmt_result.is_err(){
