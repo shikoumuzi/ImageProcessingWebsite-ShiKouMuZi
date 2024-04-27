@@ -48,7 +48,7 @@ async fn addBetweenMatAndValue(users: &State<Mutex<UserGroup>>, token: String, i
         let image_index_response = ImageIndexResponse::new(1, -1);
         return Json(image_index_response);
     }
-    
+    println!("{}", dst_mat_index);
     let image_index_response = ImageIndexResponse::new(0, dst_mat_index);
     return Json(image_index_response);
 }

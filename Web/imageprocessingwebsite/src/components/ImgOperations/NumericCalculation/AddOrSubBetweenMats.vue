@@ -48,7 +48,7 @@ import mitt from '../../../plugin/MittAPI'
             }).then(response => {
               if (response.data != null) {
                 if (response.data.status === 0) {
-                  console.log('ok')
+                  console.log(response.data)
                   console.log()
                   this.result_index = response.data.mat_index
                   mitt.emit('result_index', this.result_index)
@@ -59,12 +59,13 @@ import mitt from '../../../plugin/MittAPI'
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.sub_between_mats, {
             params: {
               token: this.$store.getters.getToken,
-              mat_index: this.form.img_a
+              img_a: this.form.img_a,
+              img_b: this.form.img_b,
             }
             }).then(response => {
               if (response.data != null) {
                 if (response.data.status != null) {
-                  console.log('ok')
+                  console.log(response.data)
                   this.result_index = response.data.mat_index
                   mitt.emit('result_index', this.result_index)
                 }

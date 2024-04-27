@@ -5,3 +5,13 @@ forms = "20 MiB"
 json = "20 MiB"
 bytes = "20 MiB"
 data-form="50 MiB"
+
+[development]
+address = "127.0.0.1"
+port = 10086
+workers = 16
+keep_alive = 5
+#log = "normal"
+#secret_key = ""
+#limits = { forms = 32768 }
+#template_dir = "src/templates/"

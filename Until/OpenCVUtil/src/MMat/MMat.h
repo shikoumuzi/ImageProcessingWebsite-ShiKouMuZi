@@ -25,7 +25,7 @@ namespace MUZI
 		{
 			Mat mat;
 			MMatIndex_t index;  // 索引号
-			bool is_allocated; // 代表是否以及被分配出去了
+			std::atomic_bool is_allocated; // 代表是否以及被分配出去了
 		};
 		using MatVecotr = std::vector<MatMsg>;
 		struct MatMangerData

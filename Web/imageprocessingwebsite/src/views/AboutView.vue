@@ -58,7 +58,7 @@
                       <a :href="scope.row.url">{{scope.row.url}}</a>
                     </template>
                     </el-table-column>
-                    <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
+                    <el-table-column label="Title" width="500" fixed="right" prop="title"></el-table-column>
                   </el-table>
 
               </el-collapse-item>
@@ -76,7 +76,7 @@
                       <a :href="scope.row.url">{{scope.row.url}}</a>
                     </template>
                   </el-table-column>
-                  <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
+                  <el-table-column label="Title" width="500" fixed="right" prop="title"></el-table-column>
 
                 </el-table>
               </el-collapse-item>
@@ -96,7 +96,7 @@
                       <a :href="scope.row.url">{{scope.row.url}}</a>
                     </template>
                   </el-table-column>
-                  <el-table-column label="Title" width="100" fixed="right" prop="title"></el-table-column>
+                  <el-table-column label="Title" width="500" fixed="right" prop="title"></el-table-column>
 
                 </el-table>
               </el-collapse-item>

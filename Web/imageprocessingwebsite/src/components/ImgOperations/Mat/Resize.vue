@@ -42,7 +42,7 @@ export default {
     },
     methods: {
       submit() {
-          axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.add_between_mat_and_scalar, {
+          axios.get(this.$store.getters.getUrl.operation.operation.mat.resize, {
           params: {
             token: this.$store.getters.getToken,
             img_a: this.form.img_a,

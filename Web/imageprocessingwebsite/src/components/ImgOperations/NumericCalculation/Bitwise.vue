@@ -57,7 +57,8 @@ import mitt from '../../../plugin/MittAPI'
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.bitwise_and, {
             params: {
               token: this.$store.getters.getToken,
-              mat_index: this.form.img_a
+              img_a: this.form.img_a,
+              img_b: this.form.img_b,
             }
             }).then(response => {
               if (response.data != null) {
@@ -72,7 +73,8 @@ import mitt from '../../../plugin/MittAPI'
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.bitwise_xor, {
             params: {
               token: this.$store.getters.getToken,
-              mat_index: this.form.img_a
+              img_a: this.form.img_a,
+              img_b: this.form.img_b,
             }
             }).then(response => {
               if (response.data != null) {
@@ -87,7 +89,8 @@ import mitt from '../../../plugin/MittAPI'
           axios.get(this.$store.getters.getUrl.operation.operation.numberic_calculation.bitwise_not, {
             params: {
               token: this.$store.getters.getToken,
-              mat_index: this.form.img_a
+              img_a: this.form.img_a,
+              img_b: this.form.img_b,
             }
             }).then(response => {
               if (response.data != null) {

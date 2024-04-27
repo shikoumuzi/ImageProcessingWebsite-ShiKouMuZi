@@ -239,19 +239,28 @@ namespace MUZI
 		MMatIndex_t now_index = this->m_data->m_tail_index;
 		for (MMatIndex_t i = now_index; i < this->m_data->m_mats.size(); ++i)
 		{
+			std::cout << "loop index is " << i << std::endl;
+			std::cout << "this->m_data->m_mats[i].is_allocated is " << this->m_data->m_mats[i].is_allocated << std::endl;
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
-				this->m_data->m_mats[i].is_allocated == true;
+				this->m_data->m_mats[i].is_allocated = true;
 				this->m_data->m_tail_index = i;
+				std::cout << "new index is " << i << std::endl;
+
+
 				return i;
 			}
 		}
 		for (MMatIndex_t i = 0; i < now_index; ++i)
 		{
+			std::cout << "new index is " << i << std::endl;
+			std::cout << "this->m_data->m_mats[i].is_allocated is " << this->m_data->m_mats[i].is_allocated << std::endl;
 			if (this->m_data->m_mats[i].is_allocated == false)
 			{
-				this->m_data->m_mats[i].is_allocated == true;
+				this->m_data->m_mats[i].is_allocated = true;
 				this->m_data->m_tail_index = i;
+				std::cout << "new index is " << i << std::endl;
+
 				return i;
 			}
 		}

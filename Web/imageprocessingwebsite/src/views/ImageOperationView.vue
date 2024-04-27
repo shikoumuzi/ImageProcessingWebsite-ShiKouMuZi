@@ -160,10 +160,10 @@
               </div>
                 <el-scrollbar style="overflow: hidden; height: 100vh">
                   <div v-for="(item_i, i) in this.operations_list" :key="item_i" >
-                    <div v-for="(item_j, j) in item_i.output_image.length" :key="item_j" class="result_img_list_item">
+                    <div v-for="(item_j, j) in item_i.output_image" :key="item_j" class="result_img_list_item">
 
                       <div class="result_img">
-                          <el-image :src="getImgSrc(i, j)" :fit="contain" style="width: 80%; max-width: 80%; border: solid rgb(207, 204, 204) 5px;" lazy/>
+                          <el-image :src="this.operations_list[i].output_image[j]" :fit="contain" style="width: 80%; max-width: 80%; border: solid rgb(207, 204, 204) 5px;" lazy/>
                           <div style="  
                               display: flex; 
                               flex-direction: column;; 
@@ -247,11 +247,13 @@ export default {
     created() {
       mitt.on('result_index', (res) => {
         const operation = new Operation()
-        console.log(this.getimg_url + res)
-        operation.output_image.push(this.getimg_url + res)
+        // console.log(this.getimg_url + res)
+        operation.output_image.push(this.getimg_url + res);
         operation.mat_index = res
-        this.operations_list.push(operation)
+        this.operations_list.splice(0, 0, operation);
         this.now_operation_img_url = this.getimg_url + res
+        console.log(this.now_operation_img_url)
+        console.log(this.operations_list)
       })
     },
     data () {
@@ -271,8 +273,13 @@ export default {
         getImgSrc(i, j) {
           this.result_img_count += 1
           // console.log(this.operations_list)
-          // console.log(i, j)
-          return this.operations_list[i].output_image[j]
+          console.log(i, j)
+          // try {
+          //   return ''
+          // } catch {
+          //   return ''
+          // }
+          
           // try {
           //   return window.URL.createObjectURL(this.operations_list[i].output_image[j])
           // } catch {
@@ -291,6 +298,7 @@ export default {
           // link.click();
           
           // download(this.getimg_url + index, this.$store.getters.getUserBaseMsg.value.username, 'jpg');
+          console.log('download')
           axios.get('/operation/mat/save_img', {
             params: {
               token: this.$store.getters.getToken,
